@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>إدارة المعرض</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#EEF2F5;color:#132230;font-family:Tahoma,Arial,sans-serif;padding:16px;box-sizing:border-box}
+.box{background:#fff;border:1px solid #D7E0E7;border-radius:16px;padding:22px;max-width:380px;width:100%;text-align:center;line-height:1.8}
+a,button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 18px;background:#1D6FA8;color:#fff;cursor:pointer;text-decoration:none;display:inline-block;margin-top:10px}
+@media (prefers-color-scheme:dark){body{background:#0E161E;color:#E6EDF3}.box{background:#16212C;border-color:#263544}}
+</style>
+</head>
+<body>
+<div class="box" id="box">جاري فتح إدارة المعرض…</div>
+<script>
+(function(){
+  var KEY="sama_gh_token",tok="";try{tok=localStorage.getItem(KEY)||""}catch(e){}
+  var box=document.getElementById("box");
+  function fail(msg){box.innerHTML=msg+'<br><a href="./">الرجوع للموقع</a>'}
+  if(!tok){fail("لازم تدخل من الموقع أولاً: انزل لآخر الصفحة واضغط «دخول المعرض».");return}
+  fetch("https://api.github.com/repos/samariyadh-cars/sama-data/contents/crm.html?t="+Date.now(),{headers:{"Authorization":"Bearer "+tok,"Accept":"application/vnd.github.raw"},cache:"no-store"})
+  .then(function(r){if(r.status===401)throw "مفتاح الدخول غير صحيح أو منتهي.";if(r.status===403||r.status===404)throw "المفتاح ما عنده صلاحية على مستودع sama-data. أضفه للمفتاح من إعدادات GitHub.";if(!r.ok)throw "تعذر الفتح، تأكد من الإنترنت.";return r.text()})
+  .then(function(html){document.open();document.write(html);document.close()})
+  .catch(function(m){fail(typeof m==="string"?m:"تعذر الفتح، تأكد من الإنترنت.")});
+})();
+</script>
+</body>
+</html>
