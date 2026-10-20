@@ -146,6 +146,20 @@ dialog.cmpd{max-width:1040px}
 .adm .ad textarea{font:inherit;font-size:15px;padding:10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;min-height:260px}
 .adm .ad .row2{display:flex;gap:8px;flex-wrap:wrap}
 @keyframes drive{from{transform:translateX(60px);opacity:0}to{transform:none;opacity:1}}
+.gal{position:relative;touch-action:pan-y}
+.gal.has img{cursor:zoom-in}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:0;background:rgba(14,34,56,.55);color:#fff;font-size:20px;line-height:38px;padding:0;cursor:pointer}
+.gnav.p{right:8px}.gnav.n{left:8px}
+.gcnt{position:absolute;bottom:8px;left:8px;background:rgba(14,34,56,.65);color:#fff;border-radius:999px;padding:1px 10px;font-size:12px}
+.ghint{position:absolute;bottom:8px;right:8px;background:rgba(14,34,56,.65);color:#fff;border-radius:999px;padding:1px 10px;font-size:12px}
+.badge.new{background:#1E9E5A;color:#fff}
+#zv{position:fixed;inset:0;margin:0;padding:0;border:0;width:100%;height:100%;max-width:none;max-height:none;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none}
+#zv:not([open]){display:none!important}#zv::backdrop{background:#000}
+#zv img{max-width:100%;max-height:100%;transition:transform .2s;user-select:none;-webkit-user-drag:none}
+#zv .zx{position:absolute;top:max(12px,env(safe-area-inset-top));left:12px;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:20px;cursor:pointer}
+#zv .gnav{background:rgba(255,255,255,.18)}
+#zv .gcnt{bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%)}
+.mapw{margin:14px 0;border-radius:14px;overflow:hidden;border:1px solid var(--line,#D7E0E7);aspect-ratio:16/10;max-height:380px;background:#e8eef3}.mapw iframe{width:100%;height:100%;border:0;display:block}
 </style>
 </head>
 <body>
@@ -232,9 +246,11 @@ dialog.cmpd{max-width:1040px}
 <div><h3>ساعات العمل</h3><p>من 9 صباحًا إلى 1 ظهرًا<br>ومن 4 عصرًا إلى 9 مساءً</p></div>
 <div><h3>تواصل معنا</h3><p><a href="tel:0554378456" dir="ltr">0554378456</a><br>أو راسلنا على واتساب</p></div>
 </div>
+<div class="mapw"><iframe title="موقع المعرض على الخريطة" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=%D9%85%D8%B9%D8%B1%D8%B6%20%D8%B3%D9%85%D8%A7%D8%A1%20%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6%20%D9%84%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%D8%8C%20%D8%B4%D8%A7%D8%B1%D8%B9%20%D8%AC%D8%A8%D8%B1%D9%8A%D9%84%20%D8%A8%D9%86%20%D8%AC%D9%85%D9%8A%D9%84%D8%8C%20%D8%AD%D9%8A%20%D8%A7%D9%84%D9%85%D8%B1%D9%88%D8%A1%D8%A9%D8%8C%20%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6&amp;hl=ar&amp;z=16&amp;output=embed"></iframe></div>
 <a class="btn mapb" href="https://maps.app.goo.gl/XzDAF5c3vRzzVFhk8" target="_blank" rel="noopener">افتح موقع المعرض في خرائط قوقل</a>
 </div></section>
 
+<dialog id="zv" aria-label="عرض الصورة"><button class="zx" type="button" aria-label="إغلاق">✕</button><img alt=""><button class="gnav p" type="button" aria-label="السابقة">›</button><button class="gnav n" type="button" aria-label="التالية">‹</button><span class="gcnt" dir="ltr"></span></dialog>
 <dialog class="dlg" id="dlg" aria-labelledby="dTitle">
 <button class="btn alt x" id="dClose" type="button" aria-label="إغلاق">✕</button>
 <div class="in">
@@ -267,7 +283,7 @@ dialog.cmpd{max-width:1040px}
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=2";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=3";document.body.appendChild(s)});
 </script>
 </body>
 </html>
