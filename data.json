@@ -275,23 +275,24 @@
  },
  "extra": [
   {
-   "b": "تويوتا",
-   "n": "كورلا 2.0 طيس",
+   "b": "فورد",
+   "n": "تورس",
    "y": "2026",
    "type": "سيدان",
-   "price": 80500,
    "colors": [
     "أبيض"
    ],
    "imgs": [
-    "blob/8215214fadff331a1d89fc042f3b231b.jpg",
-    "blob/89853ca4dc8197c4b354aef8918c159a.jpg",
-    "blob/646ad66a331a14285b1b8a59a4112028.jpg",
-    "blob/7863f15cda1163bbefedf3f3209e2aa6.jpg",
-    "blob/5481a299b05a46f5f5250849b96b1087.jpg",
-    "blob/d074b680d0b21362ccf043d9b18ee74b.jpg",
-    "blob/63d6b56c43441ea12ff780d06522b1f4.jpg",
-    "blob/f2bd84832538db84759b6fcbec31bfa1.jpg"
+    "up/1792485073200-g9e09i.jpg",
+    "up/1792485075535-7d0oup.jpg",
+    "up/1792485077798-8jkfzp.jpg",
+    "up/1792485079972-uwp7au.jpg",
+    "up/1792485082417-oznnpu.jpg",
+    "up/1792485084502-0kp99g.jpg",
+    "up/1792485086507-4ob9g8.jpg",
+    "up/1792485088753-48bta9.jpg",
+    "up/1792485090986-49zypk.jpg",
+    "up/1792485094108-4onpce.jpg"
    ],
    "specs": [
     {
