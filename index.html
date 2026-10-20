@@ -5,6 +5,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>معرض سماء الرياض للسيارات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Tajawal:wght@400;500&display=swap">
 <style>
 [hidden]{display:none!important}
@@ -160,7 +161,7 @@ dialog.cmpd{max-width:1040px}
 <p>تويوتا ولكزس موديلات 2026. كاش أو أقساط أو دفعتين، وشحن لجميع مدن المملكة.</p>
 <div class="row"><a class="btn" href="#cars">تصفح السيارات</a><a class="btn ghost" href="#visit">موقع المعرض</a></div>
 </div>
-<div class="hx-pic"><img src="blob/a9aae767a49669cdc4da79357216e290.jpg" alt="لكزس IS350 بيضاء في معرض سماء الرياض"></div>
+<div class="hx-pic"><img fetchpriority="high" decoding="async" src="blob/a9aae767a49669cdc4da79357216e290.jpg" alt="لكزس IS350 بيضاء في معرض سماء الرياض"></div>
 </div></div>
 <div class="trust"><div class="wrap"><div>شحن لجميع مدن المملكة<small>من الرياض إلى بابك</small></div><div>كاش أو أقساط<small>اطلب من بطاقة السيارة</small></div><div>سيارات جديدة<small>تويوتا ولكزس</small></div></div></div>
 
@@ -266,7 +267,7 @@ dialog.cmpd{max-width:1040px}
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=1";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=2";document.body.appendChild(s)});
 </script>
 </body>
 </html>
