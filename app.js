@@ -181,6 +181,7 @@ function cmpData(idx){
   });
   return secs;
 }
+function hasDiff(idx){var r=false;cmpData(idx).forEach(function(S){S.keys.forEach(function(k){var R=S.rows[k],v=idx.map(function(i){return R.v[i]});if(!v.every(function(x){return String(x)===String(v[0])}))r=true})});return r}
 function drawCmp(){
   var wrap=$("cmpTbl");wrap.innerHTML="";
   var idx=cmpSel,diff=$("cmpDiff").checked;
@@ -210,6 +211,7 @@ function drawCmp(){
   });
   if(!any&&!diff){var er=document.createElement("tr");var ec=cell("td","المواصفات التفصيلية لهذي الفئات تتوفر عبر واتساب.","no");ec.colSpan=idx.length+1;er.appendChild(ec);body.appendChild(er)}
   if(!any&&diff){var er2=document.createElement("tr");var ec2=cell("td","ما فيه فروقات بين الفئات المختارة في المواصفات المدخلة.","no");ec2.colSpan=idx.length+1;er2.appendChild(ec2);body.appendChild(er2)}
+  tb.style.setProperty("--n",idx.length);
   tb.appendChild(body);
   var tf=document.createElement("tfoot"),fr=document.createElement("tr");fr.appendChild(cell("td",""));
   idx.forEach(function(i){var c=cars[i],td=document.createElement("td"),a=document.createElement("a");a.className="btn";a.target="_blank";a.rel="noopener";a.textContent=c.status==="sold"?"اسأل عن مشابهة":"اطلب هذي الفئة";a.href=c.status==="sold"?wa("السلام عليكم، أبغى سيارة مشابهة لـ "+c.b+" "+c.n+" من "+SHOP):wa(msgFor(c,"بالدفع كاش"));td.appendChild(a);fr.appendChild(td)});
@@ -226,7 +228,7 @@ function openCmp(c){
   var ci=cars.indexOf(c);cmpSel=cmpFam.slice(0,4);
   if(cmpSel.indexOf(ci)<0&&ci>-1){cmpSel[cmpSel.length-1]=ci;cmpSel.sort(function(a,b){return a-b})}
   $("cmpT").textContent="مقارنة فئات "+c.b+" "+modelOf(c);$("cmpPick").hidden=false;$("cmp2").hidden=true;$("cmpHint").textContent="اختر الفئات اللي تبي تقارنها (من 2 إلى 4).";
-  $("cmpDiff").checked=false;
+  $("cmpDiff").checked=hasDiff(cmpSel);
   drawPick();drawCmp();
   var d=$("cmp");if($("dlg").open)$("dlg").close();
   if(d.showModal)d.showModal();else d.setAttribute("open","");
@@ -239,7 +241,7 @@ function openCmp2(c){
   B.value=other;
   function go(){var a=+A.value,b=+B.value;if(a===b){var j=-1;cars.forEach(function(x,i){if(j<0&&i!==a&&x.status!=="hidden")j=i});b=j;B.value=b}cmpSel=[a,b];drawCmp()}
   A.onchange=go;B.onchange=go;
-  $("cmpT").textContent="مقارنة بين سيارتين";$("cmpHint").textContent="اختر أي سيارتين من القائمتين تحت.";$("cmpPick").hidden=true;$("cmp2").hidden=false;$("cmpDiff").checked=false;
+  $("cmpT").textContent="مقارنة بين سيارتين";$("cmpHint").textContent="اختر أي سيارتين من القائمتين تحت.";$("cmpPick").hidden=true;$("cmp2").hidden=false;$("cmpDiff").checked=false;{var ca=cars[+A.value],cb=cars[+B.value];$("cmpDiff").checked=!!(ca&&cb&&ca.b===cb.b&&modelOf(ca)===modelOf(cb)&&hasDiff([+A.value,+B.value]))}
   go();
   var d=$("cmp");if($("dlg").open)$("dlg").close();
   if(d.showModal)d.showModal();else d.setAttribute("open","");
