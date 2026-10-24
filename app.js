@@ -497,7 +497,7 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
         w.style.cssText="display:flex;flex-direction:column;gap:10px";
         function colorOf(u){var c=i0.cimgs||{},k=Object.keys(c).filter(function(n){return (c[n]||[]).indexOf(u)>-1})[0];return k||""}
         o.color=colorOf(o.img);
-        var pv=document.createElement("img");pv.alt="معاينة";pv.style.cssText="width:100%;max-width:340px;align-self:center;border-radius:12px;display:block;background:#0b0c0f;min-height:140px;position:sticky;top:6px;z-index:2";w.appendChild(pv);
+        var pv=document.createElement("img");pv.alt="معاينة";pv.style.cssText="width:100%;max-width:340px;align-self:center;border-radius:12px;display:block;background:#0b0c0f;min-height:140px";w.appendChild(pv);
         var fr=el("div","");fr.style.cssText="display:flex;gap:8px;justify-content:center";
         var fb=[["ستوري 9:16","story"],["منشور 4:5","post"]].map(function(z){var b=el("button","chip",z[0]);b.type="button";b._f=z[1];b.addEventListener("click",function(){fmt=z[1];sy();draw()});fr.appendChild(b);return b});
         function sy(){fb.forEach(function(b){b.setAttribute("aria-pressed",b._f===fmt?"true":"false")})}sy();w.appendChild(fr);
@@ -518,7 +518,15 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
           }else if(tab==="spec"){
             pane.appendChild(el("small","","كل خانة تتعدل. اترك الخانة فاضية لإخفائها. ستوري = 8 خانات، منشور = أول 6."));
             o.tiles.forEach(function(t,n){var row=el("div","");row.style.cssText="display:grid;grid-template-columns:42px 1fr 1fr;gap:6px;align-items:center";
-              var ic=document.createElement("select");ic.style.cssText=IS+";padding:6px 2px";var e0=document.createElement("option");e0.value="";e0.textContent="—";ic.appendChild(e0);A2.ICONS.forEach(function(q){var op=document.createElement("option");op.value=q.k;op.textContent=q.n;ic.appendChild(op)});ic.value=t.i||"";ic.addEventListener("change",function(){t.i=ic.value;draw()});
+              var ic=document.createElement("button");ic.type="button";ic.style.cssText=IS+";padding:4px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer";
+                function shw(){ic.innerHTML="";if(t.i&&A2.PATHS(t.i)){ic.innerHTML='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d11a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="'+A2.PATHS(t.i)+'"/></svg>'}else ic.textContent=t.i||"＋"}shw();
+                ic.addEventListener("click",function(){var old=pane.querySelector("[data-ip]");if(old){var same=old._for===ic;old.remove();if(same)return}
+                  var g=el("div","");g.dataset.ip="1";g._for=ic;g.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;padding:8px;border:2px solid var(--line);border-radius:12px;background:var(--bg)";
+                  function cell(inner,lbl,val){var c=document.createElement("button");c.type="button";c.style.cssText="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:1px solid var(--line);border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:11px;cursor:pointer";c.innerHTML=inner;var sp=document.createElement("span");sp.textContent=lbl;c.appendChild(sp);c.addEventListener("click",function(){t.i=val;g.remove();shw();draw()});g.appendChild(c)}
+                  cell('<span style="height:26px;line-height:26px">✕</span>',"بدون","");
+                  A2.ICONS.forEach(function(q){cell('<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d11a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="'+A2.PATHS(q.k)+'"/></svg>',q.n,q.k)});
+                  var em=document.createElement("input");em.type="text";em.placeholder="أو اكتب رمز 🚗";em.style.cssText=IS+";grid-column:1/-1";em.addEventListener("change",function(){if(em.value.trim()){t.i=em.value.trim().slice(0,2);g.remove();shw();draw()}});g.appendChild(em);
+                  row.after(g)});
               var a=document.createElement("input");a.type="text";a.value=t.t||"";a.placeholder="العنوان "+(n+1);a.style.cssText=IS;a.addEventListener("input",function(){t.t=a.value;draw()});
               var b=document.createElement("input");b.type="text";b.value=t.s||"";b.placeholder="سطر صغير";b.style.cssText=IS;b.addEventListener("input",function(){t.s=b.value;draw()});
               row.appendChild(ic);row.appendChild(a);row.appendChild(b);pane.appendChild(row)});

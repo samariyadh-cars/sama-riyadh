@@ -16,6 +16,16 @@
     cal:{n:"موديل",p:"M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM4 10h16M9 3v4M15 3v4"},
     key:{n:"دخول ذكي",p:circ(8,12,4)+"M12 12h9M18 12v3M21 12v2"},
     ac:{n:"مكيف",p:"M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"},
+    awd:{n:"دفع رباعي",p:"M5 6h4v4H5zM15 6h4v4h-4zM5 14h4v4H5zM15 14h4v4h-4zM9 8h6M9 16h6M7 10v4M17 10v4"},
+    sensor:{n:"حساسات",p:"M4 16c2-3 4-3 6 0M4 12c4-5 8-5 12 0M3 8c6-7 12-7 18 0M12 19v2"},
+    charge:{n:"شاحن لاسلكي",p:"M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM13 8l-3 4h4l-3 4"},
+    cool:{n:"مقاعد مبردة",p:"M12 3v18M5 7l14 10M19 7L5 17M9 4l3 2 3-2M9 20l3-2 3 2"},
+    sound:{n:"نظام صوت",p:"M4 9h4l5-4v14l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"},
+    cruise:{n:"تثبيت سرعة",p:"M4 17a8 8 0 1 1 16 0M12 17l4-6M7 17h.01M17 17h.01M12 9v.01"},
+    led:{n:"إضاءة LED",p:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"},
+    abs:{n:"أمان / وسائد",p:circ(12,12,8.5)+"M12 7v6M12 16v.01"},
+    leather:{n:"مقصورة فاخرة",p:"M4 18V9a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v9M4 14h16M7 18v2M17 18v2"},
+    park:{n:"ركن ذاتي",p:"M6 3h6a4 4 0 0 1 0 8H6zM6 3v18M17 15l3 3-3 3M20 18h-6"},
     star:{n:"نجمة",p:"M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.5 2.9 1-6.1L3.2 9.5l6.1-.9z"},
     phone:{n:"جوال",p:"M21 16.5v3a2 2 0 0 1-2.2 2A19 19 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L9 10.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"},
     pin:{p:"M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"+circ(12,10,2.5)},
@@ -39,6 +49,7 @@
     if(wl)T.push({i:"wheel",t:"جنوط",s:wm?wm[1]+" بوصة":"ألمنيوم"});
     var sc=/شاشة/.test(all),cm=/كاميرا/.test(all);
     if(sc)T.push({i:"screen",t:"شاشة",s:cm?"وكاميرا":""});else if(cm)T.push({i:"camera",t:"كاميرا",s:"خلفية"});
+    [[/دفع رباعي|4WD|AWD/i,"awd","دفع رباعي",""],[/حساسات/,"sensor","حساسات",""],[/شاحن لاسلكي|شحن لاسلكي/,"charge","شاحن لاسلكي",""],[/مبرد|تبريد المقاعد/,"cool","مقاعد مبردة",""],[/نظام صوت|سماعات|JBL|Mark Levinson|بوز|Bose/i,"sound","نظام صوتي",""],[/تثبيت سرعة|كروز/,"cruise","تثبيت سرعة",""],[/LED|ليد|زينون/i,"led","إضاءة LED",""],[/دخول ذكي|تشغيل بدون مفتاح|بصمة/,"key","دخول ذكي",""],[/ركن ذاتي/,"park","ركن ذاتي",""]].forEach(function(q){if(T.length<8&&q[0].test(all))T.push({i:q[1],t:q[2],s:q[3]})});
     if(hy&&T.length<8)T.push({i:"fuel",t:"هايبرد",s:"اقتصادي"});
     return T.slice(0,8)}
 
@@ -92,7 +103,7 @@
       if(story&&tl.length&&tl.length<=4)cols=Math.max(tl.length,1),tw=(W-mx*2-gap*(cols-1))/cols;
       tl.forEach(function(t,i){var c=i%cols,rw=Math.floor(i/cols),X=W-mx-tw-c*(tw+gap),Y=ty+rw*(th+gap);ey=Y+th;
         var gg=x.createLinearGradient(0,Y,0,Y+th);gg.addColorStop(0,"#1b1d22");gg.addColorStop(1,"#121317");rrp(x,X,Y,tw,th,story?26:20);x.fillStyle=gg;x.fill();x.strokeStyle="#2a2d34";x.lineWidth=2;x.stroke();
-        var is=story?80:56;if(t.i&&P[t.i])icon(x,t.i,X+tw/2,Y+(story?58:46),is,"#ff5a5a",story?1.7:1.9);
+        var is=story?80:56;if(t.i&&P[t.i])icon(x,t.i,X+tw/2,Y+(story?58:46),is,"#ff5a5a",story?1.7:1.9);else if(t.i){x.font=(story?64:46)+"px sans-serif";x.direction="ltr";x.textAlign="center";x.textBaseline="alphabetic";x.fillStyle="#fff";x.fillText(t.i,X+tw/2,Y+(story?78:60))}
         txt(x,t.t,X+tw/2,Y+(story?138:104),"800 "+(story?31:25)+"px "+F,"#fff","center",tw-14);
         if(t.s)txt(x,t.s,X+tw/2,Y+(story?176:131),"500 "+(story?24:20)+"px "+F,"#9aa0aa","center",tw-14)});
       var y=yB;
@@ -116,5 +127,5 @@
           var ix=66+10+w+30+28;ix=66+8+w+44;
           if(rw[2])icon(x,SNAP,66+w+60,cy,32,"#fff",0,true);else icon(x,"phone",66+w+60,cy,32,"#fff",1.8)})}
       return new Promise(function(ok){cv.toBlob(function(b){ok(b)},"image/jpeg",.92)})})}
-  window.SAMA_AD2={make:make,ICONS:ICONS,tilesFrom:tilesFrom};
+  window.SAMA_AD2={make:make,ICONS:ICONS,tilesFrom:tilesFrom,PATHS:function(k){return P[k]&&P[k].p}};
 })();
