@@ -64,7 +64,7 @@ function priceText(c){if(c.status==="sold")return "تم البيع";return c.pri
 function msgFor(c,pay,color){return "السلام عليكم، أرغب بطلب "+c.b+" "+c.n+" موديل "+c.y+(color?" لون "+color:"")+" "+pay+" من "+SHOP}
 var CAR='<svg viewBox="0 0 240 80" aria-hidden="true"><use href="#car"/></svg>';
 function modelOf(c){if(c.m)return c.m;var n=c.n.trim();if(/^[A-Za-z]/.test(n)){var t=n.match(/^[A-Za-z]+/)[0];return t}if(n.indexOf("راف فور")===0)return "راف فور";return n.split(/\s+/)[0]}
-var curF="all",curM="all";
+var curF="all",curM="all",curS="def";
 function drawModels(f){
   var mw=$("models");mw.innerHTML="";
   var isBrand=false;cars.forEach(function(c){if(c.b===f)isBrand=true});
@@ -78,7 +78,7 @@ $("models").addEventListener("click",function(e){var b=e.target.closest(".chip")
 function render(f){
   curF=f;
   var g=$("grid");g.innerHTML="";
-  var rk={},BN={};rk[L]=0;rk[T]=1;var ord=cars.map(function(_,k){return k}).sort(function(x,y){var a=rk[cars[x].b],b=rk[cars[y].b];a=a===undefined?9:a;b=b===undefined?9:b;return a-b||x-y}),lastB=null,multi=!(f===L||f===T);
+  var rk={},BN={};rk[L]=0;rk[T]=1;var ord=cars.map(function(_,k){return k}).sort(function(x,y){var cx=cars[x],cy=cars[y];if(curS==="new"){var nx=/جديد|وصل/.test(cx.badge||"")?0:1,ny=/جديد|وصل/.test(cy.badge||"")?0:1;if(nx!==ny)return nx-ny}else if(curS==="avail"){var sx=cx.status==="sold"?1:0,sy=cy.status==="sold"?1:0;if(sx!==sy)return sx-sy}var a=rk[cx.b],b=rk[cy.b];a=a===undefined?9:a;b=b===undefined?9:b;return a-b||x-y}),lastB=null,multi=!(f===L||f===T)&&curS==="def",shown=0;
   ord.forEach(function(i){
     var c=cars[i];
     if(c.status==="hidden")return;
@@ -99,9 +99,12 @@ function render(f){
     if(c.status==="sold"){d.classList.add("soldc");var ac=d.querySelector(".acts");ac.innerHTML="";var sa=document.createElement("a");sa.className="btn alt";sa.target="_blank";sa.rel="noopener";sa.textContent="تم البيع، اسأل عن مشابهة";sa.href=wa("السلام عليكم، أبغى سيارة مشابهة لـ "+c.b+" "+c.n+" من "+SHOP);ac.appendChild(sa)}
     pic.addEventListener("click",function(){openCar(i)});
     d.querySelector(".ttl").addEventListener("click",function(){openCar(i)});
-    g.appendChild(d);
+    g.appendChild(d);shown++;
   });
+  var ce=$("cnt");if(ce)ce.textContent=shown?("عدد السيارات: "+shown):"";
+  if(!shown){var nr=document.createElement("div");nr.className="noRes";nr.innerHTML="ما لقينا سيارة بهذي المواصفات.<br>";var na=document.createElement("a");na.className="btn";na.href="#want";na.textContent="اطلب سيارتك وتواصل معك";nr.appendChild(na);g.appendChild(nr)}
 }
+$("sortSel").addEventListener("change",function(){curS=this.value;render(curF)});
 var cur=null,selColor="";var curK=0;
 function gStep(d){var L=imgsNow();if(L.length<2)return;showImg((curK+d+L.length)%L.length)}
 function swipe(el,fn,ok){var x0=null,y0=0;el.addEventListener("touchstart",function(e){if(e.touches.length!==1||(ok&&!ok())){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
@@ -296,7 +299,7 @@ var TRK=(function(){
     try{return fetch(URL_,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify({fields:f})}).catch(function(){})}catch(e){}}
   function ev(kind,ref){if(owner)return;var k=kind+"|"+(ref||"");if(seen[k])return;mark(k);send({kind:kind,ref:ref||""})}
   ev("view");
-  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(a)ev("wa",a.id||"wa")},true);
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(a)ev("wa",a.id||(a.href.indexOf("tel:")===0?"tel":"wa"))},true);
   return {lead:function(o){o.kind="lead";send(o)},ev:ev};
 })();
 var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e){}};
@@ -390,28 +393,43 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
       L.push(SHOP);L.push("للتواصل واتساب: 0554378456");
       L.push("الصور والتفاصيل في موقعنا: "+SITE);
       return L.join("\n")}
-    function adBox(r,get,info){var bt=el("button","btn alt","نص إعلان");bt.type="button";var w=el("div","ad");w.hidden=true;var ta=el("textarea");var row=el("div","row2");var cp=el("button","btn","نسخ النص");cp.type="button";row.appendChild(cp);w.appendChild(ta);w.appendChild(row);
+    function adBox(r,get,info){var bt=el("button","btn alt","نص إعلان");bt.type="button";var w=el("div","ad");w.hidden=true;var ta=el("textarea");var kinds=[["gen","عام"],["snap","سناب"],["x","تويتر"],["tiktok","تيك توك"],["insta","انستغرام"]],kb=[];if(info){var kr=el("div","cols");kinds.forEach(function(z){var b=el("button","chip",z[1]);b.type="button";b.setAttribute("aria-pressed",z[0]==="gen"?"true":"false");b.addEventListener("click",function(){kb.forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});ta.value=z[0]==="gen"?get():platText(z[0],info())});kb.push(b);kr.appendChild(b)});w.appendChild(kr)}var row=el("div","row2");var cp=el("button","btn","نسخ النص");cp.type="button";row.appendChild(cp);w.appendChild(ta);w.appendChild(row);
       bt.addEventListener("click",function(){if(w.hidden){ta.value=get();w.hidden=false;bt.textContent="إخفاء الإعلان"}else{w.hidden=true;bt.textContent="نص إعلان"}});
       cp.addEventListener("click",function(){var ok=function(){cp.textContent="تم النسخ ✓";setTimeout(function(){cp.textContent="نسخ النص"},2000)};if(navigator.clipboard)navigator.clipboard.writeText(ta.value).then(ok,function(){ta.select();document.execCommand("copy");ok()});else{ta.select();document.execCommand("copy");ok()}});
       r.appendChild(bt);r.appendChild(w);if(info)imgBox(r,info)}
     function loadImg(u){return new Promise(function(ok,no){var i=new Image();i.onload=function(){ok(i)};i.onerror=no;i.src=u})}
     function rr(x,c,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath();x.fillStyle=c;x.fill()}
     function cover(x,im,X,Y,W,H){var s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.save();x.beginPath();x.rect(X,Y,W,H);x.clip();x.drawImage(im,X+(W-w)/2,Y+(H-h)/2,w,h);x.restore()}
+    var THEMES=[
+      {k:"def",n:"الأساسي",bg:"#0E2238",rgb:"rgba(14,34,56,X)",badge:"#C9A45C",btn:"#1E9E5A",sub:"#C9D8E6",b:""},
+      {k:"special",n:"عرض خاص",bg:"#3A0F1B",rgb:"rgba(58,15,27,X)",badge:"#D4AF37",btn:"#1E9E5A",sub:"#EBCFD6",b:"عرض خاص"},
+      {k:"new",n:"وصلت جديد",bg:"#0A2D22",rgb:"rgba(10,45,34,X)",badge:"#1E9E5A",btn:"#1E9E5A",sub:"#C8E6D8",b:"وصلت جديد"},
+      {k:"limited",n:"كمية محدودة",bg:"#35200A",rgb:"rgba(53,32,10,X)",badge:"#E67E22",btn:"#1E9E5A",sub:"#F0D9BC",b:"كمية محدودة"},
+      {k:"avail",n:"متوفرة الحين",bg:"#10294A",rgb:"rgba(16,41,74,X)",badge:"#2E86DE",btn:"#1E9E5A",sub:"#CBDDF3",b:"متوفرة الحين"}
+    ];
+    function platText(kind,i){
+      var t=i.title+" "+i.y,link=SITE,ph="0554378456",tag=(i.title.split(/\s+/)[0]||"").replace(/\s/g,"");
+      var bd=i.badge?i.badge+" • ":"";
+      if(kind==="snap")return bd+t+" جديدة 🚗\nكاش أو تقسيط، ونشحن لكل المدن\nواتساب: "+ph+"\n"+link;
+      if(kind==="x")return (bd+t+" جديدة في معرض سماء الرياض 🚗\nكاش، تقسيط، دفعتين، تأجير منتهي بالتمليك\nنشحن لجميع مدن المملكة\nواتساب: "+ph+"\n"+link+"\n#سيارات #الرياض #"+tag).slice(0,280);
+      if(kind==="tiktok")return bd+t+" 🔥 جديدة وجاهزة للتسليم\nكاش وتقسيط وشحن لكل مدن المملكة\nللطلب واتساب "+ph+"\n#سيارات #"+tag+" #الرياض #معرض_سيارات #تقسيط_سيارات";
+      if(kind==="insta")return bd+t+" جديدة 🚗\n\n✅ كاش، أقساط، دفعتين، تأجير منتهي بالتمليك\n✅ نشحن لجميع مدن المملكة\n✅ الصور والتفاصيل في موقعنا\n\nللتواصل واتساب: "+ph+"\n"+link+"\n\n#سيارات #"+tag+" #الرياض #معرض_سماء_الرياض #تقسيط_سيارات";
+      return ""}
     function makeAd(o,story){
       var W=1080,H=story?1920:1080,cv=document.createElement("canvas");cv.width=W;cv.height=H;var x=cv.getContext("2d");x.direction="rtl";x.textAlign="center";
       var F='Tahoma, "Segoe UI", Arial, sans-serif';
       return Promise.all([o.img?loadImg(o.img).catch(function(){return null}):null,loadImg("logo.png").catch(function(){return null})]).then(function(a){var im=a[0],lg=a[1];
-        x.fillStyle="#0E2238";x.fillRect(0,0,W,H);
+        var th=o.th||THEMES[0];x.fillStyle=th.bg;x.fillRect(0,0,W,H);
         var pY=story?300:0,pH=story?1000:700;
         if(im)cover(x,im,0,pY,W,pH);else{x.fillStyle="#1B3550";x.fillRect(0,pY,W,pH)}
-        var g=x.createLinearGradient(0,pY+pH-220,0,pY+pH);g.addColorStop(0,"rgba(14,34,56,0)");g.addColorStop(1,"rgba(14,34,56,1)");x.fillStyle=g;x.fillRect(0,pY+pH-220,W,220);
+        var g=x.createLinearGradient(0,pY+pH-220,0,pY+pH);g.addColorStop(0,th.rgb.replace("X","0"));g.addColorStop(1,th.rgb.replace("X","1"));x.fillStyle=g;x.fillRect(0,pY+pH-220,W,220);
         if(story){x.fillStyle="#fff";x.font="bold 54px "+F;x.fillText("معرض سماء الرياض للسيارات",W/2,170);if(lg)x.drawImage(lg,W/2-55,20,110,98)}
         else if(lg){rr(x,"rgba(255,255,255,.92)",W-170,24,146,130,22);x.drawImage(lg,W-160,30,126,112)}
-        if(o.badge){x.font="bold 44px "+F;var bw=x.measureText(o.badge).width+60,bx=40,by=story?pY+30:30;rr(x,/جديد|وصل/.test(o.badge)?"#1E9E5A":"#C9A45C",bx,by,bw,76,38);x.fillStyle="#fff";x.fillText(o.badge,bx+bw/2,by+54)}
+        if(o.badge){x.font="bold 44px "+F;var bw=x.measureText(o.badge).width+60,bx=40,by=story?pY+30:30;rr(x,th.badge,bx,by,bw,76,38);x.fillStyle="#fff";x.fillText(o.badge,bx+bw/2,by+54)}
         var y=pY+pH+(story?120:70);
         x.fillStyle="#fff";var fs=story?92:78;x.font="bold "+fs+"px "+F;while(x.measureText(o.title).width>W-80&&fs>40){fs-=4;x.font="bold "+fs+"px "+F}x.fillText(o.title,W/2,y);
-        y+=story?90:72;x.fillStyle="#C9D8E6";x.font=(story?50:42)+"px "+F;x.fillText(o.sub,W/2,y);
-        y+=story?150:100;var bw2=story?820:760,bh=story?120:100;rr(x,"#1E9E5A",(W-bw2)/2,y-bh+ (story?30:26),bw2,bh,bh/2);x.fillStyle="#fff";x.font="bold "+(story?60:52)+"px "+F;x.fillText("واتساب  "+o.phone,W/2,y+(story?8:6));
+        y+=story?90:72;x.fillStyle=th.sub;x.font=(story?50:42)+"px "+F;x.fillText(o.sub,W/2,y);
+        y+=story?150:100;var bw2=story?820:760,bh=story?120:100;rr(x,th.btn,(W-bw2)/2,y-bh+ (story?30:26),bw2,bh,bh/2);x.fillStyle="#fff";x.font="bold "+(story?60:52)+"px "+F;x.fillText("واتساب  "+o.phone,W/2,y+(story?8:6));
         if(story){y+=150;x.fillStyle="#C9D8E6";x.font="42px "+F;x.fillText(o.l1,W/2,y);y+=70;x.fillText(o.l2,W/2,y)}
         else{x.fillStyle="#9FB3C6";x.font="34px "+F;x.fillText(o.l1,W/2,H-30)}
         return new Promise(function(ok){cv.toBlob(function(b){ok(b)},"image/jpeg",.9)})})}
@@ -424,7 +442,9 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
         var story=false,tmr=null,blob=null;
         w.style.cssText="display:flex;flex-direction:column;gap:12px";
         function sect(t){var d=el("div","");d.style.cssText="border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--bg)";d.appendChild(el("b","",t));return d}
-        function fld(label,key,ph){var l=el("label","",label);l.style.cssText="display:flex;flex-direction:column;gap:4px;font-size:14px";var i=document.createElement("input");i.type="text";i.value=o[key];i.placeholder=ph||"";i.style.cssText="font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box";i.addEventListener("input",function(){o[key]=i.value;draw()});l.appendChild(i);return l}
+        function fld(label,key,ph){var l=el("label","",label);l.style.cssText="display:flex;flex-direction:column;gap:4px;font-size:14px";var i=document.createElement("input");i.type="text";i.value=o[key];i.dataset.k=key;i.placeholder=ph||"";i.style.cssText="font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box";i.addEventListener("input",function(){o[key]=i.value;draw()});l.appendChild(i);return l}
+        var s0=sect("القالب");var tr=el("div","cols");var tbs=THEMES.map(function(t){var b=el("button","chip",t.n);b.type="button";b.addEventListener("click",function(){o.th=t;if(t.k!=="def")o.badge=t.b;else if(o.badge&&THEMES.some(function(q){return q.b===o.badge}))o.badge=i0.badge||"";var bi=w.querySelector("[data-k=badge]");if(bi)bi.value=o.badge;mk();draw()});b._t=t;tr.appendChild(b);return b});
+        function mk(){tbs.forEach(function(b){b.setAttribute("aria-pressed",(o.th||THEMES[0])===b._t?"true":"false")})}mk();s0.appendChild(tr);w.appendChild(s0);
         var s1=sect("١) النصوص (عدّل أي شي)");s1.appendChild(fld("العنوان","title"));s1.appendChild(fld("السطر تحت العنوان","sub"));s1.appendChild(fld("الشارة (اتركها فاضية لإخفائها)","badge","مثال: وصلت جديد"));s1.appendChild(fld("رقم الواتساب","phone"));s1.appendChild(fld("سطر أسفل ١","l1"));s1.appendChild(fld("سطر أسفل ٢ (للستوري)","l2"));
         w.appendChild(s1);
         if(imgs.length){var s2=sect("٢) اختر الصورة");var gr=el("div","");gr.style.cssText="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px";

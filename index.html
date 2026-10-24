@@ -167,6 +167,11 @@ dialog.cmpd{max-width:1040px}
 .cmp2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
 .cmp2 label{flex:1 1 200px;display:flex;flex-direction:column;gap:4px;font-size:14px}
 .cmp2 select{font:inherit;padding:9px 10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit;width:100%}
+.tbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 10px;font-size:14px}
+#cnt{font-weight:700}
+.tbar select{font:inherit;padding:6px 10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit}
+.float.call{inset-inline-end:auto;inset-inline-start:14px;background:#0E2238;color:#fff}
+.noRes{grid-column:1/-1;text-align:center;padding:26px 10px;opacity:.85;line-height:2}
 </style>
 </head>
 <body>
@@ -200,6 +205,7 @@ dialog.cmpd{max-width:1040px}
 </div>
 <div class="chips" id="models" hidden></div>
 <div id="cmpBar" hidden></div>
+<div class="tbar"><span id="cnt" aria-live="polite"></span><label>الترتيب <select id="sortSel"><option value="def">حسب الماركة</option><option value="new">وصلت جديد أولاً</option><option value="avail">المتوفر أولاً</option></select></label></div>
 <div class="grid" id="grid"></div>
 </div></section>
 
@@ -300,10 +306,11 @@ dialog.cmpd{max-width:1040px}
 </dialog>
 
 <footer>© معرض سماء الرياض للسيارات</footer>
+<a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=5";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=6";document.body.appendChild(s)});
 </script>
 </body>
 </html>
