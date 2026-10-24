@@ -172,6 +172,9 @@ dialog.cmpd{max-width:1040px}
 .tbar select{font:inherit;padding:6px 10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit}
 .float.call{inset-inline-end:auto;inset-inline-start:14px;background:#0E2238;color:#fff}
 .noRes{grid-column:1/-1;text-align:center;padding:26px 10px;opacity:.85;line-height:2}
+.nf{margin:10px 0;padding:12px;border:1px solid var(--line,#D7E0E7);border-radius:12px;background:var(--bg)}
+.nfr{display:flex;gap:8px;margin:8px 0}
+.nfr input{flex:1;min-width:0;font:inherit;padding:10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit}
 </style>
 </head>
 <body>
@@ -283,12 +286,15 @@ dialog.cmpd{max-width:1040px}
 <h2 id="dTitle"></h2>
 <div class="meta" id="dMeta"></div>
 <div class="price" id="dPrice"></div>
+<div class="meta" id="dViews" hidden style="color:#1E9E5A;font-weight:700"></div>
 <div id="dColWrap"><div class="meta">اختر اللون المطلوب (حسب التوفر)</div><div class="sw" id="dColors"></div></div>
 <ul class="specs" id="dSpecs"></ul>
 <div class="meta" id="dNoSpecs">للفئات والمواصفات التفصيلية تواصل معنا على واتساب.</div>
 <button class="btn cmp" id="dCmp" type="button" hidden>⇄ قارن فئات هذا الموديل</button>
 <button class="btn cmp" id="dCmp2" type="button">⇄ قارن مع سيارة ثانية</button>
 <button class="btn shr" id="dShare" type="button">شارك هذي السيارة</button>
+<button class="btn shr" id="dCard" type="button">🖼 بطاقة صورة للمشاركة</button>
+<div class="nf" id="dNotify" hidden><b>تبي نخبرك إذا وصلت سيارة مشابهة؟</b><div class="nfr"><input id="nfPhone" type="tel" inputmode="tel" placeholder="رقم جوالك 05xxxxxxxx" dir="ltr" autocomplete="tel"><button class="btn" id="nfBtn" type="button">أخبرني</button></div><small>نستخدم رقمك للتواصل معك بخصوص هذي السيارة فقط.</small><div id="nfNote" class="meta" aria-live="polite"></div></div>
 <div class="acts"><a class="btn" id="dCash" target="_blank" rel="noopener" href="#">اطلب كاش</a><a class="btn alt" id="dInst" target="_blank" rel="noopener" href="#">اطلب تقسيط</a></div>
 </div>
 </dialog>
@@ -310,7 +316,7 @@ dialog.cmpd{max-width:1040px}
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=6";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=7";document.body.appendChild(s)});
 </script>
 </body>
 </html>
