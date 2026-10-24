@@ -386,7 +386,18 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
       r.appendChild(lab("السعر (ر.س)",(function(){var i=inp("number",m.price,function(v){m.price=v});i.min="0";i.inputMode="numeric";i.dir="ltr";return i})()));
       r.dataset.s=m.status||"";if(m.status==="sold")r.classList.add("sold3");r.appendChild(lab("الحالة",sel([["","متوفرة"],["sold","تم البيع"],["hidden","مخفية عن الموقع"]],m.status,function(v){m.status=v;r.dataset.s=v;r.classList.toggle("sold3",v==="sold");counts()})));
       var bi=inp("text",m.badge,function(v){m.badge=v.trim()});bi.maxLength=24;r.appendChild(lab("شارة (مثل: عرض خاص)",bi));var qb=el("div","cols");["وصلت جديد","عرض خاص","كمية محدودة","بدون شارة"].forEach(function(t){var b=el("button","chip",t);b.type="button";b.addEventListener("click",function(){var v=t==="بدون شارة"?"":t;bi.value=v;m.badge=v});qb.appendChild(b)});r.appendChild(qb);
-      var cw=el("div","cols");Object.keys(COLHEX).forEach(function(n){var b=el("button","chip");b.type="button";var dt=el("span","dot");dt.style.background=COLHEX[n];b.appendChild(dt);b.appendChild(document.createTextNode(n));b.setAttribute("aria-pressed",m.colors.indexOf(n)>-1?"true":"false");b.addEventListener("click",function(){var k=m.colors.indexOf(n);if(k>-1)m.colors.splice(k,1);else m.colors.push(n);b.setAttribute("aria-pressed",k>-1?"false":"true");rcp()});cw.appendChild(b)});var dtl=el("details");dtl.appendChild(el("summary","","الألوان وصور كل لون"));r.appendChild(dtl);dtl.appendChild(cw);
+      var cs=el("div","");cs.style.cssText="grid-column:1/-1;display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg)";
+      var chd=el("div","");chd.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap";
+      chd.appendChild(el("b","","الألوان المتوفرة"));var ccnt=el("span","meta","");chd.appendChild(ccnt);cs.appendChild(chd);
+      cs.appendChild(el("div","meta","اضغط اللون لإضافته أو إزالته. اللي تختاره هو اللي يظهر للعميل."));
+      var cw=el("div","cols"),cw2=el("div","cols"),cchips={};
+      function updCols(){ccnt.textContent=m.colors.length?"المحدد: "+m.colors.length:"ما اخترت ألوان، يظهر للعميل: "+DEFCOL.join("، ");Object.keys(cchips).forEach(function(n){var on=m.colors.indexOf(n)>-1;cchips[n].setAttribute("aria-pressed",on?"true":"false");cchips[n].lastChild.textContent=on?" ✓":""})}
+      Object.keys(COLHEX).forEach(function(n){var b=el("button","chip");b.type="button";var dt=el("span","dot");dt.style.background=COLHEX[n];b.appendChild(dt);b.appendChild(document.createTextNode(n));b.appendChild(document.createTextNode(""));cchips[n]=b;b.addEventListener("click",function(){var k=m.colors.indexOf(n);if(k>-1)m.colors.splice(k,1);else m.colors.push(n);updCols();rcp()});(n.indexOf("بمقصورة")>-1?cw2:cw).appendChild(b)});
+      cs.appendChild(cw);
+      var d2=el("details");d2.appendChild(el("summary","","ألوان بمقصورة (داخلية) مختلفة"));d2.appendChild(cw2);cs.appendChild(d2);d2.open=m.colors.some(function(n){return n.indexOf("بمقصورة")>-1});
+      var clr=el("button","chip","مسح كل الألوان");clr.type="button";clr.style.alignSelf="flex-start";clr.addEventListener("click",function(){m.colors.length=0;updCols();rcp()});cs.appendChild(clr);
+      r.appendChild(cs);updCols();
+      var dtl=el("details");dtl.appendChild(el("summary","","صور كل لون (اختياري)"));r.appendChild(dtl);
       var cp=el("div","");cp.style.cssText="display:flex;flex-direction:column;gap:8px;margin-top:8px";dtl.appendChild(cp);
       function rcp(){cp.innerHTML="";if(!m.cimgs)m.cimgs={};if(m.colors.length)cp.appendChild(el("div","meta","صور كل لون (اختيارية). إذا ما أضفت صورًا للون تظهر الصور الرئيسية للسيارة."));m.colors.forEach(function(n){if(!m.cimgs[n])m.cimgs[n]=[];var l=el("label","","صور اللون: "+n);l.appendChild(photos(m.cimgs[n]));cp.appendChild(l)})}rcp();
     }
