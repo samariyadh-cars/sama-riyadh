@@ -58,7 +58,7 @@ function ck(c){return c.b+" "+c.n}
 var NBASE=cars.length;
 (DATA.extra||[]).forEach(function(x){var c={};for(var k in x)c[k]=x[k];cars.push(c)});
 (function(){var ov=(DATA&&DATA.ov)||{};cars.forEach(function(c){c._bc=JSON.stringify(c.cimgs||{});c._bi=JSON.stringify(c.imgs||[]);var o=ov[ck(c)];if(!o)return;if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||""})})();
-function wa(msg){return "https://wa.me/"+NUM+"?text="+encodeURIComponent(msg)}
+function wa(msg){return "https://wa.me/"+NUM+"?text="+encodeURIComponent(window.SAMA_TM?window.SAMA_TM(msg):msg)}
 function money(n){return Number(n).toLocaleString("en-US")+" ر.س"}
 function priceText(c){if(c.status==="sold")return "تم البيع";return c.price?"تبدأ من "+money(c.price):"السعر عند الطلب"}
 function msgFor(c,pay,color){return "السلام عليكم، أرغب بطلب "+c.b+" "+c.n+" موديل "+c.y+(color?" لون "+color:"")+" "+pay+" من "+SHOP}
@@ -132,7 +132,7 @@ function showImg(k){
   if(L.length){gal.classList.add("has");var im=document.createElement("img");im.alt=c.b+" "+c.n+(selColor?" "+selColor:"");im.src=L[k];im.addEventListener("click",function(){zOpen(curK)});gal.appendChild(im);
     if(L.length>1){[["p","›",-1],["n","‹",1]].forEach(function(x){var b=document.createElement("button");b.type="button";b.className="gnav "+x[0];b.textContent=x[1];b.setAttribute("aria-label",x[2]>0?"الصورة التالية":"الصورة السابقة");b.addEventListener("click",function(e){e.stopPropagation();gStep(x[2])});gal.appendChild(b)});var cn=document.createElement("span");cn.className="gcnt";cn.dir="ltr";cn.textContent=(k+1)+" / "+L.length;gal.appendChild(cn)}
     var hn=document.createElement("span");hn.className="ghint";hn.textContent="🔍 اضغط للتكبير";gal.appendChild(hn);
-    if(c.badge){var bd=document.createElement("span");bd.className="badge"+(/جديد|وصل/.test(c.badge)?" new":"");bd.textContent=c.badge;bd.style.cssText="position:absolute;top:10px;right:10px;margin:0";gal.appendChild(bd)}
+    if(c.badge){var bd=document.createElement("span");bd.className="badge"+(/جديد|وصل/.test(c.badge)?" new":"");bd.textContent=c.badge;bd.style.cssText="position:absolute;top:10px;inset-inline-end:10px;margin:0";gal.appendChild(bd)}
   }else{gal.classList.remove("has");gal.innerHTML=CAR}
   document.querySelectorAll("#dThumbs button").forEach(function(b,j){b.setAttribute("aria-pressed",j===k?"true":"false")});
 }

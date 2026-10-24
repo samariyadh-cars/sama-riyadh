@@ -19,7 +19,14 @@ a,button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 1
   var KEY="sama_gh_token",tok="";try{tok=localStorage.getItem(KEY)||""}catch(e){}
   var box=document.getElementById("box");
   function fail(msg){box.innerHTML=msg+'<br><a href="./">الرجوع للموقع</a>'}
-  if(!tok){fail("لازم تدخل من الموقع أولاً: انزل لآخر الصفحة واضغط «دخول المعرض».");return}
+  if(!tok){
+    box.innerHTML='<b>دخول إدارة المعرض</b><br>المالك: ادخل من آخر صفحة الموقع بزر «دخول المعرض».<br><br><b>الموظف (مشاهدة فقط)</b><br><input id="et" type="password" dir="ltr" placeholder="الصق مفتاح المشاهدة هنا" autocomplete="off" style="width:100%;box-sizing:border-box;padding:10px;border:2px solid #D7E0E7;border-radius:10px;font:inherit;margin-top:8px"><br><button id="eb" type="button">دخول</button><div id="em" style="color:#C0392B;margin-top:6px"></div><br><a href="./" style="background:none;color:#1D6FA8;padding:0">الرجوع للموقع</a>';
+    document.getElementById("eb").onclick=function(){var t=(document.getElementById("et").value||"").trim();if(!t)return;
+      document.getElementById("em").textContent="";
+      fetch("https://api.github.com/repos/samariyadh-cars/sama-data",{headers:{"Authorization":"Bearer "+t}}).then(function(r){
+        if(!r.ok){document.getElementById("em").textContent="المفتاح غير صحيح أو ما عنده صلاحية على بيانات المعرض.";return}
+        try{localStorage.setItem(KEY,t)}catch(e){}location.reload()}).catch(function(){document.getElementById("em").textContent="تعذر الاتصال، تأكد من الإنترنت."})};
+    return}
   fetch("https://api.github.com/repos/samariyadh-cars/sama-data/contents/crm.html?t="+Date.now(),{headers:{"Authorization":"Bearer "+tok,"Accept":"application/vnd.github.raw"},cache:"no-store"})
   .then(function(r){if(r.status===401)throw "مفتاح الدخول غير صحيح أو منتهي.";if(r.status===403||r.status===404)throw "المفتاح ما عنده صلاحية على مستودع sama-data. أضفه للمفتاح من إعدادات GitHub.";if(!r.ok)throw "تعذر الفتح، تأكد من الإنترنت.";return r.text()})
   .then(function(html){document.open();document.write(html);document.close()})
