@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1D6FA8"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-title" content="سماء الرياض">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>معرض سماء الرياض للسيارات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -194,9 +195,21 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 .cmpw tbody td:not(:first-child){border-inline-start:1px solid var(--line);font-size:14px;line-height:1.5;word-break:break-word}
 .cmpw .btn{padding:8px 6px;font-size:13px;width:100%;box-sizing:border-box}
 @media(min-width:701px){.cmpw thead img{max-width:150px}.cmpw thead .cn{font-size:16px}.cmpw thead .price{font-size:14px}.cmpw tbody td:not(:first-child){font-size:15px}.cmpw .btn{padding:9px 12px;font-size:14px}}
+#fuels{margin-top:-4px}
+#promo{background:#1D6FA8;color:#fff;text-align:center;font-weight:700;font-size:14px;padding:8px 40px 8px 12px;position:relative}
+#promo a{color:#fff;text-decoration:underline}
+#promo button{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;font-size:18px;cursor:pointer;line-height:1}
+#dSim{margin:14px 0 4px}.simh{font-size:16px;margin:0 0 8px}
+.simg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.simc{all:unset;cursor:pointer;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.simc img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee}
+.simc span{padding:6px 8px;font-size:13px;font-weight:700;line-height:1.3}
+.simc small{display:block;font-weight:400;opacity:.7;font-size:12px}
+@media(min-width:700px){.simg{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
+<div id="promo" hidden></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="car" viewBox="0 0 240 80"><path fill="currentColor" d="M12 56c0-8 3-12 10-14l26-8 22-18c3-3 7-4 11-4h52c6 0 11 2 15 6l20 16 30 6c8 2 12 8 12 16v6c0 3-2 5-5 5h-14a22 22 0 0 0-44 0H93a22 22 0 0 0-44 0H17c-3 0-5-2-5-5z"/><path fill="var(--surface,#fff)" opacity=".85" d="M84 34l16-14h42l22 14zM108 20h30l14 14h-52z" /><circle cx="71" cy="62" r="13" fill="#0E2238"/><circle cx="71" cy="62" r="5" fill="#9DB2C6"/><circle cx="187" cy="62" r="13" fill="#0E2238"/><circle cx="187" cy="62" r="5" fill="#9DB2C6"/></symbol></svg>
 
 <header class="top"><div class="wrap"><a class="logo" href="#" aria-label="معرض سماء الرياض للسيارات"><span class="lk"><span class="lk-m"></span><span class="lk-t"><span class="lk-1">معرض <b>سماء الرياض</b></span><span class="lk-2">للسيارات<i></i><em dir="ltr">SAMA RIYADH</em></span></span></span></a><a class="btn" id="topWa" href="#">واتساب</a></div></header>
@@ -226,6 +239,7 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <button class="chip" data-f="عائلية" aria-pressed="false">عائلية</button>
 </div>
 <div class="chips" id="models" hidden></div>
+<div class="chips" id="fuels"><button class="chip" data-fu="all" aria-pressed="true">كل أنواع الوقود</button><button class="chip" data-fu="بنزين" aria-pressed="false">بنزين</button><button class="chip" data-fu="هايبرد" aria-pressed="false">هايبرد</button><button class="chip" data-fu="ديزل" aria-pressed="false">ديزل</button><button class="chip" id="avOnly" aria-pressed="false">المتوفر فقط</button></div>
 <div id="cmpBar" hidden></div>
 <div class="tbar"><span id="cnt" aria-live="polite"></span><label>الترتيب <select id="sortSel"><option value="def">حسب الماركة</option><option value="new">وصلت جديد أولاً</option><option value="avail">المتوفر أولاً</option></select></label></div>
 <div class="grid" id="grid"></div>
@@ -312,7 +326,9 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <button class="btn cmp" id="dCmp" type="button" hidden>⇄ قارن فئات هذا الموديل</button>
 <button class="btn cmp" id="dCmp2" type="button">⇄ قارن مع سيارة ثانية</button>
 <button class="btn shr" id="dShare" type="button">شارك هذي السيارة</button>
+<button class="btn shr" id="dCopy" type="button">🔗 انسخ رابط السيارة</button>
 <button class="btn shr" id="dCard" type="button">🖼 بطاقة صورة للمشاركة</button>
+<div id="dSim" hidden><h3 class="simh">قد يعجبك أيضًا</h3><div class="simg" id="dSimG"></div></div>
 <div class="nf" id="dNotify" hidden><b>تبي نخبرك إذا وصلت سيارة مشابهة؟</b><div class="nfr"><input id="nfPhone" type="tel" inputmode="tel" placeholder="رقم جوالك 05xxxxxxxx" dir="ltr" autocomplete="tel"><button class="btn" id="nfBtn" type="button">أخبرني</button></div><small>نستخدم رقمك للتواصل معك بخصوص هذي السيارة فقط.</small><div id="nfNote" class="meta" aria-live="polite"></div></div>
 <div class="acts"><a class="btn" id="dCash" target="_blank" rel="noopener" href="#">اطلب كاش</a><a class="btn alt" id="dInst" target="_blank" rel="noopener" href="#">اطلب تقسيط</a></div>
 </div>
@@ -334,9 +350,11 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
-<script src="i18n.js?v=1"></script><script src="specs_en.js?v=1"></script>
+<link rel="preload" href="app.js?v=15" as="script">
+<script src="i18n.js?v=2"></script><script src="specs_en.js?v=1"></script>
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=14";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=15";document.body.appendChild(s)});
 </script>
+<script>if("serviceWorker"in navigator&&location.protocol==="https:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>

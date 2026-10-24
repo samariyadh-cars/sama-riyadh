@@ -29,7 +29,7 @@
     "السيارات المتوفرة":"Available cars",
     "اضغط على السيارة لعرض تفاصيلها وألوانها وسعرها. ما لقيت اللي تبغاه؟":"Tap a car to see its details and colors. Can't find what you want?",
     "اطلبها هنا":"Request it here","الكل":"All","تويوتا":"Toyota","لكزس":"Lexus","هيونداي":"Hyundai","فورد":"Ford",
-    "سيدان":"Sedan","عائلية":"Family","الترتيب":"Sort","حسب الماركة":"By brand","وصلت جديد أولاً":"New arrivals first","المتوفر أولاً":"Available first",
+    "سيدان":"Sedan","كل أنواع الوقود":"All fuel types","بنزين":"Petrol","هايبرد":"Hybrid","ديزل":"Diesel","المتوفر فقط":"Available only","قد يعجبك أيضًا":"You may also like","🔗 انسخ رابط السيارة":"🔗 Copy car link","التفاصيل":"Details","عائلية":"Family","الترتيب":"Sort","حسب الماركة":"By brand","وصلت جديد أولاً":"New arrivals first","المتوفر أولاً":"Available first",
     "ما لقيت سيارتك؟ اطلبها":"Can't find your car? Request it",
     "اكتب لنا السيارة اللي تبغاها، ونوفرها لك ونتواصل معك على واتساب.":"Tell us which car you want and we'll source it and contact you on WhatsApp.",
     "الاسم":"Name","رقم الجوال":"Mobile number","السيارة المطلوبة":"Car you want","الفئة (اختياري)":"Trim (optional)","اللون المفضل (اختياري)":"Preferred color (optional)",
