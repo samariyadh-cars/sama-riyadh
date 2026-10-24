@@ -219,12 +219,26 @@ function openCmp(c){
   cmpFam=famOf(c);if(cmpFam.length<2)return;
   var ci=cars.indexOf(c);cmpSel=cmpFam.slice(0,4);
   if(cmpSel.indexOf(ci)<0&&ci>-1){cmpSel[cmpSel.length-1]=ci;cmpSel.sort(function(a,b){return a-b})}
-  $("cmpT").textContent="مقارنة فئات "+c.b+" "+modelOf(c);
+  $("cmpT").textContent="مقارنة فئات "+c.b+" "+modelOf(c);$("cmpPick").hidden=false;$("cmp2").hidden=true;$("cmpHint").textContent="اختر الفئات اللي تبي تقارنها (من 2 إلى 4).";
   $("cmpDiff").checked=false;
   drawPick();drawCmp();
   var d=$("cmp");if($("dlg").open)$("dlg").close();
   if(d.showModal)d.showModal();else d.setAttribute("open","");
 }
+function openCmp2(c){
+  var A=$("cmpA"),B=$("cmpB"),ci=cars.indexOf(c);A.innerHTML=B.innerHTML="";
+  cars.forEach(function(x,i){if(x.status==="hidden")return;[A,B].forEach(function(S){var o=document.createElement("option");o.value=i;o.textContent=x.b+" "+x.n+" "+x.y;S.appendChild(o)})});
+  A.value=ci;var other=-1;cars.forEach(function(x,i){if(other<0&&i!==ci&&x.status!=="hidden"&&x.status!=="sold"&&x.b===c.b&&x.n!==c.n)other=i});
+  if(other<0)cars.forEach(function(x,i){if(other<0&&i!==ci&&x.status!=="hidden"&&x.status!=="sold")other=i});
+  B.value=other;
+  function go(){var a=+A.value,b=+B.value;if(a===b){var j=-1;cars.forEach(function(x,i){if(j<0&&i!==a&&x.status!=="hidden")j=i});b=j;B.value=b}cmpSel=[a,b];drawCmp()}
+  A.onchange=go;B.onchange=go;
+  $("cmpT").textContent="مقارنة بين سيارتين";$("cmpHint").textContent="اختر أي سيارتين من القائمتين تحت.";$("cmpPick").hidden=true;$("cmp2").hidden=false;$("cmpDiff").checked=false;
+  go();
+  var d=$("cmp");if($("dlg").open)$("dlg").close();
+  if(d.showModal)d.showModal();else d.setAttribute("open","");
+}
+$("dCmp2").addEventListener("click",function(){if(cur)openCmp2(cur)});
 $("cmpClose").addEventListener("click",function(){$("cmp").close()});
 $("cmp").addEventListener("click",function(e){if(e.target===$("cmp"))$("cmp").close()});
 $("cmpDiff").addEventListener("change",drawCmp);

@@ -160,6 +160,13 @@ dialog.cmpd{max-width:1040px}
 #zv .gnav{background:rgba(255,255,255,.18)}
 #zv .gcnt{bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%)}
 .mapw{margin:14px 0;border-radius:14px;overflow:hidden;border:1px solid var(--line,#D7E0E7);aspect-ratio:16/10;max-height:380px;background:#e8eef3}.mapw iframe{width:100%;height:100%;border:0;display:block}
+.whyg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+.whyg>div{background:var(--card,#fff);border:1px solid var(--line,#D7E0E7);border-radius:14px;padding:14px 16px}
+.whyg b{display:block;font-size:17px;margin-bottom:6px}
+.whyg p{margin:0;line-height:1.8;opacity:.85}
+.cmp2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.cmp2 label{flex:1 1 200px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.cmp2 select{font:inherit;padding:9px 10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit;width:100%}
 </style>
 </head>
 <body>
@@ -238,6 +245,17 @@ dialog.cmpd{max-width:1040px}
 </div>
 </div></section>
 
+<section id="why"><div class="wrap">
+<h2>ليش معرض سماء الرياض</h2>
+<p class="sub">أربع أشياء تهمك لما تشتري سيارتك.</p>
+<div class="whyg">
+<div><b>🚗 سيارات جديدة</b><p>سيارات جديدة بموديلات حديثة، وتقدر تشوف الصور والمواصفات كاملة قبل لا تتواصل.</p></div>
+<div><b>💳 دفع على كيفك</b><p>كاش، أقساط، دفعتين، أو تأجير منتهي بالتمليك، ونرتّب لك الأنسب.</p></div>
+<div><b>🏦 تمويل من عدة جهات</b><p>نتعامل مع أكثر من جهة تمويل، ونساعدك في تجهيز الأوراق للحصول على أفضل خيار.</p></div>
+<div><b>🚚 نشحن لباب بيتك</b><p>سواء كنت في الرياض أو أي مدينة ثانية في المملكة، نوصل لك السيارة.</p></div>
+</div>
+<p style="margin-top:14px"><a class="btn" href="#want">ما لقيت سيارتك؟ اطلبها</a></p>
+</div></section>
 <section id="visit"><div class="wrap">
 <h2>زرنا في المعرض</h2>
 <p class="sub">حياك في المعرض، وإذا كنت خارج الرياض نشحن سيارتك لين باب بيتك.</p>
@@ -263,6 +281,7 @@ dialog.cmpd{max-width:1040px}
 <ul class="specs" id="dSpecs"></ul>
 <div class="meta" id="dNoSpecs">للفئات والمواصفات التفصيلية تواصل معنا على واتساب.</div>
 <button class="btn cmp" id="dCmp" type="button" hidden>⇄ قارن فئات هذا الموديل</button>
+<button class="btn cmp" id="dCmp2" type="button">⇄ قارن مع سيارة ثانية</button>
 <button class="btn shr" id="dShare" type="button">شارك هذي السيارة</button>
 <div class="acts"><a class="btn" id="dCash" target="_blank" rel="noopener" href="#">اطلب كاش</a><a class="btn alt" id="dInst" target="_blank" rel="noopener" href="#">اطلب تقسيط</a></div>
 </div>
@@ -272,8 +291,9 @@ dialog.cmpd{max-width:1040px}
 <button class="btn alt x" id="cmpClose" type="button" aria-label="إغلاق">✕</button>
 <div class="in">
 <h2 id="cmpT">مقارنة الفئات</h2>
-<div class="meta">اختر الفئات اللي تبي تقارنها (من 2 إلى 4).</div>
+<div class="meta" id="cmpHint">اختر الفئات اللي تبي تقارنها (من 2 إلى 4).</div>
 <div class="chips" id="cmpPick" style="margin:0"></div>
+<div class="cmp2" id="cmp2" hidden><label>السيارة الأولى<select id="cmpA"></select></label><label>السيارة الثانية<select id="cmpB"></select></label></div>
 <div class="tools"><label><input type="checkbox" id="cmpDiff"> أظهر الفروقات فقط</label></div>
 <div class="cmpw" id="cmpTbl"></div>
 </div>
@@ -283,7 +303,7 @@ dialog.cmpd{max-width:1040px}
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=4";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=5";document.body.appendChild(s)});
 </script>
 </body>
 </html>
