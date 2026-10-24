@@ -271,7 +271,7 @@ $("dShare").addEventListener("click",function(){if(!cur)return;var c=cur,b=$("dS
   if(navigator.share){navigator.share({title:c.b+" "+c.n,text:txt,url:url}).catch(function(){})}
   else if(navigator.clipboard){navigator.clipboard.writeText(txt+"\n"+url).then(function(){done("تم نسخ الرابط")},function(){window.open(wa(txt+"\n"+url),"_blank")})}
   else window.open(wa(txt+"\n"+url),"_blank")});
-function openFromHash(){var h=location.hash||"";var m=h.match(/car=([^&]+)/);if(!m)return;var k;try{k=decodeURIComponent(m[1])}catch(e){return}for(var i=0;i<cars.length;i++){if(ck(cars[i])===k&&cars[i].status!=="hidden"){openCar(i);return}}}
+function openFromHash(){var h=location.hash||"";var m=h.match(/car=([^&]+)/);if(!m)return;var k;try{k=decodeURIComponent(m[1])}catch(e){return}for(var i=0;i<cars.length;i++){if(ck(cars[i])===k&&cars[i].status!=="hidden"){openCar(i);try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}return}}}
 $("q").addEventListener("input",function(){render(curF)});
 window.addEventListener("hashchange",openFromHash);setTimeout(openFromHash,0);
 $("wForm").addEventListener("submit",function(e){e.preventDefault();var v=function(i){return $(i).value.trim()};
