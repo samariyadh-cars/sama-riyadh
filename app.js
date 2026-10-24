@@ -4,7 +4,10 @@ var $=function(i){return document.getElementById(i)};
 var T="تويوتا",L="لكزس",Y="2026";
 /* لإضافة بيانات سيارة: price:120000, colors:["أبيض","أسود"], imgs:["img/camry-1.jpg"], specs:[["المحرك","2.5L"]] */
 function enLine(ar,l){l=String(l||"").trim();if(!l)return ar;if(typeof ar==="string")return l;if(ar.h)return {h:l.replace(/^#+\s*/,"")};var k=l.indexOf(":");return (k>0&&k<l.length-1)?[l.slice(0,k).trim(),l.slice(k+1).trim()]:ar}
-function specsFor(c){var a=c.specs||[];if(window.SAMA_LANG!=="en")return a;var t=c.specsEn;if(!t)return a;var L=String(t).split("\n");return a.map(function(r,i){return enLine(r,L[i])})}
+function autoTr(x){var f=window.SAMA_SPEC;if(!f)return x;var t=f(x);return t==null?x:t}
+function autoItem(r){if(typeof r==="string")return autoTr(r);if(r.h)return {h:autoTr(r.h)};return [autoTr(r[0]),autoTr(r[1])]}
+function itemMiss(r){var f=window.SAMA_SPEC;if(!f)return 0;var a=typeof r==="string"?[r]:r.h?[r.h]:r;return a.some(function(x){return f(x)==null})?1:0}
+function specsFor(c){var a=c.specs||[];if(window.SAMA_LANG!=="en")return a;var L=String(c.specsEn||"").split("\n");return a.map(function(r,i){return (L[i]||"").trim()?enLine(r,L[i]):autoItem(r)})}
 var COLHEX={"رصاصي فاتح":"#8E9BAA","أبيض بمقصورة جملي":"#F5F5F5","أخضر بمقصورة أحمر":"#4A5237","أخضر بمقصورة جملي":"#4A5237","أسود بمقصورة أحمر":"#111111","تيتانيوم بمقصورة أحمر":"#8A8780","رمادي بمقصورة جملي":"#6B7077","أزرق غامق بمقصورة جملي":"#14264A","أسود بمقصورة جملي":"#111111","رمادي بمقصورة بيج":"#6B7077","فضي بمقصورة بيج":"#C0C4C8","أبيض":"#F5F5F5","أسود":"#111111","فضي":"#C0C4C8","رمادي":"#6B7077","أزرق":"#1F3F73","أحمر":"#9B1C2B","بني":"#6B4A2B","ذهبي":"#B8902F","بيج":"#D8C7A3","تيتانيوم":"#8A8780","أزرق غامق":"#14264A","كحلي":"#14264A","برونزي":"#8B6B4A"};
 var DEFCOL=["أبيض","أسود","فضي","رمادي"];
 var DATA=window.__DATA||{};
@@ -370,7 +373,7 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
     var ta=el("textarea");ta.rows=9;ta.value=m.stext;ta.style.cssText=cs;
     var te=el("textarea");te.rows=9;te.value=m.etext;te.style.cssText=cs+";direction:ltr;text-align:left";te.placeholder="English — same lines, same order as the Arabic.\nLeave a line empty to use the automatic translation.";
     var note=el("div","","");note.style.cssText="font-size:12px;opacity:.75;grid-column:1/-1";
-    function upd(){var A=String(m.stext||"").split("\n").filter(function(x){return x.trim()}),E=String(m.etext||"").split("\n");var miss=0;A.forEach(function(x,i){if(!(E[i]||"").trim())miss++});note.textContent=miss?("بدون ترجمة يدوية: "+miss+" من "+A.length+" سطر (يستخدم القاموس التلقائي لها)"):"كل الأسطر لها ترجمة إنجليزية يدوية ✓"}
+    function upd(){var A=parseSpecs(m.stext),E=String(m.etext||"").split("\n");var man=0,bad=0;A.forEach(function(r,i){if((E[i]||"").trim())man++;else if(itemMiss(r))bad++});note.textContent=bad?("⚠ "+bad+" سطر بدون ترجمة إنجليزية (يبقى بالعربي في النسخة الإنجليزية) — اكتبه في الخانة اللي فوق في نفس رقم السطر"):"كل الأسطر لها ترجمة إنجليزية ✓ ("+man+" يدوي والباقي من القاموس)"}
     ta.addEventListener("input",function(){m.stext=ta.value;upd()});te.addEventListener("input",function(){m.etext=te.value;upd()});
     r.appendChild(lab("المواصفات بالعربي (سطر ## للعنوان، و«الاسم: القيمة» للأرقام، وأي سطر عادي يظهر بعلامة ✓)",ta,true));
     r.appendChild(lab("المواصفات بالإنجليزي — نفس الأسطر ونفس الترتيب (السطر الفاضي = ترجمة تلقائية)",te,true));r.appendChild(note);upd()}
