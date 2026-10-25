@@ -2,10 +2,23 @@
  "ov": {
   "تويوتا كامري LE بنزين": {
    "price": 131000,
-   "badge": "وصلت جديد",
    "colors": [
     "أبيض",
-    "تيتانيوم (داخلية سوداء)"
+    "تيتانيوم (داخلية سوداء)",
+    "أسود",
+    "فضي",
+    "تيتانيوم"
+   ],
+   "imgs": [
+    "img/cam-le-2.jpg",
+    "img/cam-le-1.jpg",
+    "img/cam-le-3.jpg",
+    "img/cam-le-4.jpg",
+    "img/cam-le-5.jpg",
+    "img/cam-le-6.jpg",
+    "img/cam-le-7.jpg",
+    "img/cam-le-8.jpg",
+    "img/cam-le-9.jpg"
    ]
   },
   "تويوتا كامري E بنزين": {
