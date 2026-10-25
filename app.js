@@ -508,13 +508,18 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
         function fld(label,key){var l=el("label","",label);l.style.cssText="display:flex;flex-direction:column;gap:4px;font-size:14px";var i=document.createElement("input");i.type="text";i.value=o[key]||"";i.style.cssText=IS;i.addEventListener("input",function(){o[key]=i.value;draw()});l.appendChild(i);return l}
         function pn(){pane.innerHTML="";
           if(tab==="img"){
-            if(!imgs.length){pane.appendChild(el("div","","ما فيه صور للسيارة، أضف صور أولاً."));return}
+            
             pane.appendChild(el("small","","اختر صورة خلفيتها نظيفة (بدون لوحات أو أرقام معرض ثاني)"));
             var gr=el("div","");gr.style.cssText="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px";
             imgs.forEach(function(u){var b=document.createElement("button");b.type="button";b.style.cssText="flex:0 0 auto;padding:0;border:3px solid transparent;border-radius:10px;background:none;cursor:pointer";var im=document.createElement("img");thumbImg(im,u);im.alt="";im.style.cssText="width:96px;height:66px;object-fit:cover;border-radius:7px;display:block";b.appendChild(im);b._u=u;
               b.addEventListener("click",function(){o.img=u;o.color=colorOf(u);mk();draw();var ci=pane.querySelector("[data-k=color]");if(ci)ci.value=o.color});gr.appendChild(b)});
             function mk(){Array.prototype.forEach.call(gr.children,function(b){b.style.borderColor=b._u===o.img?"var(--brass,#C9A45C)":"transparent"})}mk();pane.appendChild(gr);
-            var cl=fld("اللون (يتحدد حسب الصورة)","color");cl.querySelector("input").dataset.k="color";pane.appendChild(cl)
+            var up=document.createElement("input");up.type="file";up.accept="image/*";up.hidden=true;var ub=el("button","btn alt","📷 إضافة صورة (كاميرا أو الجوال)");ub.type="button";ub.addEventListener("click",function(){up.click()});
+              up.addEventListener("change",function(){var f=up.files&&up.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var m=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*m);c.height=Math.round(im.height*m);c.getContext("2d").drawImage(im,0,0,c.width,c.height);var u=c.toDataURL("image/jpeg",.88);imgs.unshift(u);o.img=u;o.color="";o.fx=.5;o.fy=null;o.zoom=1;pn();draw()};im.src=rd.result};rd.readAsDataURL(f);up.value=""});
+              pane.appendChild(ub);pane.appendChild(up);
+              var fit=el("div","");fit.style.cssText="display:flex;gap:8px";[["ملء الإطار","cover"],["الصورة كاملة","contain"]].forEach(function(z){var b=el("button","chip",z[0]);b.type="button";b.setAttribute("aria-pressed",(o.fit||"cover")===z[1]?"true":"false");b.addEventListener("click",function(){o.fit=z[1];Array.prototype.forEach.call(fit.children,function(q){q.setAttribute("aria-pressed",q===b?"true":"false")});draw()});fit.appendChild(b)});pane.appendChild(fit);
+              [["تحريك الصورة يمين/يسار","fx",0,1,.05,.5],["تحريك الصورة فوق/تحت","fy",0,1,.05,fmt==="story"?.5:.7],["تكبير","zoom",1,2,.05,1]].forEach(function(z){var l=el("label","",z[0]);l.style.cssText="display:flex;flex-direction:column;gap:2px;font-size:14px";var r2=document.createElement("input");r2.type="range";r2.min=z[2];r2.max=z[3];r2.step=z[4];r2.value=o[z[1]]==null?z[5]:o[z[1]];r2.addEventListener("input",function(){o[z[1]]=+r2.value;draw()});l.appendChild(r2);pane.appendChild(l)});
+              var cl=fld("اللون (يتحدد حسب الصورة)","color");cl.querySelector("input").dataset.k="color";pane.appendChild(cl)
           }else if(tab==="spec"){
             pane.appendChild(el("small","","كل خانة تتعدل. اترك الخانة فاضية لإخفائها. ستوري = 8 خانات، منشور = أول 6."));
             o.tiles.forEach(function(t,n){var row=el("div","");row.style.cssText="display:grid;grid-template-columns:42px 1fr 1fr;gap:6px;align-items:center";
@@ -532,7 +537,7 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
               row.appendChild(ic);row.appendChild(a);row.appendChild(b);pane.appendChild(row)});
             var rs=el("button","chip","↺ عبّها من مواصفات السيارة");rs.type="button";rs.style.alignSelf="flex-start";rs.addEventListener("click",function(){var n=A2.tilesFrom(info().specs);while(n.length<8)n.push({i:"",t:"",s:""});o.tiles=n;pn();draw()});pane.appendChild(rs)
           }else{
-            [["الماركة","brand"],["الموديل / الفئة","model"],["السنة","y"],["الشارة (فاضي = إخفاء)","badge"],["شريط الدفع","pay"],["شريط التمويل","bank"],["العنوان","addr"],["الشحن","ship"],["الاسم","owner"],["الجوال","phone"],["سناب","snap"]].forEach(function(z){pane.appendChild(fld(z[0],z[1]))});
+            [["الماركة","brand"],["الاسم / الفئة (مثال: ES 250)","model"],["الموديل (السنة)","y"],["الشارة (فاضي = إخفاء)","badge"],["شريط الدفع","pay"],["شريط التمويل","bank"],["العنوان","addr"],["الشحن","ship"],["الاسم","owner"],["الجوال","phone"],["سناب","snap"]].forEach(function(z){pane.appendChild(fld(z[0],z[1]))});
             pane.appendChild(el("small","","الثوابت (الاسم، الجوال، العنوان…) تتغير للأبد من «إعدادات الموقع» تحت.")) }}
         pn();
         var sv2=el("button","btn","مشاركة / حفظ الصورة");sv2.type="button";w.appendChild(sv2);

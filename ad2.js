@@ -43,7 +43,7 @@
     if(cc)T.push({i:"engine",t:cc[1]+" سي سي",s:"سعة المحرك"});else if(lt)T.push({i:"engine",t:Math.round(parseFloat(lt[1])*1000)+" سي سي",s:"سعة المحرك"});
     if((m=/(\d)\s*-?\s*[أا]سطوانات|(\d)\s*سلندر/.exec(all)))T.push({i:"cyl",t:(m[1]||m[2])+" سلندر",s:"المحرك"});
     var hy=/هايبرد/.test(all);
-    if(/جلد/.test(all))T.push({i:"seat",t:"مقاعد جلد",s:"المقصورة"});else if(/قماش/.test(all))T.push({i:"seat",t:"مقاعد قماش",s:"المقصورة"});
+    if(/جلد/.test(all))T.push({i:"seat",t:"مقاعد جلد",s:"الداخلية"});else if(/قماش/.test(all))T.push({i:"seat",t:"مقاعد قماش",s:"الداخلية"});
     if(/فتحة سقف|سقف بانورام/.test(all))T.push({i:"roof",t:"فتحة سقف",s:/بانورام/.test(all)?"بانورامي":""});
     var wl=L.filter(function(a){return /جنوط|زيق/.test(a[0]+a[1])})[0],wm=wl&&/(\d{2})\s*بوصة/.exec(wl[0]+" "+wl[1]);
     if(wl)T.push({i:"wheel",t:"جنوط",s:wm?wm[1]+" بوصة":"ألمنيوم"});
@@ -58,7 +58,7 @@
   function ld(u){return new Promise(function(ok){if(!u)return ok(null);var i=new Image();i.crossOrigin="anonymous";i.onload=function(){ok(i)};i.onerror=function(){ok(null)};i.src=u})}
   function rrp(x,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath()}
   function rr(x,c,X,Y,W,H,R){rrp(x,X,Y,W,H,R);x.fillStyle=c;x.fill()}
-  function cover(x,im,X,Y,W,H,fx,fy){var s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.save();x.beginPath();x.rect(X,Y,W,H);x.clip();x.drawImage(im,X-(w-W)*(fx==null?.5:fx),Y-(h-H)*(fy==null?.5:fy),w,h);x.restore()}
+  function cover(x,im,X,Y,W,H,fx,fy,z){var s=Math.max(W/im.width,H/im.height)*(z||1),w=im.width*s,h=im.height*s;x.save();x.beginPath();x.rect(X,Y,W,H);x.clip();x.drawImage(im,X-(w-W)*(fx==null?.5:fx),Y-(h-H)*(fy==null?.5:fy),w,h);x.restore()}
   function icon(x,key,cx,cy,size,color,lw,fill){var d=typeof key==="string"&&P[key]?P[key].p:key;if(!d)return;var p=new Path2D(d),s=size/24;x.save();x.translate(cx-size/2,cy-size/2);x.scale(s,s);if(fill){x.fillStyle=color;x.fill(p)}else{x.strokeStyle=color;x.lineWidth=lw||1.8;x.lineCap="round";x.lineJoin="round";x.stroke(p)}x.restore()}
   function txt(x,s,X,Y,font,color,align,maxW){s=String(s==null?"":s);if(!s)return 0;x.font=font;var f=font;
     if(maxW){var sz=+(/(\d+)px/.exec(font)||[0,30])[1];while(x.measureText(s).width>maxW&&sz>14){sz-=2;f=font.replace(/\d+px/,sz+"px");x.font=f}}
@@ -75,7 +75,9 @@
       if(lg){var lh=hh-24,lw=lh*lg.width/lg.height;if(lw>W-80){lw=W-80;lh=lw*lg.height/lg.width}x.drawImage(lg,(W-lw)/2,(hh-lh)/2,lw,lh)}
       /* الصورة */
       var pY=story?188:292,pH=story?760:500;
-      if(im)cover(x,im,0,pY,W,pH,.55,story?.5:.7);else{x.fillStyle="#1B3550";x.fillRect(0,pY,W,pH)}
+      if(im){var zm=o.zoom||1,fx=o.fx==null?.5:o.fx,fy=o.fy==null?(story?.5:.7):o.fy;
+        if(o.fit==="contain"){cover(x,im,0,pY,W,pH,.5,.5);x.fillStyle="rgba(11,12,15,.78)";x.fillRect(0,pY,W,pH);var cs=Math.min(W/im.width,pH/im.height)*zm,cw=im.width*cs,ch=im.height*cs;x.save();x.beginPath();x.rect(0,pY,W,pH);x.clip();x.drawImage(im,(W-cw)*fx,pY+(pH-ch)*fy,cw,ch);x.restore()}
+        else cover(x,im,0,pY,W,pH,fx,fy,zm)}else{x.fillStyle="#1B3550";x.fillRect(0,pY,W,pH)}
       var g=x.createLinearGradient(0,story?pY+pH*.55:pY+pH-60,0,pY+pH);g.addColorStop(0,"rgba(11,12,15,0)");g.addColorStop(1,"rgba(11,12,15,1)");x.fillStyle=g;x.fillRect(0,story?pY+pH*.55:pY+pH-60,W,story?pH*.45:60);
       /* الشارة والدفع */
       var by=story?225:320,bf=(story?38:34)+"px Cairo,"+F.slice(6);
