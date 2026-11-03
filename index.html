@@ -123,6 +123,7 @@ dialog.cmpd{max-width:1040px}
 .pays{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 .pays div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;border-top:4px solid var(--brass)}
 .pays h3{margin:0 0 4px;font-size:18px}.pays p{margin:0;color:var(--muted);font-size:15px}
+.ptT{margin:26px 0 4px;font-size:20px}.ptg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:560px){.ptg{grid-template-columns:repeat(3,1fr)}}@media(min-width:900px){.ptg{grid-template-columns:repeat(5,1fr)}}.pt{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 8px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-weight:700;font-size:14px;line-height:1.5}.pt img{max-width:84px;max-height:40px;object-fit:contain}.ptN{margin:8px 0 0;font-size:13px;color:var(--muted,#667)}
 .banks{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .banks b{font-family:Cairo,Tajawal,sans-serif;margin-inline-end:4px}
 .banks span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-size:14px}
@@ -264,13 +265,16 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <section id="pay"><div class="wrap">
 <h2>طرق الدفع</h2>
 <p class="sub">اختر الطريقة اللي تناسبك، ونرتب لك كل شي من المعرض.</p>
-<p class="sub" style="margin-top:-6px"><b>معتمدون لدى جميع البنوك وشركات التمويل</b> · ضمان الوكيل</p>
 <div class="pays">
 <div><h3>كاش</h3><p>تدفع كامل المبلغ وتستلم سيارتك بأسرع وقت.</p></div>
 <div><h3>تقسيط</h3><p>دفعة أولى ومدة تصل إلى 5 سنوات، والموافقة حسب جهة التمويل.</p></div>
 <div><h3>دفعتين</h3><p>تدفع جزء الآن والباقي على دفعة ثانية متفق عليها.</p></div>
 <div><h3>تأجير منتهي بالتمليك</h3><p>قسط شهري مريح، وتتملك السيارة بنهاية العقد.</p></div>
 </div>
+<h3 class="ptT">شركاء التمويل المعتمدون</h3>
+<p class="sub" style="margin:0 0 10px">معتمدون لدى أبرز البنوك وشركات التمويل، ومنها:</p>
+<div class="ptg"><div class="pt" data-b="alrajhi"><span>مصرف الراجحي</span></div><div class="pt" data-b="ahli"><span>البنك الأهلي التجاري</span></div><div class="pt" data-b="riyad"><span>بنك الرياض</span></div><div class="pt" data-b="albilad"><span>بنك البلاد</span></div><div class="pt" data-b="alinma"><span>مصرف الإنماء</span></div><div class="pt" data-b="jazira"><span>بنك الجزيرة</span></div><div class="pt" data-b="fransi"><span>البنك السعودي الفرنسي</span></div><div class="pt" data-b="enbd"><span>بنك الإمارات دبي الوطني</span></div><div class="pt" data-b="alj"><span>عبد اللطيف جميل للتمويل</span></div><div class="pt" data-b="raya"><span>شركة راية للتمويل</span></div></div>
+<p class="ptN">ضمان الوكيل · الموافقة حسب شروط جهة التمويل</p>
 <div class="banks" id="banks" hidden></div>
 <div class="ship"><p><b>نشحن لجميع مدن المملكة</b> — من المعرض في الرياض إلى باب بيتك.</p><a class="btn" id="shipWa" target="_blank" rel="noopener" href="#">اسأل عن الشحن لمدينتك</a></div>
 <h3 style="margin:28px 0 0;font-size:20px">اطلب تقسيط</h3>
