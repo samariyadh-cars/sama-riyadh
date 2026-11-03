@@ -22,7 +22,7 @@
     "واتساب":"WhatsApp","معرض سماء الرياض للسيارات":SHOP_EN,
     "سيارتك الجديدة":"Your new car","تبدأ من هنا":"starts here",
     "تويوتا ولكزس موديلات 2026. كاش أو أقساط أو دفعتين، وشحن لجميع مدن المملكة.":"Toyota and Lexus 2026 models. Cash, installments, two payments, and shipping to every city in the Kingdom.",
-    "تصفح السيارات":"Browse cars","موقع المعرض":"Showroom location",
+    "تصفح السيارات":"Browse cars","موقعنا":"Our location","معرض سماء الرياض للسيارات في الرياض – معارض الشفاء، ونشحن سيارتك لجميع مدن المملكة.":"Sama Riyadh Cars, Riyadh – Al-Shifa showrooms. We ship to all cities in the Kingdom.","ساعات الرد":"Response hours","آراء عملائنا":"Customer reviews","تقييمات عملائنا على خرائط قوقل، وشاركنا رأيك بعد شرائك.":"Our customers' reviews on Google Maps. Share your opinion after your purchase.","⭐ شاهد التقييمات":"⭐ See reviews","قيّمنا على قوقل":"Rate us on Google","معتمدون لدى جميع البنوك وشركات التمويل":"Approved by all banks and finance companies","ضمان الوكيل":"Dealer warranty","موقع المعرض":"Showroom location",
     "شحن لجميع مدن المملكة":"Shipping to all cities in the Kingdom","من الرياض إلى بابك":"From Riyadh to your door",
     "كاش أو أقساط":"Cash or installments","اطلب من بطاقة السيارة":"Order from the car card",
     "سيارات جديدة":"Brand-new cars","تويوتا ولكزس":"Toyota and Lexus",
