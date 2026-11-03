@@ -1,6 +1,13 @@
 /* قاموس مواصفات السيارات (عربي → إنجليزي) + قواعد الوحدات. يرجع null إذا ما قدر يترجم السطر كاملًا */
 (function(){
 var D={
+"مقاعد خلفية قابلة للطي (60:40)": "Folding rear seats (60:40)",
+"مع مسند وسطي وحامل أكواب": "with center armrest and cup holder",
+"مقاعد خلفية 40:20:40": "Rear seats 40:20:40",
+"مع مسند وحاملات أكواب وأزرار تحكم باللمس": "with armrest, cup holders and touch controls",
+"وسادات هوائية": "Airbags",
+"سائق وراكب أمامي وجانبية أمامية": "Driver, front passenger and front side",
+"ما قبل التصادم PCS، مثبت سرعة راداري DRCC، تتبع المسار LTA، تنبيه مغادرة المسار LDA": "Pre-Collision System (PCS), Dynamic Radar Cruise Control (DRCC), Lane Tracing Assist (LTA), Lane Departure Alert (LDA)",
 "205/50R17 – جنوط ألمنيوم 17 بوصة": "205/50R17 – 17-inch alloy wheels",
 "225/55R19 – جنوط ألمنيوم 19 بوصة": "225/55R19 – 19-inch alloy wheels",
 "3 سنوات أو 100,000 كم (أيهما أسبق)": "3 years or 100,000 km (whichever comes first)",
