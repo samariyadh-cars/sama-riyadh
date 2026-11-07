@@ -27,7 +27,7 @@ a,button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 1
   var box=document.getElementById("box");
   function fail(msg){box.innerHTML=msg+'<br><a href="./">الرجوع للموقع</a>'}
   if(!tok){
-    box.innerHTML='<b>دخول إدارة المعرض</b><br>المالك: ادخل من آخر صفحة الموقع بزر «دخول المعرض».<br><br><b>الموظف (مشاهدة فقط)</b><br><input id="et" type="password" dir="ltr" placeholder="الصق مفتاح المشاهدة هنا" autocomplete="off" style="width:100%;box-sizing:border-box;padding:10px;border:2px solid #D7E0E7;border-radius:10px;font:inherit;margin-top:8px"><br><button id="eb" type="button">دخول</button><div id="em" style="color:#C0392B;margin-top:6px"></div><br><a href="./" style="background:none;color:#1D6FA8;padding:0">الرجوع للموقع</a>';
+    box.innerHTML='<b>دخول إدارة المعرض</b><br>المالك: ادخل من آخر صفحة الموقع بزر «دخول المعرض».<br><br><b>أو الصق مفتاحك هنا</b><br><span style="font-size:13px">(مفتاح المالك، أو مفتاح المشاهدة للموظف)</span><br><input id="et" type="password" dir="ltr" placeholder="الصق المفتاح هنا" autocomplete="off" style="width:100%;box-sizing:border-box;padding:10px;border:2px solid #D7E0E7;border-radius:10px;font:inherit;margin-top:8px"><br><button id="eb" type="button">دخول</button><div id="em" style="color:#C0392B;margin-top:6px"></div><br><a href="./" style="background:none;color:#1D6FA8;padding:0">الرجوع للموقع</a>';
     document.getElementById("eb").onclick=function(){var t=(document.getElementById("et").value||"").trim();if(!t)return;
       document.getElementById("em").textContent="";
       fetch("https://api.github.com/repos/samariyadh-cars/sama-data",{headers:{"Authorization":"Bearer "+t}}).then(function(r){

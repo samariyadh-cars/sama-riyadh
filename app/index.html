@@ -28,7 +28,8 @@ button,input,select{font:inherit}
 .top .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
 .logo{width:48px;height:48px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
-.logo img{width:40px;height:36px;object-fit:contain}
+.logo{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.logo img{width:40px;height:36px;object-fit:contain;pointer-events:none}
 .brand b{display:block;font-size:19px;font-weight:700;white-space:nowrap}
 .brand small{display:block;font-size:12px;color:#C9CDD3}
 .ibtn{width:44px;height:44px;border-radius:12px;border:1px solid #3A3F47;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
@@ -201,6 +202,7 @@ var ICON={
  snap:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg>',
  pin:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
  clock:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ ops:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg>',
  star:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A5A12" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>'
 };
 
@@ -222,6 +224,10 @@ function priceLine(c){if(c.status==="sold")return '<em>تم البيع</em>';var
 function tagOf(c,cls){if(c.status==="sold")return '<span class="'+cls+' sold">تم البيع</span>';var b=(c.badge||"").trim();if(!b)return "";var t=/تصل|قريب|شحن|طلب/.test(b)?" soon":(/جديد|وصل|متوفر|فور/.test(b)?"":" red");return '<span class="'+cls+t+'">'+esc(b)+'</span>'}
 function fuelOf(c){var t=c.b+" "+c.n;if(/ديزل/.test(t))return "ديزل";if(/هايبرد|HEV/i.test(t))return "هايبرد";return "بنزين"}
 function idx(c){return cars.indexOf(c)}
+/* الربط مع «متابعات سماء»: نفس الموقع ونفس مفتاح الدخول */
+function isOwner(){try{return !!localStorage.getItem("sama_gh_token")}catch(e){return false}}
+function b64u(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function opsLink(kind,data){var u=location.origin+location.pathname.replace(/app\/[^\/]*$/,"")+"ops.html";return kind?u+"#"+kind+"="+b64u(data||{}):u}
 function byKey(k){for(var i=0;i<cars.length;i++)if(ck(cars[i])===k)return cars[i];return null}
 function toast(t){var e=document.getElementById("toast");e.textContent=t;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){e.style.display="none"},2200)}
 
@@ -251,7 +257,7 @@ var app=document.getElementById("app");
 
 function header(){
   return '<header class="top"><div class="wrap"><div class="row"><div class="brand"><div class="logo"><img src="../logo.png" alt="شعار سماء الرياض"></div><div><b>سماء الرياض للسيارات</b><small>الرياض – معارض الشفاء</small></div></div>'+
-  '<a class="ibtn" href="#/contact" aria-label="تواصل معنا">'+ICON.phone+'</a></div>'+
+  (isOwner()?'<a class="ibtn" href="'+opsLink()+'" aria-label="متابعات سماء">'+ICON.ops+'</a></div>':'<a class="ibtn" href="#/contact" aria-label="تواصل معنا">'+ICON.phone+'</a></div>')+
   '<div class="search"><label>'+ICON.search+'<input id="q" type="search" enterkeyhint="search" placeholder="ابحث: كامري، راف فور، LX…" value="'+esc(F.q)+'" aria-label="بحث"></label>'+
   '<button class="fbtn'+(isFiltered()?" on":"")+'" id="fopen" aria-label="فلترة"><i></i>'+ICON.filter+'</button></div></div></header>';
 }
@@ -337,6 +343,7 @@ function drawCar(){
    (ims.length>1?'<span class="cnt" id="cnt">1 / '+ims.length+'</span>':"")+'</div>'+
    '<div class="dt wrap"><div class="hd"><div><h1>'+esc(c.b+" "+c.n)+'</h1><span>'+esc(c.y||"")+' · جديدة · ضمان الوكيل</span></div>'+tagOf(c,"pill")+'</div>'+price+
    (sw?'<div class="lbl">اللون</div><div class="sw" id="sw">'+sw+'</div><div class="swn">'+esc(col)+'</div>':"")+
+   (isOwner()?'<div class="box" style="border-color:var(--red)"><b style="font-size:14px">أدوات المعرض <span style="font-weight:400;color:var(--mut);font-size:12px">(تظهر لك أنت بس)</span></b><div style="display:flex;gap:8px;margin-top:10px"><a class="btn" style="height:46px;font-size:14px" href="'+opsLink("quote",{car:c.b+" "+c.n,year:c.y||"2026",color:col})+'">عرض سعر لها</a><a class="btn ghost" style="height:46px;font-size:14px" href="'+opsLink()+'">المتابعات</a></div></div>':'')+
    '<div class="box"><b style="font-size:14px">طرق الشراء</b><div class="pays"><span>كاش</span><span>تقسيط</span><span>دفعتين</span><span>تأجير منتهي بالتمليك</span></div><div class="note">شحن لجميع مدن المملكة · معتمدون لدى جميع البنوك وشركات التمويل</div></div>'+
    specsHtml(c)+'</div>'+
    '<div class="bar"><div class="in">'+(c.status==="sold"?'<a class="btn wa" target="_blank" rel="noopener" href="'+esc(wa("السلام عليكم، أسأل عن سيارة مشابهة لـ "+c.b+" "+c.n+" من "+SHOP))+'">'+ICON.wa+'اسأل عن مثلها</a>':
@@ -376,6 +383,8 @@ function vFinance(i){
     var m="السلام عليكم، طلب تمويل من تطبيق "+SHOP+"\n\n"+
       (cc?"السيارة: "+cc.b+" "+cc.n+" "+(cc.y||"")+(col?" — لون "+col:"")+"\n":"")+
       "نوع الشراء: "+FM.type+"\nالاسم: "+n+"\nالجوال: "+p+"\nالراتب: "+(g("fs")||"—")+"\nجهة العمل: "+g("fw")+"\nالبنك: "+g("fbk")+"\nالالتزامات: "+g("fo");
+    /* رابط للمعرض يفتح «متابعات سماء» والعميل معبّى */
+    m+="\n\nللمعرض: "+opsLink("add",{name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:FM.type,sector:g("fw"),salary:g("fs"),oblig:g("fo")==="لا يوجد"?"":g("fo"),bank:g("fbk")});
     window.open(wa(m),"_blank");
   };
 }
@@ -407,6 +416,11 @@ function route(){
   if(p[0]!=="car")window.scrollTo(0,0);
 }
 document.getElementById("fab").href=wa("السلام عليكم، أتواصل معكم من تطبيق "+SHOP);
+/* الدخول المخفي: ضغطة مطوّلة (ثانية ونص) على الشعار تفتح «متابعات سماء» */
+(function(){var t=null;function stop(){clearTimeout(t);t=null}
+  document.addEventListener("pointerdown",function(e){if(!e.target.closest(".logo"))return;stop();t=setTimeout(function(){t=null;if(navigator.vibrate)navigator.vibrate(30);location.href=opsLink()},1500)});
+  ["pointerup","pointercancel","pointerleave","scroll"].forEach(function(ev){document.addEventListener(ev,stop,true)});
+  document.addEventListener("contextmenu",function(e){if(e.target.closest(".logo"))e.preventDefault()});})();
 window.addEventListener("hashchange",function(){try{sessionStorage.setItem("sama_nav","1")}catch(e){}route()});
 load().then(route).catch(function(){app.innerHTML='<div class="load">تعذّر تحميل السيارات. تأكد من الاتصال بالإنترنت ثم <a href="javascript:location.reload()">أعد المحاولة</a>.</div>'});
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
