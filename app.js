@@ -74,7 +74,8 @@ var NBASE=cars.length;
 (function(){var ov=(DATA&&DATA.ov)||{},SPX=(DATA&&DATA.specs)||{},SPE=(DATA&&DATA.specsEn)||{};cars.forEach(function(c){c._bs=JSON.stringify(c.specs||[]);if(SPX[ck(c)])c.specs=SPX[ck(c)];if(SPE[ck(c)])c.specsEn=SPE[ck(c)];c._bc=JSON.stringify(c.cimgs||{});c._bi=JSON.stringify(c.imgs||[]);c._by=c.y;var o=ov[ck(c)];if(!o)return;if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||""})})();
 function wa(msg){return "https://wa.me/"+NUM+"?text="+encodeURIComponent(window.SAMA_TM?window.SAMA_TM(msg):msg)}
 function money(n){return Number(n).toLocaleString("en-US")+" ر.س"}
-function priceText(c){if(c.status==="sold")return "تم البيع";if(c.pm==="hide")return "";return c.price?"تبدأ من "+money(c.price):"السعر عند الطلب"}
+/* السعر يُكتب قبل الضريبة في اللوحة، ويظهر للعميل شامل الضريبة 15% */
+function priceText(c){if(c.status==="sold")return "تم البيع";if(c.pm==="hide")return "";return c.price?money(Math.round(c.price*1.15))+" شامل الضريبة":"السعر عند الطلب"}
 function msgFor(c,pay,color){return "السلام عليكم، أرغب بطلب "+c.b+" "+c.n+" موديل "+c.y+(color?" لون "+color:"")+" "+pay+" من "+SHOP}
 var CAR='<svg viewBox="0 0 240 80" aria-hidden="true"><use href="#car"/></svg>';
 function modelOf(c){if(c.m)return c.m;var n=c.n.trim();if(/^[A-Za-z]/.test(n)){var t=n.match(/^[A-Za-z]+/)[0];return t}if(n.indexOf("راف فور")===0)return "راف فور";return n.split(/\s+/)[0]}
@@ -170,7 +171,7 @@ function openCar(i){
   var c=cars[i];cur=c;selColor="";
   $("dTitle").textContent=c.b+" "+c.n;
   $("dMeta").textContent="جديدة، موديل "+c.y+" • "+c.type;
-  $("dPrice").textContent=priceText(c);
+  $("dPrice").textContent=priceText(c);(function(){var e=$("dPriceNote");if(!e){e=document.createElement("div");e.id="dPriceNote";e.style.cssText="font-size:12px;opacity:.8;margin-top:4px";$("dPrice").insertAdjacentElement("afterend",e)}var show=c.price>0&&c.pm!=="hide"&&c.status!=="sold";e.hidden=!show;if(show)e.textContent="قبل الضريبة "+money(c.price)+" + ضريبة 15% "+money(Math.round(c.price*.15))+" • لا يشمل رسوم اللوحات والتأمين"})();
   var vn=(DATA.views||{})[ck(c)],ve=$("dViews");if(ve){ve.hidden=!(vn>=10);if(vn>=10)ve.textContent="👁 شافها "+vn+" شخص آخر ٧ أيام"}
   buildThumbs();
   showImg(0);
