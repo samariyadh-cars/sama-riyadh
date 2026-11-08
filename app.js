@@ -71,7 +71,7 @@ function thumbImg(im,u){im.decoding="async";im.src=TH(u);if(TH(u)!==u)im.onerror
 function ck(c){return c.b+" "+c.n}
 var NBASE=cars.length;
 (DATA.extra||[]).forEach(function(x){var c={};for(var k in x)c[k]=x[k];if(c.pm)c.price=0;cars.push(c)});
-(function(){var ov=(DATA&&DATA.ov)||{},SPX=(DATA&&DATA.specs)||{},SPE=(DATA&&DATA.specsEn)||{};cars.forEach(function(c){c._bs=JSON.stringify(c.specs||[]);if(SPX[ck(c)])c.specs=SPX[ck(c)];if(SPE[ck(c)])c.specsEn=SPE[ck(c)];c._bc=JSON.stringify(c.cimgs||{});c._bi=JSON.stringify(c.imgs||[]);c._by=c.y;var o=ov[ck(c)];if(!o)return;if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||""})})();
+(function(){var ov=(DATA&&DATA.ov)||{},SPX=(DATA&&DATA.specs)||{},SPE=(DATA&&DATA.specsEn)||{};cars.forEach(function(c){c._bs=JSON.stringify(c.specs||[]);if(SPX[ck(c)])c.specs=SPX[ck(c)];if(SPE[ck(c)])c.specsEn=SPE[ck(c)];c._bc=JSON.stringify(c.cimgs||{});c._bi=JSON.stringify(c.imgs||[]);c._by=c.y;var o=ov[ck(c)];if(!o)return;if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.colors&&o.colors.length)c.colors=o.colors;if(o.csoon)c.csoon=o.csoon;c.status=o.status||"";c.badge=o.badge||""})})();
 function wa(msg){return "https://wa.me/"+NUM+"?text="+encodeURIComponent(window.SAMA_TM?window.SAMA_TM(msg):msg)}
 function money(n){return Number(n).toLocaleString("en-US")+" ر.س"}
 /* السعر يُكتب قبل الضريبة في اللوحة، ويظهر للعميل شامل الضريبة 15% */
@@ -79,6 +79,10 @@ function priceText(c){if(c.status==="sold")return "تم البيع";if(c.pm==="h
 function msgFor(c,pay,color){return "السلام عليكم، أرغب بطلب "+c.b+" "+c.n+" موديل "+c.y+(color?" لون "+color:"")+" "+pay+" من "+SHOP}
 var CAR='<svg viewBox="0 0 240 80" aria-hidden="true"><use href="#car"/></svg>';
 function modelOf(c){if(c.m)return c.m;var n=c.n.trim();if(/^[A-Za-z]/.test(n)){var t=n.match(/^[A-Za-z]+/)[0];return t}if(n.indexOf("راف فور")===0)return "راف فور";return n.split(/\s+/)[0]}
+/* المفضلة: نفس مفتاح التطبيق، فتتشارك في نفس المتصفح */
+function favs(){try{return JSON.parse(localStorage.getItem("sama_favs")||"[]")}catch(e){return []}}
+function isFav(c){return favs().indexOf(ck(c))>=0}
+var curFav=false;
 var curF="all",curM="all",curS="def",curFu="all",curAv=false;
 function fuelOf(c){var t=c.b+" "+c.n;if(/ديزل/.test(t))return "ديزل";if(/هايبرد|HEV/i.test(t))return "هايبرد";return "بنزين"}
 function drawModels(f){
@@ -106,6 +110,7 @@ function render(f){
   ord.forEach(function(i){
     var c=cars[i];
     if(c.status==="hidden")return;
+    if(curFav&&!isFav(c))return;
     if(!(f==="all"||c.b===f||c.type===f))return;
     if(curM!=="all"&&modelOf(c)!==curM)return;
     if(curFu!=="all"&&fuelOf(c)!==curFu)return;
@@ -124,11 +129,14 @@ function render(f){
     d.querySelector(".inst").href=wa(msgFor(c,"بالتقسيط"));
     if(c.badge){var bd=document.createElement("span");bd.className="badge"+(/جديد|وصل/.test(c.badge)?" new":"");bd.textContent=c.badge;d.querySelector(".meta").appendChild(bd)}
     if(c.status==="sold"){d.classList.add("soldc");var ac=d.querySelector(".acts");ac.innerHTML="";var sa=document.createElement("a");sa.className="btn alt";sa.target="_blank";sa.rel="noopener";sa.textContent="تم البيع، اسأل عن مشابهة";sa.href=wa("السلام عليكم، أبغى سيارة مشابهة لـ "+c.b+" "+c.n+" من "+SHOP);ac.appendChild(sa)}
+    (function(){var fb=document.createElement("button");fb.type="button";fb.className="favb";var on=isFav(c);fb.setAttribute("aria-pressed",on);fb.setAttribute("aria-label",on?"شيلها من المفضلة":"أضف للمفضلة");fb.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>';
+      fb.addEventListener("click",function(e){e.stopPropagation();var l=favs(),k=l.indexOf(ck(c));if(k>=0)l.splice(k,1);else l.push(ck(c));try{localStorage.setItem("sama_favs",JSON.stringify(l))}catch(x){}favChip();var y=window.scrollY;render(curF);window.scrollTo(0,y)});d.appendChild(fb)})();
     pic.addEventListener("click",function(){openCar(i)});
     d.querySelector(".ttl").addEventListener("click",function(){openCar(i)});
     g.appendChild(d);shown++;
   });
-  var ce=$("cnt");if(ce)ce.textContent=shown?("عدد السيارات: "+shown):"";
+  var ce=$("cnt");if(ce)ce.textContent=shown?((curFav?"المفضلة: ":"عدد السيارات: ")+shown):"";favChip();
+  if(curFav&&!shown){var nf0=document.createElement("div");nf0.className="noRes";nf0.textContent="ما حفظت سيارات للحين. اضغط القلب على أي سيارة تعجبك.";g.appendChild(nf0);return}
   if(!shown){var nr=document.createElement("div");nr.className="noRes";nr.innerHTML="ما لقينا سيارة بهذي المواصفات.<br>";var na=document.createElement("a");na.className="btn";na.href="#want";na.textContent="اطلب سيارتك وتواصل معك";nr.appendChild(na);g.appendChild(nr)}
 }
 $("fuels").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;
@@ -176,7 +184,7 @@ function openCar(i){
   buildThumbs();
   showImg(0);
   var cw=$("dColWrap"),cl=$("dColors");cl.innerHTML="";
-  var cols=(c.colors&&c.colors.length)?c.colors:DEFCOL;{cw.hidden=false;cols.forEach(function(n){var b=document.createElement("button");b.type="button";b.className="chip";var dt=document.createElement("span");dt.className="dot";dt.style.background=COLHEX[n]||"#999";b.appendChild(dt);b.appendChild(document.createTextNode(n));b.setAttribute("aria-pressed","false");b.addEventListener("click",function(){var on=b.getAttribute("aria-pressed")==="true";cl.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed","false")});selColor=on?"":n;if(!on)b.setAttribute("aria-pressed","true");buildThumbs();showImg(0);links()});cl.appendChild(b)})}
+  var cols=(c.colors&&c.colors.length)?c.colors:DEFCOL;{cw.hidden=false;cols.forEach(function(n){var b=document.createElement("button");b.type="button";b.className="chip";var dt=document.createElement("span");dt.className="dot";dt.style.background=COLHEX[n]||"#999";b.appendChild(dt);b.appendChild(document.createTextNode(n));if((c.csoon||[]).indexOf(n)>=0){var smn=document.createElement("small");smn.className="csoon";smn.textContent="يصل قريباً";b.appendChild(smn)}b.setAttribute("aria-pressed","false");b.addEventListener("click",function(){var on=b.getAttribute("aria-pressed")==="true";cl.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed","false")});selColor=on?"":n;if(!on)b.setAttribute("aria-pressed","true");buildThumbs();showImg(0);links();try{var nc=$("nfColor");if(nc&&selColor&&[].some.call(nc.options,function(o){return o.value===selColor}))nc.value=selColor}catch(e){}});cl.appendChild(b)})}
   var sp=$("dSpecs");sp.innerHTML="";
   var SPC=specsFor(c);if(SPC.length){sp.hidden=false;$("dNoSpecs").hidden=true;SPC.forEach(function(r){var li=document.createElement("li");if(typeof r==="string"){li.className="ft";li.textContent="✓ "+r}else if(r.h){li.className="sh";li.textContent=r.h}else{var a=document.createElement("span");a.textContent=r[0];var b=document.createElement("b");b.textContent=r[1];li.appendChild(a);li.appendChild(b)}sp.appendChild(li)})}else{sp.hidden=true;$("dNoSpecs").hidden=false}
   links();$("dCash").hidden=$("dInst").hidden=(c.status==="sold");
@@ -184,7 +192,9 @@ function openCar(i){
     var L=[];cars.forEach(function(x,k){if(k===me||x.status==="hidden"||x.status==="sold"||x.type!==c.type)return;var sc=(x.b===c.b?0:1000000)+(p0&&+x.price?Math.abs(+x.price-p0):500000);L.push([sc,k])});
     L.sort(function(u,v){return u[0]-v[0]});L=L.slice(0,4);W.hidden=!L.length;
     L.forEach(function(u){var x=cars[u[1]],b=document.createElement("button");b.type="button";b.className="simc";var im=document.createElement("img");im.alt="";im.loading="lazy";if(x.imgs&&x.imgs[0])thumbImg(im,x.imgs[0]);b.appendChild(im);var s=document.createElement("span");s.textContent=x.b+" "+x.n;var sm=document.createElement("small");sm.textContent=priceText(x);s.appendChild(sm);b.appendChild(s);b.addEventListener("click",function(){openCar(u[1])});G.appendChild(b)})})();
-  var nf=$("dNotify");nf.hidden=c.status!=="sold";$("nfPhone").value="";$("nfNote").textContent="";
+  var nf=$("dNotify"),cso=(c.csoon||[]),soonB=/تصل|قريب|شحن/.test(c.badge||"");nf.hidden=!(c.status==="sold"||soonB||cso.length);$("nfPhone").value="";$("nfName").value="";$("nfNote").textContent="";
+  $("nfTitle").textContent=c.status==="sold"?"🔔 نبّهني إذا وصلت سيارة مثلها":(!soonB&&cso.length)?"🔔 نبّهني إذا وصل اللون":"🔔 نبّهني إذا وصلت";
+  (function(){var sel=$("nfColor");sel.innerHTML="";var ops=(!soonB&&cso.length)?cso.concat(["أي لون"]):["أي لون"].concat(c.colors||[]);ops.forEach(function(x){var o=document.createElement("option");o.value=x;o.textContent=x;sel.appendChild(o)})})();
 
   var dl=$("dlg");if(dl.open){try{dl.scrollTop=0;var dq=dl.querySelector(".in,.dbody");if(dq)dq.scrollTop=0}catch(e){}}else if(dl.showModal)dl.showModal();else dl.setAttribute("open","");try{if(document.activeElement&&document.activeElement.blur)document.activeElement.blur()}catch(e){}
 }
@@ -324,16 +334,28 @@ $("wForm").addEventListener("submit",function(e){e.preventDefault();var v=functi
 var $=function(i){return document.getElementById(i)};
 cars.forEach(function(c,i){if(c.status==="hidden"||c.status==="sold")return;var o=document.createElement("option");o.value=i;o.textContent=c.b+" "+c.n+" "+c.y;$("cCar").appendChild(o)});
 function digits(v){return String(v||"").replace(/[^0-9]/g,"")}
-function upd(){
-  var c=cars[+$("cCar").value],sal=+$("cSalary").value;
-  var msg="السلام عليكم، أرغب بطلب "+c.b+" "+c.n+" موديل "+c.y+" بالتقسيط من "+SHOP+"\nالاسم: "+$("cName").value.trim()+"\nالجوال: "+$("cPhone").value.trim()+"\nالدفعة الأولى: "+$("cDown").value+"%\nالمدة: "+$("cYears").value+" سنة\nجهة العمل: "+$("cJob").value+(sal>0?"\nالراتب الشهري: "+sal+" ر.س":"");
-  $("cWa").href=wa(msg);
-}
-["cName","cPhone","cCar","cDown","cYears","cJob","cSalary"].forEach(function(i){$(i).addEventListener("input",upd)});
+function cnum(v){v=String(v||"").replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[^\d.]/g,"");return v?+v:0}
+function cv(i){var e=$(i);return e?String(e.value||"").trim():""}
+function cOb(){var p=cnum(cv("cOP")),h=cnum(cv("cOH")),o=cnum(cv("cOO")),t=p+h+o;$("cTot").textContent=t.toLocaleString("en-US")+" ريال";return {p:p,h:h,o:o,t:t,none:$("cO0").checked||!t}}
+function cMsg(){
+  var c=cars[+$("cCar").value],ob=cOb(),f=function(x){return x.toLocaleString("en-US")};
+  return {c:c,ob:ob,obTxt:ob.none?"لا يوجد":"شخصي "+f(ob.p)+" + عقاري "+f(ob.h)+" + أخرى "+f(ob.o)+" = "+f(ob.t),
+   msg:"السلام عليكم، طلب تمويل من موقع "+SHOP+"\n\nالسيارة: "+c.b+" "+c.n+" "+c.y+"\nنوع الشراء: "+cv("cType")+"\nالاسم: "+cv("cName")+"\nالجوال: "+cv("cPhone")+"\nالمدينة: "+(cv("cCity")||"—")+"\nالجنسية: "+cv("cNat")+"\nالعمر: "+(cv("cAge")||"—")+"\nالراتب: "+(cv("cSalary")||"—")+"\nجهة العمل: "+cv("cJob")+"\nالبنك: "+cv("cBank")+"\nالدفعة الأولى: "+$("cDown").value+"%\nالمدة: "+$("cYears").options[$("cYears").selectedIndex].text+
+     "\n\nالالتزامات الشهرية:"+(ob.none?" لا يوجد":"\n• قسط شخصي: "+f(ob.p)+"\n• قسط عقاري: "+f(ob.h)+"\n• أخرى: "+f(ob.o)+"\n• المجموع: "+f(ob.t)+" ريال")}}
+function upd(){$("cWa").href=wa(cMsg().msg)}
+["cName","cPhone","cCar","cDown","cYears","cJob","cSalary","cCity","cNat","cAge","cBank","cType","cOP","cOH","cOO"].forEach(function(i){var e=$(i);if(e){e.addEventListener("input",upd);e.addEventListener("change",upd)}});
+["cOP","cOH","cOO"].forEach(function(i){$(i).addEventListener("input",function(){if($(i).value.trim())$("cO0").checked=false;upd()})});
+$("cO0").addEventListener("change",function(){["cOP","cOH","cOO"].forEach(function(i){$(i).disabled=$("cO0").checked;if($("cO0").checked)$(i).value=""});upd()});
 $("cWa").addEventListener("click",function(e){
-  if(!($("cName").value.trim()&&digits($("cPhone").value).length>=9)){e.preventDefault();$("cNote").textContent="اكتب اسمك ورقم جوالك عشان نتواصل معك.";return}
-  try{var c=cars[+$("cCar").value],sal=+$("cSalary").value;TRK.lead({src:"حاسبة التقسيط",name:$("cName").value.trim(),phone:$("cPhone").value.trim(),car:c.b+" "+c.n+" "+c.y,pay:"تقسيط",job:$("cJob").value,salary:sal>0?sal:"",down:$("cDown").value+"%",years:$("cYears").value})}catch(x){}
+  var anyOb=["cOP","cOH","cOO"].some(function(i){return cv(i)!==""});
+  var bad=!cv("cName")?"اكتب اسمك.":digits(cv("cPhone")).length<9?"اكتب رقم جوال صحيح.":(!anyOb&&!$("cO0").checked)?"اكتب التزاماتك الشهرية، أو اختر «ما عندي أي التزامات».":!$("cAgree").checked?"لازم توافق على استخدام بياناتك عشان نقدر ندرس طلبك.":"";
+  if(bad){e.preventDefault();$("cNote").textContent=bad;$("cNote").style.color="#B91C1C";return}
+  $("cNote").style.color="";$("cNote").textContent="تم تجهيز الطلب في واتساب، اضغط إرسال هناك.";
+  try{var r=cMsg(),c=r.c,sal=cnum(cv("cSalary"));$("cWa").href=wa(r.msg);
+    TRK.lead({src:"حاسبة التقسيط • "+cv("cType")+" • "+cv("cNat")+" • العمر "+(cv("cAge")||"—")+" • البنك "+cv("cBank")+" • الالتزامات "+r.obTxt,name:cv("cName"),phone:cv("cPhone"),car:c.b+" "+c.n+" "+c.y,pay:({"تقسيط":"أقساط"})[cv("cType")]||cv("cType"),job:cv("cJob"),salary:sal>0?sal:"",down:$("cDown").value+"%",years:$("cYears").value,city:cv("cCity")})}catch(x){}
 });
+function favChip(){var n=favs().length,b=$("favOnly");if(!b){b=document.createElement("button");b.className="chip favc";b.id="favOnly";b.type="button";b.addEventListener("click",function(e){e.stopPropagation();curFav=!curFav;render(curF)});$("fuels").appendChild(b)}
+  b.hidden=!n&&!curFav;b.textContent="♥ المفضلة ("+n+")";b.setAttribute("aria-pressed",curFav?"true":"false");if(!n&&curFav)curFav=false}
 upd();
 render("all");
 
@@ -629,9 +651,10 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
     
     sv.addEventListener("click",function(){
       var ov={},specs={},specsEn={};
-      base.forEach(function(c,i){var s=st[i],o={};if(s.y&&s.y!==c._by)o.y=s.y;if(s.pm)o.pm=s.pm;else if(+s.price>0)o.price=+s.price;if(s.status)o.status=s.status;if(s.badge)o.badge=s.badge;var d=(s.colors.length?s.colors:DEFCOL);if(d.join("|")!==DEFCOL.join("|"))o.colors=d;var bc={};try{bc=JSON.parse(c._bc||"{}")}catch(e){}var ci={};Object.keys(Object.assign({},s.cimgs,bc)).forEach(function(col){if(s.colors.indexOf(col)<0)return;var a=s.cimgs[col]||[];if(JSON.stringify(a)!==JSON.stringify(bc[col]||[]))ci[col]=a});if(Object.keys(ci).length)o.cimgs=ci;if(JSON.stringify(s.imgs)!==(c._bi||"[]")&&s.imgs.length)o.imgs=s.imgs;if(Object.keys(o).length)ov[ck(c)]=o;var sx=parseSpecs(s.stext);if(sx.length)specs[ck(c)]=sx;if((s.etext||"").trim())specsEn[ck(c)]=s.etext});
+      base.forEach(function(c,i){var s=st[i],o={},pv=(DATA.ov||{})[ck(c)]||{};if(s.y&&s.y!==c._by)o.y=s.y;if(s.pm)o.pm=s.pm;else if(+s.price>0)o.price=+s.price;if(s.status)o.status=s.status;if(s.badge)o.badge=s.badge;var d=(s.colors.length?s.colors:DEFCOL);if(d.join("|")!==DEFCOL.join("|"))o.colors=d;/* نحافظ على الألوان غير المتوفرة و«يصل قريباً» من تطبيق المعرض */if(pv.call){var ca=pv.call.slice();d.forEach(function(x){if(ca.indexOf(x)<0)ca.push(x)});o.call=ca}if(pv.csoon){var cso=pv.csoon.filter(function(x){return d.indexOf(x)>=0});if(cso.length)o.csoon=cso}var bc={};try{bc=JSON.parse(c._bc||"{}")}catch(e){}var ci={};Object.keys(Object.assign({},s.cimgs,bc)).forEach(function(col){if(s.colors.indexOf(col)<0&&(pv.call||[]).indexOf(col)<0)return;var a=s.cimgs[col]||[];if(JSON.stringify(a)!==JSON.stringify(bc[col]||[]))ci[col]=a});if(Object.keys(ci).length)o.cimgs=ci;if(JSON.stringify(s.imgs)!==(c._bi||"[]")&&s.imgs.length)o.imgs=s.imgs;if(Object.keys(o).length)ov[ck(c)]=o;var sx=parseSpecs(s.stext);if(sx.length)specs[ck(c)]=sx;if((s.etext||"").trim())specsEn[ck(c)]=s.etext});
       var extra=[];
-      xs.forEach(function(m){if(m.del||!m.n)return;var o={b:m.b,n:m.n,y:m.y||"2026",type:m.type};if(m.pm)o.pm=m.pm;else if(+m.price>0)o.price=+m.price;if(m.status)o.status=m.status;if(m.badge)o.badge=m.badge;var d=(m.colors.length?m.colors:DEFCOL);if(d.join("|")!==DEFCOL.join("|"))o.colors=d;if(m.imgs.length)o.imgs=m.imgs;var ci={};m.colors.forEach(function(col){var a=(m.cimgs||{})[col];if(a&&a.length)ci[col]=a});if(Object.keys(ci).length)o.cimgs=ci;var sp=parseSpecs(m.stext);if(sp.length)o.specs=sp;if((m.etext||"").trim())o.specsEn=m.etext;extra.push(o)});
+      xs.forEach(function(m){if(m.del||!m.n)return;var o={b:m.b,n:m.n,y:m.y||"2026",type:m.type},px=((DATA&&DATA.extra)||[]).filter(function(x){return x.b===m.b&&x.n===m.n})[0]||{};if(m.pm)o.pm=m.pm;else if(+m.price>0)o.price=+m.price;if(m.status)o.status=m.status;if(m.badge)o.badge=m.badge;var d=(m.colors.length?m.colors:DEFCOL);if(d.join("|")!==DEFCOL.join("|"))o.colors=d;if(m.imgs.length)o.imgs=m.imgs;var ci={};if(px.call){var cx=px.call.slice();m.colors.forEach(function(x){if(cx.indexOf(x)<0)cx.push(x)});o.call=cx}if(px.csoon){var csx=px.csoon.filter(function(x){return m.colors.indexOf(x)>=0});if(csx.length)o.csoon=csx}
+      m.colors.concat((px.call||[]).filter(function(x){return m.colors.indexOf(x)<0})).forEach(function(col){var a=(m.cimgs||{})[col];if(a&&a.length)ci[col]=a});if(Object.keys(ci).length)o.cimgs=ci;var sp=parseSpecs(m.stext);if(sp.length)o.specs=sp;if((m.etext||"").trim())o.specsEn=m.etext;extra.push(o)});
       var json=JSON.stringify({ov:ov,extra:extra,specs:specs,specsEn:specsEn,set:set,views:(DATA&&DATA.views)||{}},null,1);
       sv.disabled=true;ms.textContent="جاري الحفظ...";
       art.publish(json).then(function(){sv.disabled=false;ms.textContent="تم الحفظ ✓ يظهر للعملاء خلال دقيقة تقريبًا"}).catch(function(e){sv.disabled=false;var s=e&&e.status;ms.textContent=s===401?"مفتاح الدخول غير صحيح أو منتهي.":s===403||s===404?"المفتاح ما عنده صلاحية على المستودع.":s===409?"صار تعديل من مكان ثاني، حدّث الصفحة وأعد المحاولة.":"تعذر الحفظ، تأكد من الإنترنت وحاول مرة ثانية."});
@@ -646,10 +669,12 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
 /* ===== أخبرني إذا وصلت + بطاقة المشاركة ===== */
 (function(){
   $("nfBtn").addEventListener("click",function(){
-    var ph=$("nfPhone").value.trim();
+    var nm=$("nfName").value.trim(),ph=$("nfPhone").value.trim(),cl=$("nfColor").value;
+    if(!nm){$("nfNote").textContent="اكتب اسمك.";return}
     if(String(ph).replace(/[^0-9]/g,"").length<9){$("nfNote").textContent="اكتب رقم جوالك صحيح.";return}
-    try{TRK.lead({src:"أخبرني إذا وصلت",name:"",phone:ph,car:cur?cur.b+" "+cur.n+" "+cur.y:"",pay:""})}catch(e){}
-    $("nfNote").textContent="تم، بنتواصل معك أول ما تتوفر سيارة مشابهة.";$("nfPhone").value=""});
+    var car=cur?cur.b+" "+cur.n+" "+cur.y+(cl&&cl!=="أي لون"?" "+cl:""):"";
+    try{TRK.lead({src:"الموقع — ينتظر وصول: "+car,name:nm,phone:ph,car:car,pay:""})}catch(e){}
+    $("nfNote").textContent="تم تسجيلك، بنتواصل معك أول ما توصل.";$("nfPhone").value="";$("nfName").value=""});
   $("dCard").addEventListener("click",function(){
     var c=cur,b=$("dCard"),t=b.textContent;if(!c)return;b.disabled=true;b.textContent="جاري التجهيز…";
     var L=imgsNow(),o={title:c.b+" "+c.n,y:c.y,badge:c.badge||"",sub:"جديدة • موديل "+c.y+" • كاش وتقسيط",phone:"0554378456",l1:"نشحن لجميع مدن المملكة",l2:"الرياض • حي المروءة",img:L[0]||(c.imgs||[])[0]||""};

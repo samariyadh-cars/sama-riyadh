@@ -182,6 +182,16 @@ dialog.cmpd{max-width:1040px}
 .float.call{inset-inline-end:auto;inset-inline-start:14px;background:#0E2238;color:#fff}
 .noRes{grid-column:1/-1;text-align:center;padding:26px 10px;opacity:.85;line-height:2}
 .nf{margin:10px 0;padding:12px;border:1px solid var(--line,#D7E0E7);border-radius:12px;background:var(--bg)}
+.obl{grid-column:1/-1;border:2px solid var(--line);border-radius:12px;padding:10px 14px 12px;margin:0;background:var(--bg)}.obl legend{font-weight:700;padding:0 6px}
+.obg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.obg label{font-weight:400;font-size:14px}.obg input:disabled{opacity:.5}
+.obt{display:flex;justify-content:space-between;margin-top:10px;font-weight:700}.obt b{color:#C8102E}
+.calc label.chk{flex-direction:row;align-items:flex-start;gap:8px;font-weight:400;margin-top:8px}.calc label.chk input{width:20px;height:20px;min-width:20px;padding:0;margin-top:3px;accent-color:#C8102E}
+.calc label.agr{grid-column:1/-1;font-size:14px;line-height:1.6}
+.nfr select{flex:1;min-width:0;font:inherit;padding:10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit}
+.chip small.csoon{display:inline-block;margin-inline-start:6px;font-size:11px;font-weight:700;color:#B45309;background:#FDF3E3;border-radius:8px;padding:1px 6px}
+.card{position:relative}.favb{position:absolute;top:10px;left:10px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#1C1F24;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15);z-index:2}
+.favb[aria-pressed=true]{color:#C8102E}.favb[aria-pressed=true] svg{fill:#C8102E}
+.chip.favc{border-color:#C8102E;color:#C8102E}.chip.favc[aria-pressed=true]{background:#C8102E;color:#fff}
 .nfr{display:flex;gap:8px;margin:8px 0}
 .nfr input{flex:1;min-width:0;font:inherit;padding:10px;border:2px solid var(--line,#D7E0E7);border-radius:10px;background:var(--bg);color:inherit}
 header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .wrap>.btn{flex:0 0 auto}
@@ -289,11 +299,21 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <div class="calc">
 <label>الاسم<input id="cName" type="text" autocomplete="name"></label>
 <label>رقم الجوال<input id="cPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" placeholder="05xxxxxxxx"></label>
-<label>السيارة<select id="cCar"></select></label>
-<label>الدفعة الأولى<select id="cDown"><option value="0">بدون دفعة</option><option value="10">10%</option><option value="20" selected>20%</option><option value="30">30%</option><option value="40">40%</option></select></label>
-<label>مدة التقسيط<select id="cYears"><option value="1">سنة</option><option value="2">سنتان</option><option value="3">3 سنوات</option><option value="4" selected>4 سنوات</option><option value="5">5 سنوات</option></select></label>
+<label>المدينة<input id="cCity" list="cCityL" placeholder="مثل: الرياض"><datalist id="cCityL"><option value="الرياض"><option value="جدة"><option value="مكة المكرمة"><option value="المدينة المنورة"><option value="الدمام"><option value="الخبر"><option value="القصيم"><option value="أبها"><option value="خميس مشيط"><option value="تبوك"><option value="حائل"><option value="جازان"><option value="نجران"><option value="الطائف"><option value="الأحساء"><option value="الجوف"></datalist></label>
+<label>الجنسية<select id="cNat"><option>سعودي</option><option>مقيم</option></select></label>
+<label>العمر<input id="cAge" type="text" inputmode="numeric" placeholder="سنة"></label>
+<label>الراتب الشهري (ريال)<input id="cSalary" type="text" inputmode="numeric"></label>
 <label>جهة العمل<select id="cJob"><option>حكومي</option><option>عسكري</option><option>قطاع خاص</option><option>متقاعد</option><option>أعمال حرة</option></select></label>
-<label>الراتب الشهري (ريال)<input id="cSalary" type="number" inputmode="numeric" min="0"></label>
+<label>البنك الذي ينزل فيه راتبك<select id="cBank"><option>مصرف الراجحي</option><option>البنك الأهلي التجاري</option><option>بنك الرياض</option><option>بنك البلاد</option><option>مصرف الإنماء</option><option>بنك الجزيرة</option><option>البنك السعودي الفرنسي</option><option>البنك العربي الوطني</option><option>بنك الإمارات دبي الوطني</option><option>بنك آخر</option></select></label>
+<label>السيارة<select id="cCar"></select></label>
+<label>نوع الشراء<select id="cType"><option>تقسيط</option><option>دفعتين</option><option>تأجير منتهي بالتمليك</option></select></label>
+<label>الدفعة الأولى<select id="cDown"><option value="0">بدون دفعة</option><option value="10">10%</option><option value="20" selected>20%</option><option value="30">30%</option><option value="40">40%</option></select></label>
+<label>مدة التقسيط<select id="cYears"><option value="1">سنة</option><option value="2">سنتان</option><option value="3">3 سنوات</option><option value="4">4 سنوات</option><option value="5" selected>5 سنوات</option></select></label>
+<fieldset class="obl"><legend>الالتزامات الشهرية</legend>
+<div class="obg"><label>قسط شخصي<input id="cOP" type="text" inputmode="numeric" placeholder="0"></label><label>قسط عقاري<input id="cOH" type="text" inputmode="numeric" placeholder="0"></label><label>أخرى (سيارة، بطاقات)<input id="cOO" type="text" inputmode="numeric" placeholder="0"></label></div>
+<div class="obt"><span>المجموع الشهري</span><b id="cTot">0 ريال</b></div>
+<label class="chk"><input type="checkbox" id="cO0">ما عندي أي التزامات</label></fieldset>
+<label class="chk agr"><input type="checkbox" id="cAgree">أوافق على استخدام بياناتي لدراسة طلب التمويل والتواصل معي بخصوصه فقط</label>
 <div class="res"><a class="btn" id="cWa" target="_blank" rel="noopener" href="#">أرسل طلب التقسيط عبر واتساب</a></div>
 <p class="note" id="cNote">نراجع بياناتك ونرد عليك بالقسط على واتساب.</p>
 </div>
@@ -346,7 +366,13 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <button class="btn shr" id="dCopy" type="button">🔗 انسخ رابط السيارة</button>
 <button class="btn shr" id="dCard" type="button">🖼 بطاقة صورة للمشاركة</button>
 <div id="dSim" hidden><h3 class="simh">قد يعجبك أيضًا</h3><div class="simg" id="dSimG"></div></div>
-<div class="nf" id="dNotify" hidden><b>تبي نخبرك إذا وصلت سيارة مشابهة؟</b><div class="nfr"><input id="nfPhone" type="tel" inputmode="tel" placeholder="رقم جوالك 05xxxxxxxx" dir="ltr" autocomplete="tel"><button class="btn" id="nfBtn" type="button">أخبرني</button></div><small>نستخدم رقمك للتواصل معك بخصوص هذي السيارة فقط.</small><div id="nfNote" class="meta" aria-live="polite"></div></div>
+<div class="nf" id="dNotify" hidden>
+<b id="nfTitle">🔔 نبّهني إذا وصلت</b>
+<div class="nfr"><input id="nfName" type="text" placeholder="الاسم" autocomplete="name"></div>
+<div class="nfr"><input id="nfPhone" type="tel" inputmode="tel" placeholder="رقم جوالك 05xxxxxxxx" dir="ltr" autocomplete="tel"></div>
+<div class="nfr"><select id="nfColor" aria-label="اللون المطلوب"></select><button class="btn" id="nfBtn" type="button">أخبرني</button></div>
+<small>نستخدم رقمك للتواصل معك بخصوص هذي السيارة فقط.</small>
+<div id="nfNote" class="meta" aria-live="polite"></div></div>
 <div class="acts"><a class="btn" id="dCash" target="_blank" rel="noopener" href="#">اطلب كاش</a><a class="btn alt" id="dInst" target="_blank" rel="noopener" href="#">اطلب تقسيط</a></div>
 </div>
 </dialog>
@@ -367,10 +393,10 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
-<link rel="preload" href="app.js?v=23" as="script">
+<link rel="preload" href="app.js?v=24" as="script">
 <script src="i18n.js?v=2"></script><script src="specs_en.js?v=2"></script><script src="ad2.js?v=3"></script>
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=23";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=24";document.body.appendChild(s)});
 </script>
 <script>if("serviceWorker"in navigator&&location.protocol==="https:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
