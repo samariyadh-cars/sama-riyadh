@@ -185,6 +185,13 @@ nav.tabs a.on{color:var(--red);font-weight:700}
 .eimg img{width:100%;height:100%;object-fit:cover;display:block}
 .edel{position:absolute;top:6px;left:6px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(28,31,36,.75);color:#fff;font-size:18px;line-height:1;cursor:pointer}
 .cav{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 14px}.cr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.cd{width:26px;height:26px;border-radius:50%;border:1px solid #C4C8CE;flex:none}.cn{flex:1;font-size:14px}.form .cs{width:auto;height:42px;font-size:13px;padding:0 8px}.cplus{width:100%;height:46px;border:0;background:none;color:var(--red);font:inherit;font-weight:700;cursor:pointer}
+.form label.agree{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;font-size:13px;line-height:1.6;margin-top:18px;color:var(--ink)}
+.form label.agree input{width:22px;height:22px;min-width:22px;accent-color:var(--red);margin-top:1px}
+.hseg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.hseg button{height:42px;border-radius:12px;border:1px solid var(--line2);background:#fff;font-size:13px;cursor:pointer}
+.hseg button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+.htxt{width:100%;min-height:230px;border-radius:12px;border:1px solid var(--line2);padding:12px;font:inherit;font-size:14px;line-height:1.8;resize:vertical;box-sizing:border-box}
+.himgs{display:flex;gap:6px;overflow-x:auto;margin-top:10px}.himgs img{width:64px;height:64px;border-radius:8px;object-fit:cover;flex:none}
 .load{padding:60px 20px;text-align:center;color:var(--mut)}
 .toast{position:fixed;bottom:calc(100px + var(--safe-b));left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:40;display:none}
 </style>
@@ -364,7 +371,7 @@ function drawCar(){
    (ims.length>1?'<span class="cnt" id="cnt">1 / '+ims.length+'</span>':"")+'</div>'+
    '<div class="dt wrap"><div class="hd"><div><h1>'+esc(c.b+" "+c.n)+'</h1><span>'+esc(c.y||"")+' · جديدة · ضمان الوكيل</span></div>'+tagOf(c,"pill")+'</div>'+price+
    (sw?'<div class="lbl">اللون</div><div class="sw" id="sw">'+sw+'</div><div class="swn">'+esc(col)+(colSoon(c,col)?' — <b style="color:var(--soon)">يصل قريباً</b>':"")+'</div>':"")+
-   (isOwner()?'<div class="box" style="border-color:var(--red)"><b style="font-size:14px">أدوات المعرض <span style="font-weight:400;color:var(--mut);font-size:12px">(تظهر لك أنت بس)</span></b><div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/'+idx(c)+'">تعديل</a><a class="btn" style="height:46px;font-size:14px" href="'+opsLink("quote",{car:c.b+" "+c.n,year:c.y||"2026",color:col})+'">عرض سعر لها</a><a class="btn ghost" style="height:46px;font-size:14px" href="'+opsLink()+'">المتابعات</a></div></div>':'')+
+   (isOwner()?'<div class="box" style="border-color:var(--red)"><b style="font-size:14px">أدوات المعرض <span style="font-weight:400;color:var(--mut);font-size:12px">(تظهر لك أنت بس)</span></b><div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/'+idx(c)+'">تعديل</a><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="hrj">إعلان حراج</button><a class="btn" style="height:46px;font-size:14px" href="'+opsLink("quote",{car:c.b+" "+c.n,year:c.y||"2026",color:col})+'">عرض سعر لها</a><a class="btn ghost" style="height:46px;font-size:14px" href="'+opsLink()+'">المتابعات</a></div></div>':'')+
    '<div class="box"><b style="font-size:14px">طرق الشراء</b><div class="pays"><span>كاش</span><span>تقسيط</span><span>دفعتين</span><span>تأجير منتهي بالتمليك</span></div><div class="note">شحن لجميع مدن المملكة · معتمدون لدى جميع البنوك وشركات التمويل</div></div>'+
    specsHtml(c)+'</div>'+
       '<div class="bar"><div class="in">'+((c.status==="sold"||isSoon(c)||colSoon(c,col))?
@@ -374,6 +381,7 @@ function drawCar(){
   var trk=document.getElementById("trk"),cnt=document.getElementById("cnt");
   if(cnt)trk.addEventListener("scroll",function(){var n=Math.round(Math.abs(trk.scrollLeft)/trk.clientWidth)+1;cnt.textContent=n+" / "+ims.length},{passive:true});
   var nb=document.getElementById("ntf");if(nb)nb.onclick=function(){openNotify(c,col)};
+  var hb=document.getElementById("hrj");if(hb)hb.onclick=function(){openHaraj(c,col)};
   var swe=document.getElementById("sw");if(swe)swe.onclick=function(e){var b=e.target.closest("button");if(!b)return;cur.col=b.dataset.c;drawCar()};
   document.getElementById("bk").onclick=function(e){if(history.length>1&&sessionStorage.getItem("sama_nav")){e.preventDefault();history.back()}};
   document.getElementById("shr").onclick=function(){var u=location.href.split("#")[0]+"#/car/"+idx(c),t=c.b+" "+c.n+" "+(c.y||"")+" — "+SHOP;
@@ -390,10 +398,10 @@ function vFinance(i){
    '<main class="wrap form">'+carBox+'<div class="hint">أرسل بياناتك، ونحسب لك القسط ونتواصل معك.</div>'+
    '<label>الاسم<input id="fn" autocomplete="name" placeholder="الاسم الكامل"></label>'+
    '<label>رقم الجوال<input id="fp" type="tel" inputmode="tel" autocomplete="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right"></label>'+
-   '<div class="two"><label>العمر<input id="fa" inputmode="numeric" placeholder="سنة"></label><label>الراتب<input id="fs" inputmode="numeric" placeholder="ريال"></label></div><div class="two"><label>الدفعة الأولى (اختياري)<input id="fd" inputmode="numeric" placeholder="ريال"></label><label>المدة المطلوبة<select id="fy"><option>5 سنوات</option><option>4 سنوات</option><option>3 سنوات</option><option>سنتين</option></select></label></div><div class="two" style="grid-template-columns:1fr"><label>جهة العمل<select id="fw"><option>حكومي</option><option>خاص</option><option>عسكري</option><option>متقاعد</option></select></label></div>'+
+   '<div class="two"><label>العمر<input id="fa" inputmode="numeric" placeholder="سنة"></label><label>الراتب<input id="fs" inputmode="numeric" placeholder="ريال"></label></div><div class="two"><label>الدفعة الأولى (اختياري)<input id="fd" inputmode="numeric" placeholder="ريال"></label><label>المدة المطلوبة<select id="fy"><option>5 سنوات</option><option>4 سنوات</option><option>3 سنوات</option><option>سنتين</option></select></label></div><div class="two"><label>المدينة<input id="fc" list="fcl" placeholder="مثل: الرياض"><datalist id="fcl"><option value="الرياض"><option value="جدة"><option value="مكة المكرمة"><option value="المدينة المنورة"><option value="الدمام"><option value="الخبر"><option value="القصيم"><option value="أبها"><option value="خميس مشيط"><option value="تبوك"><option value="حائل"><option value="جازان"><option value="نجران"><option value="الطائف"><option value="الأحساء"><option value="الجوف"></datalist></label><label>الجنسية<select id="fn2"><option>سعودي</option><option>مقيم</option></select></label></div><div class="two" style="grid-template-columns:1fr"><label>جهة العمل<select id="fw"><option>حكومي</option><option>خاص</option><option>عسكري</option><option>متقاعد</option></select></label></div>'+
    '<label>البنك الذي ينزل فيه راتبك<select id="fbk">'+banks.map(function(b){return '<option>'+esc(b)+'</option>'}).join("")+'<option>بنك آخر</option></select></label>'+
    '<div class="lbl">الالتزامات الشهرية</div><div class="obox">'+'<div class="orow"><label for="fo_p">قسط شخصي</label><input id="fo_p" class="ob" inputmode="numeric" placeholder="0"><em>ريال</em></div>'+'<div class="orow"><label for="fo_h">قسط عقاري</label><input id="fo_h" class="ob" inputmode="numeric" placeholder="0"><em>ريال</em></div>'+'<div class="orow"><label for="fo_o">أخرى (سيارة، بطاقات)</label><input id="fo_o" class="ob" inputmode="numeric" placeholder="0"><em>ريال</em></div>'+'<div class="otot"><span>المجموع الشهري</span><b id="fo_t">0 ريال</b></div></div>'+'<label style="flex-direction:row;align-items:center;gap:10px;font-weight:400"><input type="checkbox" id="fo0" style="width:22px;height:22px;accent-color:var(--red)">ما عندي أي التزامات</label>'+'<div class="lbl">نوع الشراء</div><div class="seg" id="seg">'+["تقسيط","دفعتين","تأجير منتهي بالتمليك"].map(function(t){return '<button type="button" aria-pressed="'+(FM.type===t)+'" data-t="'+t+'">'+(t==="تأجير منتهي بالتمليك"?"تأجير بالتمليك":t)+'</button>'}).join("")+'</div>'+
-   (c?'':carBox?'':'')+'<div class="err" id="ferr"></div>'+
+   (c?'':carBox?'':'')+'<label class="agree"><input type="checkbox" id="fagree"><span>أوافق على استخدام بياناتي لدراسة طلب التمويل والتواصل معي بخصوصه فقط</span></label>'+'<div class="err" id="ferr"></div>'+
    '<div style="margin-top:20px"><button class="btn wa" id="fsend" style="width:100%">'+ICON.wa+'إرسال الطلب عبر واتساب</button></div></main>';
   document.getElementById("seg").onclick=function(e){var b=e.target.closest("button");if(!b)return;FM.type=b.dataset.t;Array.prototype.forEach.call(this.children,function(x){x.setAttribute("aria-pressed",x===b)})};
   /* الالتزامات: أرقام فقط، والمجموع يتحسب لحاله */
@@ -406,7 +414,7 @@ function vFinance(i){
     var g=function(id){var e=document.getElementById(id);return e?e.value.trim():""};
     var n=g("fn"),p=g("fp").replace(/[^\d+]/g,""),er=document.getElementById("ferr");
     var anyOb=obs.some(function(e){return e.value.trim()!==""});
-    var bad=!n?"اكتب اسمك من فضلك.":p.length<9?"اكتب رقم جوال صحيح.":(!anyOb&&!fo0.checked)?"اكتب التزاماتك الشهرية، أو اختر «ما عندي أي التزامات».":"";
+    var bad=!n?"اكتب اسمك من فضلك.":p.length<9?"اكتب رقم جوال صحيح.":(!anyOb&&!fo0.checked)?"اكتب التزاماتك الشهرية، أو اختر «ما عندي أي التزامات».":!document.getElementById("fagree").checked?"لازم توافق على استخدام بياناتك عشان نقدر ندرس طلبك.":"";
     if(bad){er.textContent=bad;er.style.display="block";er.scrollIntoView({block:"center",behavior:"smooth"});return}
     er.style.display="none";
     var cc=c||(g("fcar")!==""?cars[+g("fcar")]:null),col=cc&&cur.c===cc?cur.col:"";
@@ -414,13 +422,13 @@ function vFinance(i){
     var obTxt=fo0.checked||!ot?"لا يوجد":"شخصي "+f(op)+" + عقاري "+f(oh)+" + أخرى "+f(oo)+" = "+f(ot);
     var m="السلام عليكم، طلب تمويل من تطبيق "+SHOP+"\n\n"+
       (cc?"السيارة: "+cc.b+" "+cc.n+" "+(cc.y||"")+(col?" — لون "+col:"")+"\n":"")+
-      "نوع الشراء: "+FM.type+"\nالاسم: "+n+"\nالجوال: "+p+"\nالعمر: "+(g("fa")||"—")+"\nالراتب: "+(g("fs")||"—")+"\nالدفعة الأولى: "+(g("fd")||"بدون")+"\nالمدة: "+g("fy")+"\nجهة العمل: "+g("fw")+"\nالبنك: "+g("fbk")+
+      "نوع الشراء: "+FM.type+"\nالاسم: "+n+"\nالجوال: "+p+"\nالمدينة: "+(g("fc")||"—")+"\nالجنسية: "+g("fn2")+"\nالعمر: "+(g("fa")||"—")+"\nالراتب: "+(g("fs")||"—")+"\nالدفعة الأولى: "+(g("fd")||"بدون")+"\nالمدة: "+g("fy")+"\nجهة العمل: "+g("fw")+"\nالبنك: "+g("fbk")+
       "\n\nالالتزامات الشهرية:"+(obTxt==="لا يوجد"?" لا يوجد":"\n• قسط شخصي: "+f(op)+"\n• قسط عقاري: "+f(oh)+"\n• أخرى: "+f(oo)+"\n• المجموع: "+f(ot)+" ريال");
     /* رابط للمعرض يفتح «متابعات سماء» والعميل معبّى */
-    m+="\n\nللمعرض: "+opsLink("add",{name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:FM.type,age:g("fa"),sector:g("fw"),salary:g("fs"),oblig:obTxt==="لا يوجد"?"0":obTxt,bank:g("fbk"),note:"طلب تمويل من التطبيق • الدفعة الأولى "+(g("fd")||"بدون")+" • المدة "+g("fy")});
+    m+="\n\nللمعرض: "+opsLink("add",{name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:FM.type,city:g("fc"),age:g("fa"),sector:g("fw"),salary:g("fs"),oblig:obTxt==="لا يوجد"?"0":obTxt,bank:g("fbk"),note:"طلب تمويل من التطبيق • "+g("fn2")+" • الدفعة الأولى "+(g("fd")||"بدون")+" • المدة "+g("fy")});
     /* يوصل للمتابعات تلقائياً مثل طلبات الموقع */
-    TRK.lead({name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:({"تقسيط":"أقساط"})[FM.type]||FM.type,down:g("fd"),years:g("fy").replace(/[^\d]/g,"")||(g("fy")==="سنتين"?"2":""),job:g("fw"),salary:g("fs"),
-      src:"التطبيق — طلب تمويل • العمر "+(g("fa")||"—")+" • البنك "+g("fbk")+" • الالتزامات "+obTxt});
+    TRK.lead({name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:({"تقسيط":"أقساط"})[FM.type]||FM.type,down:g("fd"),years:g("fy").replace(/[^\d]/g,"")||(g("fy")==="سنتين"?"2":""),job:g("fw"),salary:g("fs"),city:g("fc"),
+      src:"التطبيق — طلب تمويل • "+g("fn2")+" • العمر "+(g("fa")||"—")+" • البنك "+g("fbk")+" • الالتزامات "+obTxt});
     window.open(wa(m),"_blank");
   };
 }
@@ -594,6 +602,37 @@ function vAdminEdit(i){
      .catch(function(e){btn.disabled=false;btn.textContent="حفظ التعديل";er.textContent=errMsg(e);er.style.display="block"})};
 }
 
+
+/* ===== إعلان حراج (للمالك) — نفس قالب «متابعات سماء» وبدون سعر ===== */
+function harajText(c,col,style){var lab=c.b+" "+c.n,yr=c.y?"📅 موديل "+c.y+"\n":"",cl=col?"🎨 اللون: "+col+"\n":"";
+  var tail="📍 معرض سماء الرياض للسيارات\nالرياض – معارض الشفاء\n\n👤 أبو راكان عصام الشرفي\n📞 0554378456\n👻 سناب: @es_99000";
+  if(style==="hype")return "🔥 وصلت! "+lab+"\n\n"+yr+cl+"✅ كاش أو تقسيط\n✅ ضمان الوكيل\n✅ معتمدون لدى جميع البنوك وشركات التمويل\n✅ نشحن لجميع مدن المملكة\n\nلا يفوتك العرض 👌\n"+tail;
+  if(style==="short")return lab+(c.y?" · "+c.y:"")+(col?" · "+col:"")+"\n📞 0554378456 · معرض سماء الرياض";
+  return "🚗 "+lab+"\n\n"+yr+cl+"✅ كاش أو تقسيط\n✅ ضمان الوكيل\n✅ معتمدون لدى جميع البنوك وشركات التمويل\n✅ نشحن لجميع مدن المملكة\n\n"+tail}
+function copyText(t){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t);
+  return new Promise(function(ok,no){var a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;top:-100px";document.body.appendChild(a);a.select();try{document.execCommand("copy")?ok():no()}catch(e){no(e)}a.remove()})}
+function openHaraj(c,col){
+  var st="formal",ims=imgsFor(c,col).slice(0,10);
+  var s=document.createElement("div");s.className="sheet open";
+  s.innerHTML='<div class="box" role="dialog" aria-label="إعلان حراج"><h3>إعلان حراج</h3><p style="margin:0;color:var(--mut);font-size:13px">'+esc(c.b+" "+c.n)+(col?" · "+esc(col):"")+' — النص بدون سعر، وتقدر تعدّله قبل النسخ</p>'+
+   '<div class="hseg" id="hst"><button type="button" data-s="formal" aria-pressed="true">رسمي</button><button type="button" data-s="hype" aria-pressed="false">حماسي</button><button type="button" data-s="short" aria-pressed="false">مختصر</button></div>'+
+   '<textarea class="htxt" id="htx" dir="rtl"></textarea>'+
+   (ims.length?'<div class="himgs">'+ims.map(function(u){return pic(u,"",true)}).join("")+'</div>':'')+
+   '<div class="acts"><button type="button" class="btn ghost" id="hpics"'+(ims.length?"":" disabled")+'>حفظ الصور ('+ims.length+')</button><button type="button" class="btn" id="hcopy">نسخ الإعلان</button></div>'+
+   '<button type="button" class="btn ghost" id="hx" style="width:100%;margin-top:10px;border:0">إغلاق</button></div>';
+  document.body.appendChild(s);
+  var tx=s.querySelector("#htx");tx.value=harajText(c,col,st);
+  s.addEventListener("click",function(e){if(e.target===s)s.remove()});s.querySelector("#hx").onclick=function(){s.remove()};
+  s.querySelector("#hst").onclick=function(e){var b=e.target.closest("button");if(!b)return;st=b.dataset.s;tx.value=harajText(c,col,st);Array.prototype.forEach.call(this.children,function(x){x.setAttribute("aria-pressed",x===b)})};
+  s.querySelector("#hcopy").onclick=function(){var b=this;copyText(tx.value).then(function(){b.textContent="✓ انسخ";toast("انسخ الإعلان — الصقه في حراج");setTimeout(function(){b.textContent="نسخ الإعلان"},1800)}).catch(function(){tx.select();toast("ظلّل النص وانسخه")})};
+  s.querySelector("#hpics").onclick=function(){var b=this;b.disabled=true;b.textContent="جاري تجهيز الصور…";
+    Promise.all(ims.map(function(u,k){return fetch(img(u)).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(bl){return new File([bl],"sama-"+(k+1)+".jpg",{type:bl.type||"image/jpeg"})})}))
+    .then(function(files){
+      if(navigator.canShare&&navigator.canShare({files:files})){return navigator.share({files:files}).then(function(){toast("اختر «حفظ الصور» عشان تنحفظ في الألبوم")}).catch(function(){})}
+      files.forEach(function(f){var a=document.createElement("a");a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();a.remove()});toast("انحفظت الصور")})
+    .catch(function(){toast("ما قدرت أجهّز الصور، تأكد من الإنترنت")})
+    .then(function(){b.disabled=false;b.textContent="حفظ الصور ("+ims.length+")"})};
+}
 /* ===== التنقل ===== */
 function route(){
   var h=location.hash.replace(/^#\/?/,""),p=h.split("/"),t="home";
