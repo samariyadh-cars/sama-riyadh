@@ -263,7 +263,7 @@ var ICON={
 
 /* ===== أدوات ===== */
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function ck(c){return c.b+" "+c.n}
+function ck(c){return c._k||(c.b+" "+c.n)}
 function wa(msg){return "https://wa.me/"+NUM+"?text="+encodeURIComponent(msg)}
 function money(n){return Math.round(Number(n)).toLocaleString("en-US")+" ر.س"}
 function img(u){return /^(https?:|data:|blob:)/.test(u)?u:BASE+u}
@@ -302,7 +302,7 @@ function load(){
     /* نفس طريقة الموقع في دمج تعديلات لوحة التحكم */
     (DATA.extra||[]).forEach(function(x){var c={};for(var k in x)c[k]=x[k];if(c.pm)c.price=0;cars.push(c)});
     var ov=DATA.ov||{},SPX=DATA.specs||{};
-    cars.forEach(function(c){if(SPX[ck(c)])c.specs=SPX[ck(c)];c.allColors=(c.call||c.colors||[]).slice();c.csoon=(c.csoon||[]).slice();var o=ov[ck(c)];if(!o)return;if(o.call)c.allColors=o.call.slice();if(o.csoon)c.csoon=o.csoon.slice();if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||"";c.loc=o.loc||"";c.eta=o.eta||"";if(o.gimgs)c.gimgs=o.gimgs;c.arch=o.arch?1:0});
+    cars.forEach(function(c){c._k=c.b+" "+c.n;c._b0=c.b;c._n0=c.n;var o0=ov[c._k]||{},nm=c.nm||o0.nm,bn=c.bn||o0.bn;if(nm)c.n=nm;if(bn)c.b=bn;if(SPX[ck(c)])c.specs=SPX[ck(c)];c.allColors=(c.call||c.colors||[]).slice();c.csoon=(c.csoon||[]).slice();var o=ov[ck(c)];if(!o)return;if(o.call)c.allColors=o.call.slice();if(o.csoon)c.csoon=o.csoon.slice();if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||"";c.loc=o.loc||"";c.eta=o.eta||"";if(o.gimgs)c.gimgs=o.gimgs;c.arch=o.arch?1:0});
     cars.forEach(function(c){(c.colors||[]).forEach(function(x){if(c.allColors.indexOf(x)<0)c.allColors.push(x)})});
   });
 }
@@ -551,14 +551,16 @@ function saveCar(c,patch,tries){tries=tries||0;var key=ck(c),base=idx(c)<NBASE;
     if(patch.gimgs){if(patch.gimgs.length)o.gimgs=patch.gimgs;else delete o.gimgs}
     if(patch.specs){if(base){D.specs=D.specs||{};if(patch.specs.length)D.specs[key]=patch.specs;else delete D.specs[key]}else{if(patch.specs.length)o.specs=patch.specs;else delete o.specs}}
     if("eta" in patch){if(patch.eta)o.eta=patch.eta;else delete o.eta}
+    if(patch.y)o.y=patch.y;
     if("badge" in patch){if(patch.badge)o.badge=patch.badge;else delete o.badge}
+    if("nm" in patch){var n0=c._n0||c.n,b0=c._b0||c.b;if(patch.nm&&patch.nm!==n0)o.nm=patch.nm;else delete o.nm;if(patch.bn&&patch.bn!==b0)o.bn=patch.bn;else delete o.bn}
     if(patch.cimgs){o.cimgs=o.cimgs||{};for(var k in patch.cimgs)o.cimgs[k]=patch.cimgs[k]}
     if(patch.colors){o.colors=patch.colors;o.call=patch.call;if(patch.csoon.length)o.csoon=patch.csoon;else delete o.csoon}
     var txt=JSON.stringify(D,null,1);
     return ghPut("data.json",u8b64(new TextEncoder().encode(txt)),"تعديل من التطبيق: "+key,g.sha).then(function(){
       /* نحدّث النسخة اللي في الجوال على طول */
       if("price" in patch)c.price=patch.price>0?patch.price:0;if("pm" in patch)c.pm=patch.pm||"";if(c.pm==="hide")c.price=0;
-      if("status" in patch)c.status=patch.status||"";if("badge" in patch)c.badge=patch.badge||"";if("loc" in patch)c.loc=patch.loc||"";if("arch" in patch)c.arch=patch.arch?1:0;if(patch.gimgs)c.gimgs=patch.gimgs.slice();if(patch.specs)c.specs=patch.specs;if("eta" in patch)c.eta=patch.eta||"";
+      if("status" in patch)c.status=patch.status||"";if("badge" in patch)c.badge=patch.badge||"";if("loc" in patch)c.loc=patch.loc||"";if("arch" in patch)c.arch=patch.arch?1:0;if(patch.gimgs)c.gimgs=patch.gimgs.slice();if(patch.specs)c.specs=patch.specs;if("eta" in patch)c.eta=patch.eta||"";if("nm" in patch){if(!c._k){c._k=key;c._b0=c.b;c._n0=c.n}c.n=patch.nm;c.b=patch.bn}if(patch.y)c.y=patch.y;
       if(patch.cimgs){c.cimgs=c.cimgs||{};for(var k2 in patch.cimgs)c.cimgs[k2]=patch.cimgs[k2]}
       if(patch.colors){c.colors=patch.colors.slice();c.allColors=patch.call.slice();c.csoon=patch.csoon.slice()}})
   }).catch(function(e){if(e===409&&tries<2)return saveCar(c,patch,tries+1);throw e})}
@@ -603,12 +605,16 @@ function vAdminEdit(i){
   var c=cars[+i];if(!c){location.hash="#/admin";return}
   if(AE.i!==+i){AE={i:+i,col:(c.colors||[])[0]||"",newImgs:null,d:null}}
   var D0=AE.d||{},cols=(D0.all||c.allColors||c.colors||[]).slice(),p=("p" in D0)?(+D0.p||0):(+c.price||0),st=("s" in D0)?D0.s:(c.status||""),hid=("h" in D0)?D0.h:c.pm==="hide",bdg=("b" in D0)?D0.b:(c.badge||""),loc=("l" in D0)?D0.l:(c.loc||""),eta=("e" in D0)?D0.e:(c.eta||"");
+  var enB=("nb" in D0)?D0.nb:c.b,enN=("nn" in D0)?D0.nn:c.n,enY=("ny" in D0)?D0.ny:(c.y||"");
   var colImgs=AE.newImgs||(((c.cimgs||{})[AE.col])||[]).slice();
   var badges=["متوفرة فوراً","تصل قريباً","وصلت جديد","عرض خاص"];
   var cst=D0.cst||{};cols.forEach(function(n){if(!(n in cst))cst[n]=(c.colors||[]).indexOf(n)<0?"off":(c.csoon||[]).indexOf(n)>=0?"soon":"on"});
   if(!AE.col||cols.indexOf(AE.col)<0)AE.col=cols[0]||"";
   app.innerHTML='<div class="sub"><a class="back" href="#/admin" aria-label="رجوع">'+ICON.back+'</a><div style="flex:1;min-width:0"><small style="color:var(--mut);font-size:12px">تعديل</small><h1 style="font-size:17px">'+esc(c.b+" "+c.n)+'</h1></div></div>'+
    '<main class="wrap form" style="padding-bottom:110px">'+
+   '<div class="two"><label>الماركة<input id="eB" list="eBl" value="'+esc(enB)+'"><datalist id="eBl">'+MAINB.concat(myBrands(),COMMONB).filter(function(x,k,a){return a.indexOf(x)===k}).map(function(b){return '<option value="'+esc(b)+'">'}).join("")+'</datalist></label><label>السنة<input id="eY" inputmode="numeric" value="'+esc(enY)+'"></label></div>'+
+   '<label>اسم السيارة (الموديل والفئة)<input id="eN" value="'+esc(enN)+'"></label>'+
+   ((c.b+" "+c.n)!==ck(c)?'<p class="note" style="margin-top:-4px">الاسم الأصلي: '+esc(ck(c))+'</p>':'')+
    '<div class="two"><label>السعر قبل الضريبة<input id="ep" inputmode="numeric" placeholder="ر.س" value="'+(p||"")+'"></label><label>شامل الضريبة 15%<input id="ept" disabled value="'+(p?money(p*(1+VAT)):"—")+'"></label></div>'+
    '<label style="flex-direction:row;align-items:center;gap:10px;font-weight:400"><input type="checkbox" id="eh" style="width:22px;height:22px;accent-color:var(--red)"'+(hid?" checked":"")+'>إخفاء السعر وإظهار «السعر عند التواصل»</label>'+
    '<label>الشارة (تظهر على صورة السيارة)<input id="eb" list="ebl" value="'+esc(bdg)+'" placeholder="بدون شارة"><datalist id="ebl">'+badges.map(function(b){return '<option value="'+b+'">'}).join("")+'</datalist></label>'+
@@ -630,7 +636,7 @@ function vAdminEdit(i){
   var ep=document.getElementById("ep"),ept=document.getElementById("ept"),eb=document.getElementById("eb"),S={s:st,l:loc};
   var nm=function(v){v=String(v||"").replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[^\d.]/g,"");return v?+v:0};
   var readCst=function(){Array.prototype.forEach.call(document.querySelectorAll(".cs"),function(x){cst[x.dataset.c]=x.value})};
-  var keep=function(){readCst();var ee=document.getElementById("ee");AE.d={p:nm(ep.value),h:document.getElementById("eh").checked,b:eb.value,s:S.s,cst:cst,all:cols,l:S.l,e:ee?ee.value:eta}};
+  var keep=function(){readCst();var ee=document.getElementById("ee");AE.d={p:nm(ep.value),h:document.getElementById("eh").checked,b:eb.value,s:S.s,cst:cst,all:cols,l:S.l,e:ee?ee.value:eta,nb:document.getElementById("eB").value,nn:document.getElementById("eN").value,ny:document.getElementById("eY").value}};
   document.getElementById("cplus").onclick=function(){var n=(prompt("اسم اللون الجديد (مثل: أزرق غامق)")||"").trim();if(!n)return;if(cols.indexOf(n)>=0){toast("اللون موجود");return}
     keep();AE.d.all=cols.concat([n]);AE.d.cst[n]="on";AE.col=n;AE.newImgs=null;vAdminEdit(i);toast("انضاف اللون — أضف صوره واضغط «حفظ التعديل»")};
   ep.oninput=function(){var v=nm(ep.value);ept.value=v?money(v*(1+VAT)):"—"};
@@ -651,6 +657,10 @@ function vAdminEdit(i){
     var ee=document.getElementById("ee");
     var patch={price:nm(ep.value),pm:document.getElementById("eh").checked?"hide":"",badge:eb.value.trim(),status:S.s,loc:S.l||"",eta:(S.l==="ship"||S.l==="dealer")&&ee?ee.value:""};
     if(AE.newImgs){patch.cimgs={};patch.cimgs[AE.col]=AE.newImgs}
+    var nB=document.getElementById("eB").value.trim().replace(/\s+/g," "),nN=document.getElementById("eN").value.trim().replace(/\s+/g," "),nY=document.getElementById("eY").value.replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[^\d]/g,"");
+    if(!nB||!nN){er.textContent="اكتب الماركة واسم السيارة.";er.style.display="block";return}
+    if(nB!==c.b||nN!==c.n){var dup=cars.filter(function(x){return x!==c&&(x.b+" "+x.n)===(nB+" "+nN)})[0];if(dup){er.textContent="فيه سيارة ثانية بنفس الاسم: "+nB+" "+nN;er.style.display="block";return}patch.nm=nN;patch.bn=nB}
+    if(nY&&nY!==String(c.y||""))patch.y=nY;
     readCst();var shown=cols.filter(function(n){return cst[n]!=="off"});
     if(!shown.length){er.textContent="لازم يكون فيه لون واحد متوفر على الأقل.";er.style.display="block";return}
     patch.colors=shown;patch.call=cols.slice();patch.csoon=cols.filter(function(n){return cst[n]==="soon"});
@@ -961,7 +971,7 @@ function vNew(){
       btn.disabled=true;btn.textContent="جاري الحفظ…";
       ghGetJson("data.json").then(function(g){var D=g.data||{};D.extra=D.extra||[];if(D.extra.some(function(x){return x.b===o.b&&x.n===o.n}))throw "dup";D.extra.push(o);if(MAINB.indexOf(o.b)<0){D.set=D.set||{};var bl=D.set.brands||[];if(bl.indexOf(o.b)<0){bl.unshift(o.b);D.set.brands=bl.slice(0,30)}SET.brands=D.set.brands}
         return ghPut("data.json",u8b64(new TextEncoder().encode(JSON.stringify(D,null,1))),"سيارة جديدة من التطبيق: "+o.b+" "+o.n,g.sha)})
-      .then(function(){var c=JSON.parse(JSON.stringify(o));c.allColors=c.colors.slice();c.csoon=[];c.status="";c.badge="";c.loc="";cars.push(c);NW=null;toast("انضافت — تظهر للعملاء خلال دقيقة");location.hash="#/admin/"+idx(c)})
+      .then(function(){var c=JSON.parse(JSON.stringify(o));c.allColors=c.colors.slice();c.csoon=[];c.status="";c.badge="";c.loc="";c._k=c.b+" "+c.n;c._b0=c.b;c._n0=c.n;cars.push(c);NW=null;toast("انضافت — تظهر للعملاء خلال دقيقة");location.hash="#/admin/"+idx(c)})
       .catch(function(e){btn.disabled=false;btn.textContent="حفظ السيارة";er.textContent=e==="dup"?"فيه سيارة بنفس الاسم.":errMsg(e);er.style.display="block"})}}
   var bk=document.getElementById("nback");if(bk&&st>1)bk.onclick=function(e){e.preventDefault();NW.step--;vNew()};
   document.body.classList.add("has-bar")}
