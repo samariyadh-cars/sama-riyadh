@@ -931,7 +931,7 @@ function vNew(){
   var head='<div class="sub"><a class="back" href="'+(st>1?"javascript:void 0":"#/admin")+'" id="nback" aria-label="رجوع">'+ICON.back+'</a><h1 style="flex:1">سيارة جديدة</h1><small style="color:var(--mut)">خطوة '+st+' من 3</small></div>'+bar;
   var seg=function(id,arr,v){return '<div class="seg" id="'+id+'" style="grid-template-columns:repeat('+arr.length+',minmax(0,1fr))">'+arr.map(function(x){return '<button type="button" data-v="'+esc(x)+'" aria-pressed="'+(x===v)+'">'+esc(x)+'</button>'}).join("")+'</div>'};
   if(st===1){var palette=["أبيض","أسود","فضي","رمادي","تيتانيوم","رصاصي فاتح","أزرق غامق","كحلي","أحمر","بيج","بني","ذهبي"].concat(NW.colors.filter(function(x){return ["أبيض","أسود","فضي","رمادي","تيتانيوم","رصاصي فاتح","أزرق غامق","كحلي","أحمر","بيج","بني","ذهبي"].indexOf(x)<0}));
-    app.innerHTML=head+'<main class="wrap form" style="padding-bottom:110px"><div class="lbl" style="margin-top:4px">الماركة</div>'+seg("nb",["تويوتا","لكزس","هيونداي","كيا"],NW.b)+
+    app.innerHTML=head+'<main class="wrap form" style="padding-bottom:110px"><div class="lbl" style="margin-top:4px">الماركة</div>'+brandPick()+
      '<div class="two"><label>الموديل والفئة<input id="nn" value="'+esc(NW.n)+'" placeholder="مثل: كامري GLE"></label><label>السنة<input id="ny" inputmode="numeric" value="'+esc(NW.y)+'"></label></div>'+
      '<div class="lbl">النوع</div>'+seg("nt",["سيدان","SUV"],NW.type)+'<div class="lbl">الوقود</div>'+seg("nf",["بنزين","هايبرد","ديزل"],NW.fuel)+
      '<div class="two"><label>السعر قبل الضريبة<input id="np" inputmode="numeric" placeholder="ر.س" value="'+esc(NW.price)+'"></label><label>شامل الضريبة<input id="npt" disabled value="'+(+NW.price?money(NW.price*(1+VAT)):"—")+'"></label></div>'+
@@ -939,7 +939,7 @@ function vNew(){
      '<div class="lbl">الألوان المتوفرة</div><div class="chips" id="nc" style="flex-wrap:wrap">'+palette.map(function(x){var on=NW.colors.indexOf(x)>=0;return '<button type="button" class="chip" data-c="'+esc(x)+'" aria-pressed="'+on+'"><span class="dot" style="background:'+(COLHEX[x]||"#999")+'"></span>'+esc(x)+(on?" ✓":"")+'</button>'}).join("")+'<button type="button" class="chip" id="ncp" style="border-style:dashed;color:var(--red)">+ لون</button></div>'+
      '<div class="err" id="nerr"></div></main><div class="bar"><div class="in"><button class="btn" id="nnext">التالي: المواصفات</button></div></div>';
     var keep=function(){NW.n=document.getElementById("nn").value.trim();NW.y=document.getElementById("ny").value.trim()||"2026";NW.price=document.getElementById("np").value.replace(/[^\d]/g,"");NW.pm=document.getElementById("nph").checked};
-    ["nb","nt","nf"].forEach(function(id){document.getElementById(id).onclick=function(e){var b=e.target.closest("button");if(!b)return;keep();NW[{nb:"b",nt:"type",nf:"fuel"}[id]]=b.dataset.v;vNew()}});
+    brandWire(keep);["nt","nf"].forEach(function(id){document.getElementById(id).onclick=function(e){var b=e.target.closest("button");if(!b)return;keep();NW[{nb:"b",nt:"type",nf:"fuel"}[id]]=b.dataset.v;vNew()}});
     document.getElementById("np").oninput=function(){var v=+this.value.replace(/[^\d]/g,"");document.getElementById("npt").value=v?money(v*(1+VAT)):"—"};
     document.getElementById("nc").onclick=function(e){var b=e.target.closest(".chip");if(!b)return;keep();if(b.id==="ncp"){var n=(prompt("اسم اللون")||"").trim();if(n&&NW.colors.indexOf(n)<0)NW.colors.push(n)}else{var c=b.dataset.c,k=NW.colors.indexOf(c);if(k>=0)NW.colors.splice(k,1);else NW.colors.push(c)}vNew()};
     document.getElementById("nnext").onclick=function(){keep();var er=document.getElementById("nerr"),name=fullName();
@@ -959,12 +959,32 @@ function vNew(){
       var first=NW.colors.map(function(c){return (NW.cimgs[c]||[])[0]}).filter(Boolean)[0];o.imgs=first?[first]:[];if(NW.gimgs.length)o.gimgs=NW.gimgs.slice();if(NW.specs.length)o.specs=NW.specs;
       if(!o.imgs.length&&!NW.gimgs.length&&!confirm("ما أضفت صور. تحفظ السيارة بدون صور؟"))return;
       btn.disabled=true;btn.textContent="جاري الحفظ…";
-      ghGetJson("data.json").then(function(g){var D=g.data||{};D.extra=D.extra||[];if(D.extra.some(function(x){return x.b===o.b&&x.n===o.n}))throw "dup";D.extra.push(o);
+      ghGetJson("data.json").then(function(g){var D=g.data||{};D.extra=D.extra||[];if(D.extra.some(function(x){return x.b===o.b&&x.n===o.n}))throw "dup";D.extra.push(o);if(MAINB.indexOf(o.b)<0){D.set=D.set||{};var bl=D.set.brands||[];if(bl.indexOf(o.b)<0){bl.unshift(o.b);D.set.brands=bl.slice(0,30)}SET.brands=D.set.brands}
         return ghPut("data.json",u8b64(new TextEncoder().encode(JSON.stringify(D,null,1))),"سيارة جديدة من التطبيق: "+o.b+" "+o.n,g.sha)})
       .then(function(){var c=JSON.parse(JSON.stringify(o));c.allColors=c.colors.slice();c.csoon=[];c.status="";c.badge="";c.loc="";cars.push(c);NW=null;toast("انضافت — تظهر للعملاء خلال دقيقة");location.hash="#/admin/"+idx(c)})
       .catch(function(e){btn.disabled=false;btn.textContent="حفظ السيارة";er.textContent=e==="dup"?"فيه سيارة بنفس الاسم.":errMsg(e);er.style.display="block"})}}
   var bk=document.getElementById("nback");if(bk&&st>1)bk.onclick=function(e){e.preventDefault();NW.step--;vNew()};
   document.body.classList.add("has-bar")}
+/* الماركات */
+var MAINB=["تويوتا","لكزس","هيونداي","كيا"];
+var COMMONB=["نيسان","هوندا","مازدا","ميتسوبيشي","سوزوكي","شانجان","جيلي","MG","هافال","شيري","جيتور","فورد","شيفروليه","جي إم سي","جيب","دودج","كاديلاك","BMW","مرسيدس","أودي","فولكس واجن","بورش","لاند روفر","رينج روفر","إنفينيتي","جينيسيس","بي واي دي","تانك","هونشي","إكسيد","جاك","لينكولن","رام","بيجو","رينو","سانج يونج","إيسوزو","فولفو","ميني"];
+function myBrands(){var l=[];(SET.brands||[]).concat(cars.map(function(c){return c.b})).forEach(function(b){if(b&&MAINB.indexOf(b)<0&&l.indexOf(b)<0)l.push(b)});return l}
+function brandPick(){var l=MAINB.concat(myBrands());if(NW.b&&l.indexOf(NW.b)<0)l.push(NW.b);
+  var h='<div class="chips" id="nb" style="flex-wrap:wrap">'+l.map(function(x){return '<button type="button" class="chip" data-v="'+esc(x)+'" aria-pressed="'+(x===NW.b)+'">'+esc(x)+(x===NW.b?" ✓":"")+'</button>'}).join("")+'<button type="button" class="chip" id="nbo" style="border-style:dashed;color:var(--red)">'+(NW.bpick?"إغلاق":"+ ماركة ثانية")+'</button></div>';
+  if(NW.bpick)h+='<div class="box" id="nbp" style="margin-top:8px"><input id="nbq" placeholder="ابحث عن ماركة…" autocomplete="off" style="width:100%"><div class="chips" id="nbl" style="flex-wrap:wrap;margin-top:8px"></div></div>';
+  return h}
+function brandWire(keep){var w=document.getElementById("nb");
+  w.onclick=function(e){var b=e.target.closest("button");if(!b)return;keep();if(b.id==="nbo"){NW.bpick=!NW.bpick;vNew();if(NW.bpick){var q=document.getElementById("nbq");if(q)q.focus()}return}NW.b=b.dataset.v;NW.bpick=false;vNew()};
+  var q=document.getElementById("nbq");if(!q)return;var L=document.getElementById("nbl");
+  var norm=function(t){return String(t).toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g,"")};
+  var draw=function(){var v=q.value.trim(),nv=norm(v),have=MAINB.concat(myBrands());
+    var m=COMMONB.filter(function(x){return have.indexOf(x)<0&&(!nv||norm(x).indexOf(nv)>=0)});
+    var exact=v&&have.concat(COMMONB).some(function(x){return norm(x)===nv});
+    L.innerHTML=m.map(function(x){return '<button type="button" class="chip" data-v="'+esc(x)+'">'+esc(x)+'</button>'}).join("")+
+      (v&&!exact?'<button type="button" class="chip" data-v="'+esc(v)+'" style="border-style:dashed;color:var(--red)">+ أضف «'+esc(v)+'»</button>':'')+
+      (!m.length&&!v?'<span style="color:var(--mut);font-size:13px">اكتب اسم الماركة</span>':'')};
+  q.oninput=draw;draw();
+  L.onclick=function(e){var b=e.target.closest("button");if(!b)return;keep();NW.b=b.dataset.v;NW.bpick=false;vNew()}}
 function fullName(){var n=NW.n.trim();if(NW.fuel==="هايبرد"&&!/هايبرد|HEV/i.test(n))n+=" هايبرد";if(NW.fuel==="ديزل"&&!/ديزل/.test(n))n+=" ديزل";return n}
 
 /* ===== مواصفات سيارة موجودة ===== */

@@ -206,7 +206,7 @@ $("chips").addEventListener("click",function(e){
   document.querySelectorAll("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});
   curM="all";drawModels(b.dataset.f);render(b.dataset.f);
 });
-(function(){var have={};document.querySelectorAll("#chips .chip").forEach(function(b){have[b.dataset.f]=1});cars.forEach(function(c){if(c.status!=="hidden"&&!have[c.b]){have[c.b]=1;var b=document.createElement("button");b.className="chip";b.dataset.f=c.b;b.setAttribute("aria-pressed","false");b.textContent=c.b;var after=document.querySelector("#chips .chip[data-f=\"لكزس\"]");after.parentNode.insertBefore(b,after.nextSibling)}})})();
+(function(){var have={};document.querySelectorAll("#chips .chip").forEach(function(b){have[b.dataset.f]=1});cars.forEach(function(c){if(c.status!=="hidden"&&!have[c.b]){have[c.b]=1;var b=document.createElement("button");b.className="chip";b.dataset.f=c.b;b.setAttribute("aria-pressed","false");b.textContent=c.b;var after=document.querySelector("#chips .chip[data-f=\"لكزس\"]");after.parentNode.insertBefore(b,after.nextSibling)}});var live={},isB={};cars.forEach(function(c){isB[c.b]=1;if(c.status!=="hidden")live[c.b]=1});["تويوتا","لكزس"].forEach(function(x){isB[x]=1});document.querySelectorAll("#chips .chip").forEach(function(b){var f=b.dataset.f;if(isB[f]&&!live[f])b.hidden=true})})();
 
 /* مقارنة الفئات */
 function famOf(c){var m=modelOf(c);var o=[];cars.forEach(function(x,i){if(x.b===c.b&&x.status!=="hidden"&&modelOf(x)===m)o.push(i)});return o}
