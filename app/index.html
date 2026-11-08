@@ -194,7 +194,12 @@ nav.tabs a.on{color:var(--red);font-weight:700}
 .himgs{display:flex;gap:6px;overflow-x:auto;margin-top:10px}.himgs img{width:64px;height:64px;border-radius:8px;object-fit:cover;flex:none}
 .atools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
 .atools a,.atools button{height:64px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none;font:inherit;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer}
-.atools svg{color:var(--red)}.atools button.on{background:var(--soon-bg);border-color:var(--soon);color:var(--soon)}
+.atools svg{color:var(--red)}
+.plist{display:flex;flex-direction:column;gap:8px;margin:10px 0}.prow{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}.prow img,.prow .ph0{width:54px;height:42px;object-fit:cover;border-radius:8px;flex:none;background:#E9EAEC}
+.prow .pn{flex:1;min-width:0}.prow .pn b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prow .pn small{font-size:11px;color:var(--mut)}.prow input{width:104px;flex:none;height:42px;text-align:center;font-size:15px}
+.prow.ch{border-color:var(--red);background:#FFF6F7}.prow.ch input{border-color:var(--red);font-weight:700}
+.stg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.stt{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.stt small{color:var(--mut);font-size:12px}.stt b{display:block;font-size:24px}.stt i{font-style:normal;font-size:11px;color:#1E8E4E}.stt i.dn{color:var(--red-d)}
+.sth{display:block;font-size:14px;margin-bottom:8px}.sbr{display:flex;align-items:center;gap:8px;font-size:12px;margin:7px 0;color:inherit;text-decoration:none}.sbr span{width:120px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sbr em{flex:1;height:10px;background:#EEF0F3;border-radius:5px;overflow:hidden}.sbr em i{display:block;height:100%}.sbr b{width:30px;text-align:left}.atools button.on{background:var(--soon-bg);border-color:var(--soon);color:var(--soon)}
 .rep .rh{display:flex;align-items:center;gap:10px}.rep .ra{width:42px;height:42px;border-radius:12px;background:var(--red-l);color:var(--red-d);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
 .rep b{display:block;font-size:15px}.rep small{font-size:12px;color:var(--mut)}.rl{background:var(--bg);border-radius:10px;padding:8px 10px;font-size:12px;margin-top:10px;word-break:break-all}
 .rdel{width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:#fff;font-size:18px;cursor:pointer;color:var(--mut)}
@@ -401,7 +406,7 @@ function drawCar(){
    (ims.length>1?'<span class="cnt" id="cnt">1 / '+ims.length+'</span>':"")+'</div>'+
    '<div class="dt wrap"><div class="hd"><div><h1>'+esc(c.b+" "+c.n)+'</h1><span>'+esc(c.y||"")+' · جديدة · ضمان الوكيل</span></div>'+tagOf(c,"pill")+'</div>'+price+
    (sw?'<div class="lbl">اللون</div><div class="sw" id="sw">'+sw+'</div><div class="swn">'+esc(col)+(colSoon(c,col)?' — <b style="color:var(--soon)">يصل قريباً</b>':"")+'</div>':"")+
-   (isOwner()?'<div class="box" style="border-color:var(--red)"><b style="font-size:14px">أدوات المعرض <span style="font-weight:400;color:var(--mut);font-size:12px">(تظهر لك أنت بس)</span></b><div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/'+idx(c)+'">تعديل</a><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="hrj">إعلان حراج</button></div><div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="adimg">صورة إعلان</button><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="carqr">باركود</button><a class="btn" style="height:46px;font-size:14px" href="'+opsLink("quote",{car:c.b+" "+c.n,year:c.y||"2026",color:col})+'">عرض سعر لها</a><a class="btn ghost" style="height:46px;font-size:14px" href="'+opsLink()+'">المتابعات</a></div></div>':'')+
+   (isOwner()?'<div class="box" style="border-color:var(--red)"><b style="font-size:14px">أدوات المعرض <span style="font-weight:400;color:var(--mut);font-size:12px">(تظهر لك أنت بس)</span></b><div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/'+idx(c)+'">تعديل</a><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="hrj">إعلان حراج</button><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/deliv/'+idx(c)+'">🎉 تسليم</a></div><div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="adimg">صورة إعلان</button><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="carqr">باركود</button><a class="btn" style="height:46px;font-size:14px" href="'+opsLink("quote",{car:c.b+" "+c.n,year:c.y||"2026",color:col})+'">عرض سعر لها</a><a class="btn ghost" style="height:46px;font-size:14px" href="'+opsLink()+'">المتابعات</a></div></div>':'')+
    '<div class="box"><b style="font-size:14px">طرق الشراء</b><div class="pays"><span>كاش</span><span>تقسيط</span><span>دفعتين</span><span>تأجير منتهي بالتمليك</span></div><div class="note">شحن لجميع مدن المملكة · معتمدون لدى جميع البنوك وشركات التمويل</div></div>'+
    specsHtml(c)+'<button type="button" class="btn ghost" id="cmpb" style="width:100%;margin-top:14px;height:48px">⇄ قارن مع سيارة ثانية</button></div>'+
       '<div class="bar"><div class="in">'+((c.status==="sold"||isSoon(c)||colSoon(c,col))?
@@ -507,7 +512,7 @@ var TRK=(function(){
   function send(o){var f={};o.t=Date.now();for(var k in o){if(o[k]==null||o[k]==="")continue;f[k]=typeof o[k]==="number"?{integerValue:String(Math.round(o[k]))}:{stringValue:String(o[k]).slice(0,1500)}}
     try{return fetch(URL_,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify({fields:f})}).catch(function(){})}catch(e){return Promise.resolve()}}
   function ev(kind,ref){if(isOwner())return;var k=kind+"|"+(ref||"");if(seen[k])return;mark(k);send({kind:kind,ref:ref||"",src:"app"})}
-  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(a)ev("wa",a.href.indexOf("tel:")===0?"app-tel":"app-wa")},true);
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(!a)return;var mh=location.hash.match(/^#\/car\/(\d+)/),cc=mh&&cars[+mh[1]];ev("wa",cc?"wa:"+ck(cc):a.href.indexOf("tel:")===0?"app-tel":"app-wa")},true);
   return {lead:function(o){o.kind="lead";return send(o)},ev:ev};
 })();
 TRK.ev("view","app");
@@ -581,7 +586,7 @@ function vAdmin(){
   var chip=function(k,t){return '<button class="chip" data-st="'+k+'" aria-pressed="'+(AF.st===k)+'">'+t+'</button>'},cnt=function(k){return cars.filter(function(c){return c.loc===k}).length};
   app.innerHTML='<header class="top"><div class="wrap"><div class="row"><div class="brand"><a class="back" href="#/" aria-label="رجوع" style="background:#2A2E35;border-color:#3A3F47;color:#fff">'+ICON.back+'</a><div><b>إدارة السيارات</b><small>التعديل يظهر في الموقع والتطبيق خلال دقيقة</small></div></div><a class="ibtn" href="#/admin/new" aria-label="سيارة جديدة" style="background:var(--red);border-color:var(--red);font-size:24px;text-decoration:none">+</a></div>'+
    '<div class="search"><label>'+ICON.search+'<input id="aq" type="search" placeholder="ابحث باسم السيارة" value="'+esc(AF.q)+'"></label></div></div></header>'+
-   '<main class="wrap"><div class="atools"><a href="#/admin/reps">'+ICON.ops+'روابط المناديب</a><button type="button" id="shopQr">'+ICON.qr+'باركود المعرض</button><button type="button" id="mtog" class="'+(SET.maint?"on":"")+'">'+ICON.tune+(SET.maint?"الصيانة: شغّالة":"وضع الصيانة")+'</button></div>'+
+   '<main class="wrap"><div class="atools"><a href="#/admin/stats">📊<span>الإحصائيات</span></a><a href="#/admin/prices">💰<span>الأسعار</span></a><a href="#/admin/deliv">🎉<span>صورة تسليم</span></a><a href="#/admin/reps">'+ICON.ops+'روابط المناديب</a><button type="button" id="shopQr">'+ICON.qr+'باركود المعرض</button><button type="button" id="mtog" class="'+(SET.maint?"on":"")+'">'+ICON.tune+(SET.maint?"الصيانة: شغّالة":"وضع الصيانة")+'</button></div>'+
    '<div class="chips" id="ast" style="flex-wrap:wrap">'+chip("all","الكل ("+cars.length+")")+chip("on","ظاهرة")+chip("hidden","مخفية")+chip("sold","تم البيع")+chip("show","🏢 المعرض ("+cnt("show")+")")+chip("ship","🚢 الشحن ("+cnt("ship")+")")+chip("dealer","🏭 الموزع ("+cnt("dealer")+")")+chip("arch","📦 الأرشيف ("+cars.filter(function(c){return c.arch}).length+")")+'</div><div class="alist">'+
    (AF.st==="arch"&&!l.length?'<div class="empty">الأرشيف فاضي.</div>':'')+l.map(function(c){var st=c.status||"",u=firstImg(c),p=priceOf(c);
      return '<div class="arow"><a class="ainfo" href="#/admin/'+idx(c)+'">'+(u?pic(u,"",true):'<span class="ph0"></span>')+'<span><b>'+esc(c.b+" "+c.n)+'</b>'+
@@ -865,6 +870,117 @@ function openAdImg(c,col){
   sync();
 }
 
+/* ===== تعديل الأسعار دفعة وحدة ===== */
+var PB={b:"all",ch:{}};
+function vPrices(){if(!isOwner())return needOwner();
+  var L=cars.filter(function(c){return !c.arch&&c.status!=="sold"}),bs=[];L.forEach(function(c){if(bs.indexOf(c.b)<0)bs.push(c.b)});
+  var sh=L.filter(function(c){return PB.b==="all"||c.b===PB.b});
+  var cur=function(c){var k=idx(c);return (k in PB.ch)?PB.ch[k]:(+c.price||0)};
+  var n=Object.keys(PB.ch).length;
+  app.innerHTML='<div class="sub"><a class="back" href="#/admin" aria-label="رجوع">'+ICON.back+'</a><h1 style="flex:1">الأسعار</h1></div><main class="wrap form" style="padding-bottom:110px">'+
+   '<div class="chips" id="pbb" style="flex-wrap:wrap">'+["all"].concat(bs).map(function(b){return '<button type="button" class="chip" data-b="'+esc(b)+'" aria-pressed="'+(PB.b===b)+'">'+(b==="all"?"الكل":esc(b))+'</button>'}).join("")+'</div>'+
+   '<p class="note" style="margin:4px 0 0">السعر قبل الضريبة — اللي تعدّله يتلوّن أحمر</p><div class="plist">'+
+   sh.map(function(c){var k=idx(c),p=cur(c),old=+c.price||0,ch=(k in PB.ch)&&PB.ch[k]!==old,u=firstImg(c);
+     return '<div class="prow'+(ch?" ch":"")+'" data-k="'+k+'">'+(u?pic(u,"",true):'<span class="ph0"></span>')+'<div class="pn"><b>'+esc(c.b+" "+c.n)+'</b><small>'+(c.pm==="hide"?'السعر مخفي للعملاء · ':'')+(p?'شامل: '+money(p*(1+VAT)).replace(" ر.س",""):'بدون سعر')+(ch&&old?' <s>'+money(old*(1+VAT)).replace(" ر.س","")+'</s>':'')+'</small></div><input inputmode="numeric" aria-label="سعر '+esc(c.n)+'" data-k="'+k+'" value="'+(p||"")+'" placeholder="ر.س"></div>'}).join("")+'</div>'+
+   '<div class="box"><b style="font-size:13px">تعديل كل اللي معروض فوق ('+sh.filter(function(c){return cur(c)>0}).length+' سيارة)</b><div class="chips" id="pbadj" style="flex-wrap:wrap;margin-top:8px"><button type="button" class="chip" data-a="-p2">− 2%</button><button type="button" class="chip" data-a="-1000">− 1,000</button><button type="button" class="chip" data-a="1000">+ 1,000</button><button type="button" class="chip" data-a="p2">+ 2%</button></div>'+
+   (n?'<button type="button" class="btn ghost" id="pbclr" style="width:100%;height:42px;margin-top:10px;font-size:13px">إلغاء التعديلات</button>':'')+'</div>'+
+   '<div class="err" id="pberr"></div></main><div class="bar"><div class="in"><button class="btn" id="pbsave"'+(n?"":" disabled")+'>'+(n?"حفظ "+(n===1?"تعديل واحد":n===2?"تعديلين":n+" تعديلات"):"ما فيه تعديلات")+'</button></div></div>';
+  document.body.classList.add("has-bar");
+  var nm=function(v){v=String(v||"").replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[^\d]/g,"");return v?+v:0};
+  var setK=function(k,v){var c=cars[k];if(v===(+c.price||0))delete PB.ch[k];else PB.ch[k]=v};
+  document.getElementById("pbb").onclick=function(e){var b=e.target.closest("button");if(!b)return;PB.b=b.dataset.b;vPrices()};
+  Array.prototype.forEach.call(document.querySelectorAll(".prow input"),function(inp){inp.onchange=function(){var y=window.scrollY;setK(+inp.dataset.k,nm(inp.value));vPrices();window.scrollTo(0,y)}});
+  document.getElementById("pbadj").onclick=function(e){var b=e.target.closest("button");if(!b)return;var a=b.dataset.a,y=window.scrollY;
+    sh.forEach(function(c){var k=idx(c),p=cur(c);if(!p)return;var v=a==="p2"?Math.round(p*1.02/100)*100:a==="-p2"?Math.round(p*.98/100)*100:p+(+a);if(v>0)setK(k,v)});vPrices();window.scrollTo(0,y)};
+  var clr=document.getElementById("pbclr");if(clr)clr.onclick=function(){PB.ch={};vPrices()};
+  document.getElementById("pbsave").onclick=function(){var btn=this,er=document.getElementById("pberr"),ks=Object.keys(PB.ch);if(!ks.length)return;btn.disabled=true;btn.textContent="جاري الحفظ…";
+    var go=function(tries){return ghGetJson("data.json").then(function(g){var D=g.data||{};D.ov=D.ov||{};D.extra=D.extra||[];
+      ks.forEach(function(k){var c=cars[+k],v=PB.ch[k],key=ck(c),o;if(+k<NBASE)o=D.ov[key]=D.ov[key]||{};else o=D.extra.filter(function(x){return (x.b+" "+x.n)===key})[0];if(!o)return;if(v>0)o.price=v;else delete o.price});
+      return ghPut("data.json",u8b64(new TextEncoder().encode(JSON.stringify(D,null,1))),"تعديل أسعار من التطبيق ("+ks.length+")",g.sha)}).catch(function(e){if(e===409&&tries<2)return go(tries+1);throw e})};
+    go(0).then(function(){ks.forEach(function(k){var c=cars[+k];c.price=PB.ch[k]>0?PB.ch[k]:0;if(c.pm==="hide")c.price=0});var t=ks.length;PB.ch={};vPrices();toast("انحفظت "+t+" أسعار — تظهر للعملاء خلال دقيقة")})
+     .catch(function(e){btn.disabled=false;btn.textContent="حفظ";er.textContent=errMsg(e);er.style.display="block"})}}
+
+/* ===== الإحصائيات: من «متابعات سماء» (crm.json) + اللي لسى ما انسحب من Firestore ===== */
+var STP=7,STD=null;
+function fbTok(){var r="";try{r=localStorage.getItem("sama_fb_rt")||""}catch(e){}if(!r)return Promise.reject("NOAUTH");
+  return fetch("https://securetoken.googleapis.com/v1/token?key=AIzaSyAXF0CKuXOk2Pm8aqB_bfYe4K1ouiUtquE",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"grant_type=refresh_token&refresh_token="+encodeURIComponent(r)})
+   .then(function(x){return x.json()}).then(function(j){if(!j.id_token)throw "NOAUTH";try{if(j.refresh_token)localStorage.setItem("sama_fb_rt",j.refresh_token)}catch(e){}return j.id_token})}
+function fbRaw(){return fbTok().then(function(t){var acc=[],FS="https://firestore.googleapis.com/v1/projects/samariyadh-cars/databases/(default)/documents/leads?pageSize=300";
+  var pg=function(tok){return fetch(FS+(tok?"&pageToken="+encodeURIComponent(tok):""),{headers:{Authorization:"Bearer "+t}}).then(function(r){if(!r.ok)throw r.status;return r.json()}).then(function(j){(j.documents||[]).forEach(function(d){var o={};for(var k in (d.fields||{})){var v=d.fields[k];o[k]=("integerValue" in v)?+v.integerValue:v.stringValue}acc.push(o)});return j.nextPageToken&&acc.length<3000?pg(j.nextPageToken):acc})};return pg("")}).catch(function(){return null})}
+function crmGet(){return fetch("https://api.github.com/repos/samariyadh-cars/sama-data/contents/crm.json?t="+Date.now(),{headers:{"Authorization":"Bearer "+ghTok(),"Accept":"application/vnd.github.raw"},cache:"no-store"}).then(function(r){if(!r.ok)throw r.status;return r.json()})}
+function dkey(ms){var d=new Date(ms);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function vStats(){if(!isOwner())return needOwner();
+  app.innerHTML='<div class="sub"><a class="back" href="#/admin" aria-label="رجوع">'+ICON.back+'</a><h1 style="flex:1">الإحصائيات</h1><button type="button" class="ibtn" id="strf" aria-label="تحديث" style="width:40px;height:40px;font-size:18px">↻</button></div><main class="wrap" id="stm"><div class="load">جاري التحميل…</div></main>';
+  document.getElementById("strf").onclick=function(){STD=null;vStats()};
+  (STD?Promise.resolve(STD):Promise.all([crmGet().catch(function(e){return {_err:e}}),fbRaw()]).then(function(r){STD={crm:r[0],raw:r[1],at:Date.now()};return STD})).then(drawStats)}
+function drawStats(S){var m=document.getElementById("stm");if(!m)return;
+  if(S.crm._err&&!S.raw){m.innerHTML='<div class="empty">ما قدرت أجيب الأرقام.<br>'+(S.crm._err===404||S.crm._err===403?"المفتاح ما عنده صلاحية على «متابعات سماء».":"تأكد من الإنترنت وجرّب ↻")+'</div>';return}
+  var C=S.crm._err?{}:S.crm,ws=((C.settings||{}).webstats)||{},days=ws.days||{},carDays=ws.carDays||{},waCar=ws.waCar||{},raw=S.raw||[];
+  var now=Date.now(),P=STP,from=P===1?dkey(now):dkey(now-(P-1)*864e5),pFrom=P===1?dkey(now-864e5):dkey(now-(2*P-1)*864e5),today=dkey(now);
+  var inP=function(d){return d>=from&&d<=today},inPrev=function(d){return d>=pFrom&&d<from};
+  var T={view:0,car:0,wa:0,lead:0,quote:0},Pv={view:0,car:0,wa:0,lead:0,quote:0},cv={},cw={},cl={};
+  var addCar=function(o,k,d,n){if(inP(d))o[k]=(o[k]||0)+(n||1)};
+  Object.keys(days).forEach(function(d){var D=days[d];["view","car","wa"].forEach(function(k){if(inP(d))T[k]+=D[k]||0;else if(inPrev(d))Pv[k]+=D[k]||0})});
+  Object.keys(carDays).forEach(function(k){var M=carDays[k];Object.keys(M).forEach(function(d){addCar(cv,k,d,M[d])})});
+  Object.keys(waCar).forEach(function(k){var M=waCar[k];Object.keys(M).forEach(function(d){addCar(cw,k,d,M[d])})});
+  var carOf=function(txt){txt=String(txt||"");var best=null;cars.forEach(function(c){var a=ck(c),b=c.b+" "+c.n;if(txt.indexOf(a)===0||txt.indexOf(b)===0){if(!best||a.length>ck(best).length)best=c}});return best};
+  var leadAt=function(t,car){var d=dkey(t);if(inP(d)){T.lead++;var c=carOf(car);if(c)cl[ck(c)]=(cl[ck(c)]||0)+1}else if(inPrev(d))Pv.lead++};
+  var wl=C.web_log||{};Object.keys(wl).forEach(function(id){var o=wl[id];if(o.t)leadAt(o.t,o.car)});
+  var q=C.quotes||{};Object.keys(q).forEach(function(id){var o=q[id],t=o.createdAt;if(!t)return;var d=dkey(t);if(inP(d)){T.quote++;var c=carOf(o.car);if(c)cl[ck(c)]=(cl[ck(c)]||0)+1}else if(inPrev(d))Pv.quote++});
+  raw.forEach(function(o){if(!o.t)return;var d=dkey(o.t);if(o.kind==="lead")return leadAt(o.t,o.car);if(o.kind==="view"||o.kind==="car"||o.kind==="wa"){if(inP(d))T[o.kind]++;else if(inPrev(d))Pv[o.kind]++}
+    if(o.kind==="car"&&o.ref)addCar(cv,o.ref,d);if(o.kind==="wa"&&/^wa:/.test(o.ref||""))addCar(cw,o.ref.slice(3),d)});
+  var nmK=function(k){var c=byKey(k);return c?c.b+" "+c.n:k};
+  var tile=function(t,k){var a=T[k],b=Pv[k],df=a-b,s=!b?(a?"":"—"):df===0?"نفس الفترة اللي قبل":(df>0?"▲ ":"▼ ")+Math.abs(Math.round(df/b*100))+"%";return '<div class="stt"><small>'+t+'</small><b>'+a.toLocaleString("en-US")+'</b><i class="'+(df<0?"dn":"")+'">'+s+'</i></div>'};
+  var bars=function(o,color,empty){var ks=Object.keys(o).filter(function(k){return o[k]>0}).sort(function(a,b){return o[b]-o[a]}).slice(0,6),mx=ks.length?o[ks[0]]:1;
+    return ks.length?ks.map(function(k){var c=byKey(k);return '<a class="sbr" href="'+(c?"#/admin/"+idx(c):"javascript:void 0")+'"><span>'+esc(nmK(k))+'</span><em><i style="width:'+Math.max(4,Math.round(o[k]/mx*100))+'%;background:'+color+'"></i></em><b>'+o[k]+'</b></a>'}).join(""):'<p class="note" style="margin:0">'+empty+'</p>'};
+  var cold=Object.keys(cv).filter(function(k){return cv[k]>=(P===1?5:P===7?15:40)&&!cw[k]&&!cl[k]&&byKey(k)}).sort(function(a,b){return cv[b]-cv[a]}).slice(0,3);
+  var upd=ws.updated?'آخر سحب للمتابعات: '+new Date(ws.updated).toLocaleString("ar-SA-u-nu-latn",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):'';
+  m.innerHTML='<div class="seg" id="stp" style="margin-top:12px">'+[[1,"اليوم"],[7,"آخر 7 أيام"],[30,"آخر 30 يوم"]].map(function(x){return '<button type="button" data-p="'+x[0]+'" aria-pressed="'+(P===x[0])+'">'+x[1]+'</button>'}).join("")+'</div>'+
+   '<div class="stg">'+tile("زيارات الموقع والتطبيق","view")+tile("فتح صفحات السيارات","car")+tile("ضغطات واتساب واتصال","wa")+tile("طلبات (تمويل وتواصل)","lead")+tile("عروض أسعار سويتها","quote")+'</div>'+
+   '<div class="box"><b class="sth">الأكثر مشاهدة</b>'+bars(cv,"var(--red)","لسى ما فيه مشاهدات في هذي الفترة")+'</div>'+
+   '<div class="box"><b class="sth">الأكثر سؤال بالواتساب</b>'+bars(cw,"#1E8E4E","يبدأ العد من اليوم — كل ضغطة واتساب من صفحة سيارة تنحسب لها")+'</div>'+
+   '<div class="box"><b class="sth">الأكثر طلبات وعروض أسعار</b>'+bars(cl,"#1C1F24","ما فيه طلبات في هذي الفترة")+'</div>'+
+   (cold.length?'<div class="box" style="background:var(--soon-bg);border-color:#F0D9A8"><b class="sth" style="color:var(--soon)">👀 تنشاف كثير وما عليها طلب</b>'+cold.map(function(k){return '<p class="note" style="margin:4px 0;color:var(--soon)">'+esc(nmK(k))+' — '+cv[k]+' مشاهدة وولا سؤال. يمكن السعر أو الصور تحتاج مراجعة.</p>'}).join("")+'</div>':'')+
+   '<p class="note">'+(S.raw?'الأرقام مباشرة. ':'الأرقام تتحدث كل ما تفتح «متابعات سماء». ')+upd+'<br>زياراتك أنت ما تنحسب.</p>';
+  document.getElementById("stp").onclick=function(e){var b=e.target.closest("button");if(!b)return;STP=+b.dataset.p;drawStats(S)}}
+
+/* ===== صورة «مبروك التسليم» ===== */
+var DV={i:-1,ph:null,name:"",fmt:"story"};
+function drawDeliv(c,ph,name,fmt){var W=1080,H=fmt==="post"?1350:1920,cv=document.createElement("canvas");cv.width=W;cv.height=H;var x=cv.getContext("2d");
+  var fontsP=(document.fonts&&document.fonts.load)?Promise.all([document.fonts.load("700 40px \"IBM Plex Sans Arabic\""),document.fonts.load("400 40px \"IBM Plex Sans Arabic\"")]).catch(function(){}):Promise.resolve();
+  return Promise.all([ph?loadI(ph):loadI(firstImg(c)?img(firstImg(c)):""),loadI("../logo.png"),fontsP]).then(function(r){var im=r[0],lg=r[1],P=fmt==="post";
+    x.fillStyle="#111316";x.fillRect(0,0,W,H);coverI(x,im,0,0,W,H);
+    var g=x.createLinearGradient(0,0,0,300);g.addColorStop(0,"rgba(0,0,0,.6)");g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.fillRect(0,0,W,300);
+    var g2=x.createLinearGradient(0,H-(P?620:820),0,H);g2.addColorStop(0,"rgba(0,0,0,0)");g2.addColorStop(.45,"rgba(0,0,0,.78)");g2.addColorStop(1,"rgba(0,0,0,.92)");x.fillStyle=g2;x.fillRect(0,H-(P?620:820),W,P?620:820);
+    var s=120;x.fillStyle="#fff";rrect(x,(W-s)/2,48,s,s,26);x.fill();if(lg){var k=Math.min(s*.84/lg.width,s*.76/lg.height);x.drawImage(lg,(W-lg.width*k)/2,48+(s-lg.height*k)/2,lg.width*k,lg.height*k)}
+    var y=H-(P?400:500);tx(x,"ألف مبروك 🎉",W/2,y,P?110:130,700,"#fff","center",W-120);
+    tx(x,name?"لعميلنا العزيز "+name:"لعميلنا العزيز",W/2,y+(P?80:96),P?44:52,400,"#fff","center",W-120);
+    var t=c.b+" "+c.n+" "+(c.y||"");x.font="700 "+(P?44:50)+"px "+FNT;var tw=Math.min(W-120,x.measureText(t).width+80),th=P?84:96,ty=y+(P?120:146);x.fillStyle="#C8102E";rrect(x,(W-tw)/2,ty,tw,th,22);x.fill();tx(x,t,W/2,ty+th*.66,P?44:50,700,"#fff","center",tw-40);
+    tx(x,"نتمنى لك قيادة آمنة ومباركة",W/2,ty+th+(P?62:76),30,400,"#E4E6E9","center");
+    x.fillStyle="rgba(255,255,255,.25)";x.fillRect(120,H-(P?100:120),W-240,2);
+    tx(x,"سماء الرياض للسيارات",W-120,H-(P?50:62),28,700,"#fff","right");txL(x,PHONE+"  ·  Snap: es_99000",120,H-(P?50:62),26,400,"#E4E6E9","left");
+    return cv})}
+function vDeliv(i){if(!isOwner())return needOwner();if(i!=null&&i!==""&&+i!==DV.i){DV.i=+i;DV.ph=null}
+  var L=cars.filter(function(c){return !c.arch});if(DV.i<0||!cars[DV.i])DV.i=idx(L[0]);var c=cars[DV.i];
+  app.innerHTML='<div class="sub"><a class="back" href="#/admin" aria-label="رجوع">'+ICON.back+'</a><h1 style="flex:1">صورة تسليم</h1></div><main class="wrap form" style="padding-bottom:110px">'+
+   '<label>السيارة<select id="dvc">'+L.map(function(x){return '<option value="'+idx(x)+'"'+(x===c?" selected":"")+'>'+esc(x.b+" "+x.n+" "+(x.y||""))+'</option>'}).join("")+'</select></label>'+
+   '<label>اسم العميل (اختياري)<input id="dvn" value="'+esc(DV.name)+'" placeholder="مثل: أبو فهد — اتركه فاضي ويطلع «لعميلنا العزيز»"></label>'+
+   '<div class="two"><label class="btn ghost" style="height:48px;font-size:14px">'+ICON.cam+(DV.ph?"غيّر الصورة":"صوّر أو اختر صورة")+'<input type="file" id="dvf" accept="image/*" hidden></label><div class="seg" id="dvfm" style="grid-template-columns:1fr 1fr">'+[["story","ستوري"],["post","منشور"]].map(function(x){return '<button type="button" data-f="'+x[0]+'" aria-pressed="'+(DV.fmt===x[0])+'">'+x[1]+'</button>'}).join("")+'</div></div>'+
+   (DV.ph?'':'<p class="note" style="margin:0">لين تختار صورة، يطلع التصميم بصورة السيارة.</p>')+
+   '<div class="adprev" id="dvp"><span>جاري التجهيز…</span></div><p class="note">📸 خذ موافقة العميل قبل ما تنشر صورته أو اسمه.</p></main>'+
+   '<div class="bar"><div class="in"><button class="btn" id="dvs">مشاركة / حفظ</button></div></div>';
+  document.body.classList.add("has-bar");var cur=null;
+  var draw=function(){var pv=document.getElementById("dvp");pv.innerHTML="<span>جاري التجهيز…</span>";drawDeliv(c,DV.ph,DV.name.trim(),DV.fmt).then(function(cv){cur=cv;pv.innerHTML="";cv.className="adcv";pv.appendChild(cv)})};
+  document.getElementById("dvc").onchange=function(){DV.i=+this.value;vDeliv()};
+  var dn=document.getElementById("dvn"),tm=null;dn.oninput=function(){DV.name=dn.value;clearTimeout(tm);tm=setTimeout(draw,400)};
+  document.getElementById("dvfm").onclick=function(e){var b=e.target.closest("button");if(!b)return;DV.fmt=b.dataset.f;vDeliv()};
+  document.getElementById("dvf").onchange=function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){DV.ph=rd.result;vDeliv()};rd.readAsDataURL(f)};
+  document.getElementById("dvs").onclick=function(){if(!cur)return;var btn=this;btn.disabled=true;
+    cur.toBlob(function(bl){var f=new File([bl],"sama-mabrouk-"+DV.fmt+".jpg",{type:"image/jpeg"});
+      if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(function(){}).then(function(){btn.disabled=false});
+      else{var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=f.name;document.body.appendChild(a);a.click();a.remove();btn.disabled=false;toast("انحفظت الصورة")}},"image/jpeg",.92)};
+  draw()}
+
 /* ===== مقارنة سيارتين ===== */
 function pickCompare(c){
   var me=idx(c),L=visible().filter(function(x){return idx(x)!==me});
@@ -1044,7 +1160,7 @@ function route(){
   else if(p[0]==="cmp"){t="cars";vCmp(p[1],p[2])}
   else if(p[0]==="finance"){t="finance";vFinance(p[1])}
   else if(p[0]==="contact"){t="contact";vContact()}
-  else if(p[0]==="admin"){t="admin";if(p[1]==="reps")vReps();else if(p[1]==="new")vNew();else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
+  else if(p[0]==="admin"){t="admin";if(p[1]==="reps")vReps();else if(p[1]==="new")vNew();else if(p[1]==="prices")vPrices();else if(p[1]==="stats")vStats();else if(p[1]==="deliv")vDeliv(p[2]);else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
   else vHome();
   document.getElementById("fab").style.display=(t==="finance"||t==="contact"||t==="admin")?"none":"";
   document.querySelector("nav.tabs").style.display=t==="admin"?"none":"";

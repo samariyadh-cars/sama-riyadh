@@ -399,7 +399,7 @@ var TRK=(function(){
     try{return fetch(URL_,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify({fields:f})}).catch(function(){})}catch(e){}}
   function ev(kind,ref){if(owner)return;var k=kind+"|"+(ref||"");if(seen[k])return;mark(k);send({kind:kind,ref:ref||""})}
   ev("view");
-  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(a)ev("wa",a.id||(a.href.indexOf("tel:")===0?"tel":"wa"))},true);
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(!a)return;var dg=document.getElementById("dlg");ev("wa",dg&&dg.open&&cur&&dg.contains(a)?"wa:"+ck(cur):a.id||(a.href.indexOf("tel:")===0?"tel":"wa"))},true);
   return {lead:function(o){o.kind="lead";send(o)},ev:ev};
 })();
 var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e){}};
