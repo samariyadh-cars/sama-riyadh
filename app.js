@@ -68,6 +68,7 @@ var cars=[
 ];
 function TH(u){return (u&&!/^(https?:|data:|blob:)/.test(u))?"t/"+u:u}
 function thumbImg(im,u){im.decoding="async";im.src=TH(u);if(TH(u)!==u)im.onerror=function(){im.onerror=null;im.src=u}}
+function carSlug(k){var h=2166136261,u=new TextEncoder().encode(k);for(var i=0;i<u.length;i++){h^=u[i];h=Math.imul(h,16777619)>>>0}return h.toString(36)}
 function ck(c){return c._k||(c.b+" "+c.n)}
 var NBASE=cars.length;
 (DATA.extra||[]).forEach(function(x){var c={};for(var k in x)c[k]=x[k];if(c.pm)c.price=0;cars.push(c)});
@@ -323,7 +324,7 @@ $("dCopy").addEventListener("click",function(){if(!cur)return;var u=SITE+"#car="
   function fb(){try{var ta=document.createElement("textarea");ta.value=u;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();ok()}catch(e){prompt("انسخ الرابط:",u)}}
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,fb);else fb()});
 $("dShare").addEventListener("click",function(){if(!cur)return;var c=cur,b=$("dShare");var cols=(c.colors&&c.colors.length?c.colors:DEFCOL);var ks=[];(c.specs||[]).forEach(function(r){if(r instanceof Array&&ks.length<4&&/الوقود|المحرك|القوة|ناقل/.test(r[0]))ks.push("• "+r[0]+": "+r[1])});
-  var txt=c.b+" "+c.n+" موديل "+c.y+" جديدة"+(c.price&&c.status!=="sold"?"\n"+priceText(c):"")+"\nالألوان: "+cols.join("، ")+(ks.length?"\n"+ks.join("\n"):"")+"\nكاش، أقساط، دفعتين، تأجير منتهي بالتمليك — وشحن لجميع المدن\n"+SHOP+"\nشوف الصور والتفاصيل من الرابط:";var url=SITE+"#car="+encodeURIComponent(ck(c));
+  var txt=c.b+" "+c.n+" موديل "+c.y+" جديدة"+(c.price&&c.status!=="sold"?"\n"+priceText(c):"")+"\nالألوان: "+cols.join("، ")+(ks.length?"\n"+ks.join("\n"):"")+"\nكاش، أقساط، دفعتين، تأجير منتهي بالتمليك — وشحن لجميع المدن\n"+SHOP+"\nشوف الصور والتفاصيل من الرابط:";var url=SITE+"c/"+carSlug(ck(c))+".html";
   function done(m){b.textContent=m;setTimeout(function(){b.textContent="شارك هذي السيارة"},2200)}
   if(navigator.share){navigator.share({title:c.b+" "+c.n,text:txt,url:url}).catch(function(){})}
   else if(navigator.clipboard){navigator.clipboard.writeText(txt+"\n"+url).then(function(){done("تم نسخ الرابط")},function(){window.open(wa(txt+"\n"+url),"_blank")})}
@@ -531,7 +532,7 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
       if(kind==="insta")return bd+t+" جديدة 🚗\n\n✅ كاش، أقساط، دفعتين، تأجير منتهي بالتمليك\n✅ نشحن لجميع مدن المملكة\n✅ الصور والتفاصيل في موقعنا\n\nللتواصل واتساب: "+ph+"\n"+link+"\n\n#سيارات #"+tag+" #الرياض #معرض_سماء_الرياض #تقسيط_سيارات";
       return ""}
 
-    var ADD={owner:"أبو راكان عصام الشرفي",phone:"0554378456",snap:"@es_99000",addr:"الرياض – معارض الشفاء",ship:"شحن لجميع مناطق المملكة",bank:"معتمدون لدى جميع البنوك وشركات التمويل",pay:"كاش • تقسيط"};
+    var ADD={owner:"أبو راكان عصام الشرفي",phone:"0554378456",snap:"@es_99000",addr:"الرياض – معارض الشفاء",ship:"شحن لجميع مناطق المملكة",bank:"نساعدك في التمويل عن طريق البنوك وشركات التمويل",pay:"كاش • تقسيط"};
     function adFixed(){var a={};Object.keys(ADD).forEach(function(k){a[k]=(set.ad&&set.ad[k]!=null)?set.ad[k]:ADD[k]});return a}
     function imgBox2(r,info){
       var A2=window.SAMA_AD2;if(!A2)return;
