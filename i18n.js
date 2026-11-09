@@ -67,7 +67,7 @@
     "اطلب كاش":"Order with cash","مقارنة الفئات":"Compare trims","اختر الفئات اللي تبي تقارنها (من 2 إلى 4).":"Choose the trims you want to compare (2 to 4).",
     "اختر أي سيارتين من القائمتين تحت.":"Pick any two cars from the lists below.","مقارنة بين سيارتين":"Comparing two cars",
     "السيارة الأولى":"First car","السيارة الثانية":"Second car","أظهر الفروقات فقط":"Show differences only",
-    "© معرض سماء الرياض للسيارات":"© "+SHOP_EN,"📞 اتصل الحين":"📞 Call now","اطلب عبر واتساب":"Order via WhatsApp","اتصل بالمعرض":"Call the showroom","🔍 اضغط للتكبير":"🔍 Tap to zoom","دخول المعرض":"Showroom login",
+    "© معرض سماء الرياض للسيارات ·":"© Sama Riyadh Cars ·","سياسة الخصوصية":"Privacy Policy","نستخدم رقمك للتواصل معك بخصوص هذي السيارة فقط —":"We use your number only to contact you about this car —","أوافق على استخدام بياناتي لدراسة طلب التمويل والتواصل معي بخصوصه فقط، وفق":"I agree to the use of my data only to review my financing request and contact me about it, per the","© معرض سماء الرياض للسيارات":"© "+SHOP_EN,"📞 اتصل الحين":"📞 Call now","اطلب عبر واتساب":"Order via WhatsApp","اتصل بالمعرض":"Call the showroom","🔍 اضغط للتكبير":"🔍 Tap to zoom","دخول المعرض":"Showroom login",
     "ابحث عن سيارة، مثال: برادو TXL2":"Search for a car, e.g. Prado TXL2","ابحث عن سيارة":"Search for a car","مثال: لكزس LX600":"e.g. Lexus LX600",
     "مثال: فل كامل":"e.g. Fully loaded","مثال: أبيض":"e.g. White","مثال: جدة":"e.g. Jeddah","رقم جوالك 05xxxxxxxx":"Your mobile 05xxxxxxxx",
     "موقع المعرض على الخريطة":"Showroom on the map","عرض الصورة":"Image viewer","إغلاق":"Close","السابقة":"Previous","التالية":"Next",
