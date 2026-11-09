@@ -819,14 +819,21 @@ function printCard(c,qsvg){
 
 /* ===== صور الإعلان (ستوري ومنشور) ===== */
 var AF2={tpl:"dark",fmt:"story"};
-function adSpecs(c){var out=[],find=function(re){var r=(c.specs||[]).filter(function(x){return Array.isArray(x)&&re.test(x[0])})[0];return r?String(r[1]):""};
-  var all=(c.specs||[]).map(function(x){return Array.isArray(x)?x.join(" "):(x&&x.h)?"":String(x)}).join(" ");
-  var eng=find(/المحرك/),m=eng.match(/(\d\.\d)\s*لتر/);if(m)out.push([m[1],/تيربو|turbo/i.test(eng)?"تيربو":"لتر"]);
+function adSpecsAll(c){var out=[],find=function(re){var r=(c.specs||[]).filter(function(x){return Array.isArray(x)&&re.test(x[0])})[0];return r?String(r[1]):""};
+  var lines=(c.specs||[]).map(function(x){return Array.isArray(x)?x.join(" "):(x&&x.h)?"":String(x)}),all=lines.join(" "),has=function(re){return lines.some(function(l){return re.test(l)})};
+  var eng=find(/المحرك/),m=eng.match(/(\d\.\d)\s*لتر/);if(m)out.push([m[1]+" لتر",/تيربو|turbo/i.test(eng)?"محرك تيربو":"المحرك"]);
   var pw=(find(/القوة/)+" "+all).match(/(\d{3})\s*حصان/);if(pw)out.push([pw[1],"حصان"]);
-  var dr=find(/الدفع/)+" "+c.n;if(/رباعي|AWD|4X4|4WD/i.test(dr))out.push(["AWD","دفع رباعي"]);else if(/هايبرد/.test(fuelOf(c)))out.push(["هايبرد","موفّرة"]);
+  var tr=find(/ناقل/),g=tr.match(/(\d+)\s*سرعات/);if(g)out.push([g[1]+" سرعات","ناقل أوتوماتيك"]);else if(/CVT/i.test(tr))out.push(["CVT","ناقل أوتوماتيك"]);
+  var ec=find(/استهلاك|كفاءة/).match(/(\d+(\.\d+)?)\s*كم/);if(ec)out.push([ec[1],"كم/لتر"]);
+  var dr=find(/الدفع/)+" "+c.n;if(/رباعي|AWD|4X4|4WD/i.test(dr))out.push(["4×4","دفع رباعي"]);else if(/هايبرد/.test(fuelOf(c)))out.push(["هايبرد","موفّرة"]);
   var wh=(find(/الجنوط/)+" "+all).match(/(\d{2})\s*(بوصة|إنش|انش)/);if(wh)out.push([wh[1]+'"',"جنوط"]);
-  var ec=(find(/استهلاك|كفاءة/)).match(/(\d+(\.\d+)?)\s*كم/);if(ec&&out.length<4)out.push([ec[1],"كم/لتر"]);
-  return out.slice(0,4)}
+  var sc=all.match(/شاشة[^\d]{0,25}(\d{1,2}(\.\d)?)\s*بوصة/);if(sc)out.push([sc[1]+'"',"شاشة لمس"]);
+  if(has(/بانورام/))out.push(["بانوراما","فتحة سقف"]);else if(has(/فتحة سقف/))out.push(["✓","فتحة سقف"]);
+  if(has(/360/))out.push(["360°","كاميرا محيطية"]);
+  if(has(/مقاعد[^،]{0,15}جلد/))out.push(["✓","مقاعد جلد"]);
+  if(has(/CarPlay/i))out.push(["✓","Apple CarPlay"]);
+  return out}
+function adSpecs(c){return adSpecsAll(c).slice(0,6)}
 function loadI(u){return new Promise(function(ok){var i=new Image();i.onload=function(){ok(i)};i.onerror=function(){ok(null)};i.src=u})}
 function rrect(x,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath()}
 function coverI(x,im,X,Y,W,H){if(!im){x.fillStyle="#E9EAEC";x.fillRect(X,Y,W,H);return}var s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.save();x.beginPath();x.rect(X,Y,W,H);x.clip();x.drawImage(im,X+(W-w)/2,Y+(H-h)/2,w,h);x.restore()}
@@ -835,18 +842,18 @@ function tx(x,t,X,Y,size,w,col,align,maxW){x.font=(w||400)+" "+size+"px "+FNT;x.
   if(maxW){var s=size;while(s>20&&x.measureText(t).width>maxW){s-=4;x.font=(w||400)+" "+s+"px "+FNT}}x.fillText(t,X,Y)}
 function txL(x,t,X,Y,size,w,col,align,maxW){x.save();x.direction="ltr";x.font=(w||400)+" "+size+"px "+FNT;x.fillStyle=col;x.textAlign=align||"left";if(maxW){var s=size;while(s>20&&x.measureText(t).width>maxW){s-=4;x.font=(w||400)+" "+s+"px "+FNT}}x.fillText(t,X,Y);x.restore()}
 function dots(x,c,X,Y,r,ring){var cols=(c.colors||[]).slice(0,7);cols.forEach(function(n,k){var cx=X-k*(r*2+14);x.beginPath();x.arc(cx,Y,r,0,7);x.fillStyle=COLHEX[n]||COLHEX[n.split(" (")[0]]||COLHEX[n.split(" بمقصورة")[0]]||"#999";x.fill();x.lineWidth=3;x.strokeStyle=ring;x.stroke()})}
-function drawAd(c,col,tpl,fmt){
+function drawAd(c,col,tpl,fmt,sel){
   var W=1080,H=fmt==="post"?1350:1920,cv=document.createElement("canvas");cv.width=W;cv.height=H;var x=cv.getContext("2d");
   var ims=imgsFor(c,col),u=ims[0]||firstImg(c),u2=ims[1]||u,P=fmt==="post";
   var fontsP=(document.fonts&&document.fonts.load)?Promise.all([document.fonts.load("700 40px \"IBM Plex Sans Arabic\""),document.fonts.load("400 40px \"IBM Plex Sans Arabic\"")]).catch(function(){}):Promise.resolve();
-  return Promise.all([loadI(u?img(u):""),loadI(u2?img(u2):""),loadI("../logo.png"),fontsP]).then(function(r){var im=r[0],im2=r[1]||im,lg=r[2],sp=adSpecs(c),name=c.n,brand=c.b,yr=c.y||"2026",bdg=badgeOf(c)||"جديدة "+yr;
+  return Promise.all([loadI(u?img(u):""),loadI(u2?img(u2):""),loadI("../logo.png"),fontsP]).then(function(r){var im=r[0],im2=r[1]||im,lg=r[2],sp=sel||adSpecs(c),name=c.n,brand=c.b,yr=c.y||"2026",bdg=badgeOf(c)||"جديدة "+yr;
     var logoChip=function(X,Y,s){x.fillStyle="#fff";rrect(x,X,Y,s,s,s*.22);x.fill();if(lg){var k=Math.min(s*.84/lg.width,s*.76/lg.height);x.drawImage(lg,X+(s-lg.width*k)/2,Y+(s-lg.height*k)/2,lg.width*k,lg.height*k)}};
     if(tpl==="dark"){var ph=P?760:1120;x.fillStyle="#111316";x.fillRect(0,0,W,H);coverI(x,im,0,0,W,ph);
       var g=x.createLinearGradient(0,ph-420,0,ph);g.addColorStop(0,"rgba(17,19,22,0)");g.addColorStop(1,"#111316");x.fillStyle=g;x.fillRect(0,ph-420,W,420);
       x.fillStyle="rgba(17,19,22,.75)";rrect(x,W-330,44,286,104,24);x.fill();logoChip(W-136,56,80);tx(x,"سماء الرياض",W-152,94,32,700,"#fff");tx(x,"للسيارات",W-152,130,22,400,"#C9CDD3");
       x.font="700 30px "+FNT;var bw=x.measureText(bdg).width+56;x.fillStyle="#C8102E";rrect(x,44,56,bw,72,18);x.fill();tx(x,bdg,44+bw-28,104,30,700,"#fff");
       var y0=ph-150;tx(x,brand+" · موديل "+yr,W-64,y0,36,600,"#FF9AA6");tx(x,name,W-64,y0+130,128,700,"#fff","right",W-128);tx(x,"جديدة زيرو · وكالة سعودية · ضمان الوكيل",W-64,y0+196,32,400,"#C9CDD3");
-      var ty=y0+250;if(sp.length){var n=sp.length,gap=16,tw=(W-128-gap*(n-1))/n;sp.forEach(function(s,k){var X=W-64-(k+1)*tw-k*gap;x.fillStyle="#1F2328";rrect(x,X,ty,tw,P?120:150,24);x.fill();tx(x,s[0],X+tw/2,ty+(P?62:78),P?40:46,700,"#fff","center",tw-20);tx(x,s[1],X+tw/2,ty+(P?100:124),24,400,"#A9AFB8","center",tw-20)});ty+=P?150:190}
+      var ty=y0+250;if(sp.length){var per=sp.length>4?3:sp.length,rows=Math.ceil(sp.length/per),gap=16,th=sp.length>4?(P?104:136):(P?120:150),tw=(W-128-gap*(per-1))/per;sp.forEach(function(s,k){var col=k%per,row=Math.floor(k/per),X=W-64-(col+1)*tw-col*gap,Y=ty+row*(th+gap);x.fillStyle="#1F2328";rrect(x,X,Y,tw,th,24);x.fill();tx(x,s[0],X+tw/2,Y+th*.5,P?38:44,700,"#fff","center",tw-24);tx(x,s[1],X+tw/2,Y+th*.82,P?22:24,400,"#A9AFB8","center",tw-20)});ty+=rows*(th+gap)+(P?14:24)}
       if(!P){tx(x,"الألوان المتوفرة",W-64,ty+30,28,400,"#A9AFB8");dots(x,c,W-310,ty+20,22,"#3A3F47")}
       var by=H-(P?220:300),bh=P?190:260;x.fillStyle="#C8102E";rrect(x,44,by,W-88,bh,36);x.fill();
       tx(x,"كاش | أقساط | دفعتين",W-84,by+(P?56:70),34,600,"#fff");tx(x,"نساعدك في التمويل",124,by+(P?56:70),24,400,"#FFD9DE","left");
@@ -876,12 +883,17 @@ function openAdImg(c,col){
   s.innerHTML='<div class="box" role="dialog" aria-label="صورة إعلان"><h3>صورة إعلان</h3><p style="margin:0;color:var(--mut);font-size:13px">'+esc(c.b+" "+c.n)+(col?" · "+esc(col):"")+'</p>'+
    '<div class="hseg" id="atp"><button type="button" data-t="dark">فخامة داكنة</button><button type="button" data-t="white">أبيض نظيف</button><button type="button" data-t="arrive">وصلت حديثاً</button></div>'+
    '<div class="hseg" id="afm" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0"><button type="button" data-f="story">ستوري (سناب وحالة)</button><button type="button" data-f="post">منشور (إنستقرام وحراج)</button></div>'+
+   '<div id="aspw"><div style="font-size:13px;font-weight:700;margin-top:4px">خانات المواصفات <span id="ascn" style="font-weight:400;color:var(--mut)"></span></div><div class="chips" id="asp" style="flex-wrap:wrap;margin-top:6px"></div></div>'+
    '<div class="adprev" id="apv"><span>جاري التجهيز…</span></div>'+
    '<div class="acts"><button type="button" class="btn ghost" id="ax">إغلاق</button><button type="button" class="btn" id="asv">حفظ الصورة</button></div></div>';
   document.body.appendChild(s);s.addEventListener("click",function(e){if(e.target===s)s.remove()});s.querySelector("#ax").onclick=function(){s.remove()};
-  var cur2=null;
-  function sync(){Array.prototype.forEach.call(s.querySelectorAll("#atp button"),function(b){b.setAttribute("aria-pressed",b.dataset.t===AF2.tpl)});Array.prototype.forEach.call(s.querySelectorAll("#afm button"),function(b){b.setAttribute("aria-pressed",b.dataset.f===AF2.fmt)});
-    var pv=s.querySelector("#apv");pv.innerHTML="<span>جاري التجهيز…</span>";drawAd(c,col,AF2.tpl,AF2.fmt).then(function(cv){cur2=cv;pv.innerHTML="";cv.className="adcv";pv.appendChild(cv)})}
+  var cur2=null,ALL=adSpecsAll(c),pick=ALL.slice(0,6).map(function(x){return x[1]});
+  function chips(){var w=s.querySelector("#aspw");w.hidden=AF2.tpl!=="dark"||!ALL.length;s.querySelector("#ascn").textContent="("+pick.length+" من 6)";
+    s.querySelector("#asp").innerHTML=ALL.map(function(x){var on=pick.indexOf(x[1])>=0;return '<button type="button" class="chip" data-k="'+esc(x[1])+'" aria-pressed="'+on+'">'+(on?"✓ ":"")+esc(x[0]==="✓"?x[1]:x[0]+" "+x[1])+'</button>'}).join("")}
+  function selSpecs(){return ALL.filter(function(x){return pick.indexOf(x[1])>=0})}
+  s.querySelector("#asp").onclick=function(e){var b=e.target.closest(".chip");if(!b)return;var k=b.dataset.k,i=pick.indexOf(k);if(i>=0)pick.splice(i,1);else{if(pick.length>=6){toast("الحد 6 خانات — شيل وحدة أول");return}pick.push(k)}sync()};
+  function sync(){chips();Array.prototype.forEach.call(s.querySelectorAll("#atp button"),function(b){b.setAttribute("aria-pressed",b.dataset.t===AF2.tpl)});Array.prototype.forEach.call(s.querySelectorAll("#afm button"),function(b){b.setAttribute("aria-pressed",b.dataset.f===AF2.fmt)});
+    var pv=s.querySelector("#apv");pv.innerHTML="<span>جاري التجهيز…</span>";drawAd(c,col,AF2.tpl,AF2.fmt,selSpecs()).then(function(cv){cur2=cv;pv.innerHTML="";cv.className="adcv";pv.appendChild(cv)})}
   s.querySelector("#atp").onclick=function(e){var b=e.target.closest("button");if(!b)return;AF2.tpl=b.dataset.t;sync()};
   s.querySelector("#afm").onclick=function(e){var b=e.target.closest("button");if(!b)return;AF2.fmt=b.dataset.f;sync()};
   s.querySelector("#asv").onclick=function(){if(!cur2)return;var btn=this;btn.disabled=true;
