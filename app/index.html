@@ -312,7 +312,7 @@ function load(){
     /* نفس طريقة الموقع في دمج تعديلات لوحة التحكم */
     (DATA.extra||[]).forEach(function(x){var c={};for(var k in x)c[k]=x[k];if(c.pm)c.price=0;cars.push(c)});
     var ov=DATA.ov||{},SPX=DATA.specs||{};
-    cars.forEach(function(c){c._k=c.b+" "+c.n;c._b0=c.b;c._n0=c.n;var o0=ov[c._k]||{},nm=c.nm||o0.nm,bn=c.bn||o0.bn;if(nm)c.n=nm;if(bn)c.b=bn;if(SPX[ck(c)])c.specs=SPX[ck(c)];c.allColors=(c.call||c.colors||[]).slice();c.csoon=(c.csoon||[]).slice();var o=ov[ck(c)];if(!o)return;if(o.call)c.allColors=o.call.slice();if(o.csoon)c.csoon=o.csoon.slice();if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.cprice)c.cprice=o.cprice;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||"";c.loc=o.loc||"";c.eta=o.eta||"";if(o.gimgs)c.gimgs=o.gimgs;c.arch=o.arch?1:0});
+    cars.forEach(function(c){c._k=c.b+" "+c.n;c._b0=c.b;c._n0=c.n;var o0=ov[c._k]||{},nm=c.nm||o0.nm,bn=c.bn||o0.bn;if(nm)c.n=nm;if(bn)c.b=bn;if(SPX[ck(c)])c.specs=SPX[ck(c)];c.allColors=(c.call||c.colors||[]).slice();c.csoon=(c.csoon||[]).slice();var o=ov[ck(c)];if(!o)return;if(o.call)c.allColors=o.call.slice();if(o.csoon)c.csoon=o.csoon.slice();if(o.y)c.y=String(o.y);if(o.pm){c.pm=o.pm;c.price=0}if(o.cimgs){c.cimgs=c.cimgs||{};for(var k in o.cimgs)c.cimgs[k]=o.cimgs[k]}if(o.imgs&&o.imgs.length)c.imgs=o.imgs;if(o.price>0)c.price=+o.price;if(o.cprice)c.cprice=o.cprice;if(o.type)c.type=o.type;if(o.colors&&o.colors.length)c.colors=o.colors;c.status=o.status||"";c.badge=o.badge||"";c.loc=o.loc||"";c.eta=o.eta||"";if(o.gimgs)c.gimgs=o.gimgs;c.arch=o.arch?1:0});
     cars.forEach(function(c){(c.colors||[]).forEach(function(x){if(c.allColors.indexOf(x)<0)c.allColors.push(x)})});
   });
 }
@@ -562,6 +562,7 @@ function saveCar(c,patch,tries){tries=tries||0;var key=ck(c),base=idx(c)<NBASE;
     if(patch.specs){if(base){D.specs=D.specs||{};if(patch.specs.length)D.specs[key]=patch.specs;else delete D.specs[key]}else{if(patch.specs.length)o.specs=patch.specs;else delete o.specs}}
     if("eta" in patch){if(patch.eta)o.eta=patch.eta;else delete o.eta}
     if(patch.y)o.y=patch.y;
+    if(patch.type)o.type=patch.type;
     if("badge" in patch){if(patch.badge)o.badge=patch.badge;else delete o.badge}
     if("nm" in patch){var n0=c._n0||c.n,b0=c._b0||c.b;if(patch.nm&&patch.nm!==n0)o.nm=patch.nm;else delete o.nm;if(patch.bn&&patch.bn!==b0)o.bn=patch.bn;else delete o.bn}
     if(patch.cimgs){o.cimgs=o.cimgs||{};for(var k in patch.cimgs)o.cimgs[k]=patch.cimgs[k]}
@@ -571,7 +572,7 @@ function saveCar(c,patch,tries){tries=tries||0;var key=ck(c),base=idx(c)<NBASE;
     return ghPut("data.json",u8b64(new TextEncoder().encode(txt)),"تعديل من التطبيق: "+key,g.sha).then(function(){
       /* نحدّث النسخة اللي في الجوال على طول */
       if("price" in patch)c.price=patch.price>0?patch.price:0;if("pm" in patch)c.pm=patch.pm||"";if(c.pm==="hide")c.price=0;
-      if("status" in patch)c.status=patch.status||"";if("badge" in patch)c.badge=patch.badge||"";if("loc" in patch)c.loc=patch.loc||"";if("arch" in patch)c.arch=patch.arch?1:0;if(patch.gimgs)c.gimgs=patch.gimgs.slice();if(patch.specs)c.specs=patch.specs;if("eta" in patch)c.eta=patch.eta||"";if("nm" in patch){if(!c._k){c._k=key;c._b0=c.b;c._n0=c.n}c.n=patch.nm;c.b=patch.bn}if(patch.y)c.y=patch.y;
+      if("status" in patch)c.status=patch.status||"";if("badge" in patch)c.badge=patch.badge||"";if("loc" in patch)c.loc=patch.loc||"";if("arch" in patch)c.arch=patch.arch?1:0;if(patch.gimgs)c.gimgs=patch.gimgs.slice();if(patch.specs)c.specs=patch.specs;if("eta" in patch)c.eta=patch.eta||"";if("nm" in patch){if(!c._k){c._k=key;c._b0=c.b;c._n0=c.n}c.n=patch.nm;c.b=patch.bn}if(patch.y)c.y=patch.y;if(patch.type)c.type=patch.type;
       if(patch.cimgs){c.cimgs=c.cimgs||{};for(var k2 in patch.cimgs)c.cimgs[k2]=patch.cimgs[k2]}
       if(patch.cprice){var cp2={};for(var q2 in patch.cprice)if(+patch.cprice[q2]>0)cp2[q2]=+patch.cprice[q2];c.cprice=Object.keys(cp2).length?cp2:null}
       if(patch.colors){c.colors=patch.colors.slice();c.allColors=patch.call.slice();c.csoon=patch.csoon.slice()}})
@@ -618,7 +619,7 @@ function vAdminEdit(i){
   if(AE.i!==+i){AE={i:+i,col:(c.colors||[])[0]||"",newImgs:null,d:null}}
   var D0=AE.d||{},cols=(D0.all||c.allColors||c.colors||[]).slice(),p=("p" in D0)?(+D0.p||0):(+c.price||0),st=("s" in D0)?D0.s:(c.status||""),hid=("h" in D0)?D0.h:c.pm==="hide",bdg=("b" in D0)?D0.b:(c.badge||""),loc=("l" in D0)?D0.l:(c.loc||""),eta=("e" in D0)?D0.e:(c.eta||"");
   var cpr=D0.cpr||JSON.parse(JSON.stringify(c.cprice||{}));
-  var enB=("nb" in D0)?D0.nb:c.b,enN=("nn" in D0)?D0.nn:c.n,enY=("ny" in D0)?D0.ny:(c.y||"");
+  var enB=("nb" in D0)?D0.nb:c.b,enN=("nn" in D0)?D0.nn:c.n,enY=("ny" in D0)?D0.ny:(c.y||""),enT=("nt" in D0)?D0.nt:(c.type||"");
   var colImgs=AE.newImgs||(((c.cimgs||{})[AE.col])||[]).slice();
   var badges=["متوفرة فوراً","تصل قريباً","وصلت جديد","عرض خاص"];
   var cst=D0.cst||{};cols.forEach(function(n){if(!(n in cst))cst[n]=(c.colors||[]).indexOf(n)<0?"off":(c.csoon||[]).indexOf(n)>=0?"soon":"on"});
@@ -626,7 +627,7 @@ function vAdminEdit(i){
   app.innerHTML='<div class="sub"><a class="back" href="#/admin" aria-label="رجوع">'+ICON.back+'</a><div style="flex:1;min-width:0"><small style="color:var(--mut);font-size:12px">تعديل</small><h1 style="font-size:17px">'+esc(c.b+" "+c.n)+'</h1></div></div>'+
    '<main class="wrap form" style="padding-bottom:110px">'+
    '<div class="two"><label>الماركة<input id="eB" list="eBl" value="'+esc(enB)+'"><datalist id="eBl">'+MAINB.concat(myBrands(),COMMONB).filter(function(x,k,a){return a.indexOf(x)===k}).map(function(b){return '<option value="'+esc(b)+'">'}).join("")+'</datalist></label><label>السنة<input id="eY" inputmode="numeric" value="'+esc(enY)+'"></label></div>'+
-   '<label>اسم السيارة (الموديل والفئة)<input id="eN" value="'+esc(enN)+'"></label>'+
+   '<div class="two"><label>اسم السيارة (الموديل والفئة)<input id="eN" value="'+esc(enN)+'"></label><label>النوع<select id="eT">'+TYPES.concat(TYPES.indexOf(enT)<0&&enT?[enT]:[]).map(function(t){return '<option value="'+esc(t)+'"'+(t===enT?" selected":"")+'>'+esc(t==="بيك أب"?"بيك أب (ونيت)":t)+'</option>'}).join("")+'</select></label></div>'+
    ((c.b+" "+c.n)!==ck(c)?'<p class="note" style="margin-top:-4px">الاسم الأصلي: '+esc(ck(c))+'</p>':'')+
    '<div class="two"><label>السعر قبل الضريبة<input id="ep" inputmode="numeric" placeholder="ر.س" value="'+(p||"")+'"></label><label>شامل الضريبة 15%<input id="ept" disabled value="'+(p?money(p*(1+VAT)):"—")+'"></label></div>'+
    '<label style="flex-direction:row;align-items:center;gap:10px;font-weight:400"><input type="checkbox" id="eh" style="width:22px;height:22px;accent-color:var(--red)"'+(hid?" checked":"")+'>إخفاء السعر وإظهار «السعر عند التواصل»</label>'+
@@ -651,7 +652,7 @@ function vAdminEdit(i){
   var readCp=function(){Array.prototype.forEach.call(document.querySelectorAll(".cpi"),function(x){var v=nm(x.value);if(v>0)cpr[x.dataset.c]=v;else delete cpr[x.dataset.c]});return cpr};
   Array.prototype.forEach.call(document.querySelectorAll(".cpi"),function(x){x.oninput=function(){var v=nm(x.value),t=document.querySelector('.cpt[data-c="'+x.dataset.c.replace(/"/g,'\\"')+'"]');if(t)t.textContent=v?"شامل "+money(v*(1+VAT)).replace(" ر.س",""):""}});
   var readCst=function(){Array.prototype.forEach.call(document.querySelectorAll(".cs"),function(x){cst[x.dataset.c]=x.value})};
-  var keep=function(){readCst();var ee=document.getElementById("ee");AE.d={p:nm(ep.value),h:document.getElementById("eh").checked,b:eb.value,s:S.s,cst:cst,all:cols,l:S.l,e:ee?ee.value:eta,cpr:readCp(),nb:document.getElementById("eB").value,nn:document.getElementById("eN").value,ny:document.getElementById("eY").value}};
+  var keep=function(){readCst();var ee=document.getElementById("ee");AE.d={p:nm(ep.value),h:document.getElementById("eh").checked,b:eb.value,s:S.s,cst:cst,all:cols,l:S.l,e:ee?ee.value:eta,cpr:readCp(),nb:document.getElementById("eB").value,nn:document.getElementById("eN").value,ny:document.getElementById("eY").value,nt:document.getElementById("eT").value}};
   document.getElementById("cplus").onclick=function(){var n=(prompt("اسم اللون الجديد (مثل: أزرق غامق)")||"").trim();if(!n)return;if(cols.indexOf(n)>=0){toast("اللون موجود");return}
     keep();AE.d.all=cols.concat([n]);AE.d.cst[n]="on";AE.col=n;AE.newImgs=null;vAdminEdit(i);toast("انضاف اللون — أضف صوره واضغط «حفظ التعديل»")};
   ep.oninput=function(){var v=nm(ep.value);ept.value=v?money(v*(1+VAT)):"—"};
@@ -676,6 +677,7 @@ function vAdminEdit(i){
     if(!nB||!nN){er.textContent="اكتب الماركة واسم السيارة.";er.style.display="block";return}
     if(nB!==c.b||nN!==c.n){var dup=cars.filter(function(x){return x!==c&&(x.b+" "+x.n)===(nB+" "+nN)})[0];if(dup){er.textContent="فيه سيارة ثانية بنفس الاسم: "+nB+" "+nN;er.style.display="block";return}patch.nm=nN;patch.bn=nB}
     if(nY&&nY!==String(c.y||""))patch.y=nY;
+    var nT=document.getElementById("eT").value;if(nT&&nT!==(c.type||""))patch.type=nT;
     readCst();var shown=cols.filter(function(n){return cst[n]!=="off"});
     if(!shown.length){er.textContent="لازم يكون فيه لون واحد متوفر على الأقل.";er.style.display="block";return}
     readCp();patch.cprice={};cols.forEach(function(n){if(cpr[n]>0)patch.cprice[n]=cpr[n]});
@@ -1079,7 +1081,7 @@ function vNew(){
   if(st===1){var palette=["أبيض","أسود","فضي","رمادي","تيتانيوم","رصاصي فاتح","أزرق غامق","كحلي","أحمر","بيج","بني","ذهبي"].concat(NW.colors.filter(function(x){return ["أبيض","أسود","فضي","رمادي","تيتانيوم","رصاصي فاتح","أزرق غامق","كحلي","أحمر","بيج","بني","ذهبي"].indexOf(x)<0}));
     app.innerHTML=head+'<main class="wrap form" style="padding-bottom:110px"><div class="lbl" style="margin-top:4px">الماركة</div>'+brandPick()+
      '<div class="two"><label>الموديل والفئة<input id="nn" value="'+esc(NW.n)+'" placeholder="مثل: كامري GLE"></label><label>السنة<input id="ny" inputmode="numeric" value="'+esc(NW.y)+'"></label></div>'+
-     '<div class="lbl">النوع</div>'+seg("nt",["سيدان","SUV"],NW.type)+'<div class="lbl">الوقود</div>'+seg("nf",["بنزين","هايبرد","ديزل"],NW.fuel)+
+     '<div class="lbl">النوع</div>'+('<div class="chips" id="nt" style="flex-wrap:wrap">'+TYPES.map(function(x){return '<button type="button" class="chip" data-v="'+esc(x)+'" aria-pressed="'+(x===NW.type)+'">'+esc(x==="بيك أب"?"بيك أب (ونيت)":x)+(x===NW.type?" ✓":"")+'</button>'}).join("")+'</div>')+'<div class="lbl">الوقود</div>'+seg("nf",["بنزين","هايبرد","ديزل"],NW.fuel)+
      '<div class="two"><label>السعر قبل الضريبة<input id="np" inputmode="numeric" placeholder="ر.س" value="'+esc(NW.price)+'"></label><label>شامل الضريبة<input id="npt" disabled value="'+(+NW.price?money(NW.price*(1+VAT)):"—")+'"></label></div>'+
      '<label style="flex-direction:row;align-items:center;gap:10px;font-weight:400"><input type="checkbox" id="nph" style="width:22px;height:22px;accent-color:var(--red)"'+(NW.pm?" checked":"")+'>إخفاء السعر وإظهار «السعر عند التواصل»</label>'+
      '<div class="lbl">الألوان المتوفرة</div><div class="chips" id="nc" style="flex-wrap:wrap">'+palette.map(function(x){var on=NW.colors.indexOf(x)>=0;return '<button type="button" class="chip" data-c="'+esc(x)+'" aria-pressed="'+on+'"><span class="dot" style="background:'+(COLHEX[x]||"#999")+'"></span>'+esc(x)+(on?" ✓":"")+'</button>'}).join("")+'<button type="button" class="chip" id="ncp" style="border-style:dashed;color:var(--red)">+ لون</button></div>'+
@@ -1112,7 +1114,7 @@ function vNew(){
   var bk=document.getElementById("nback");if(bk&&st>1)bk.onclick=function(e){e.preventDefault();NW.step--;vNew()};
   document.body.classList.add("has-bar")}
 /* الماركات */
-var MAINB=["تويوتا","لكزس","هيونداي","كيا"];
+var MAINB=["تويوتا","لكزس","هيونداي","كيا"],TYPES=["سيدان","SUV","عائلية","بيك أب","هاتشباك"];
 var COMMONB=["نيسان","هوندا","مازدا","ميتسوبيشي","سوزوكي","شانجان","جيلي","MG","هافال","شيري","جيتور","فورد","شيفروليه","جي إم سي","جيب","دودج","كاديلاك","BMW","مرسيدس","أودي","فولكس واجن","بورش","لاند روفر","رينج روفر","إنفينيتي","جينيسيس","بي واي دي","تانك","هونشي","إكسيد","جاك","لينكولن","رام","بيجو","رينو","سانج يونج","إيسوزو","فولفو","ميني"];
 function myBrands(){var l=[];(SET.brands||[]).concat(cars.map(function(c){return c.b})).forEach(function(b){if(b&&MAINB.indexOf(b)<0&&l.indexOf(b)<0)l.push(b)});return l}
 function brandPick(){var l=MAINB.concat(myBrands());if(NW.b&&l.indexOf(NW.b)<0)l.push(NW.b);
