@@ -6,7 +6,7 @@
   var SHOP_EN="Sama Riyadh Cars Showroom";
 
   function addToggle(){
-    var h=document.querySelector("header.top .wrap");if(!h||document.getElementById("langBtn"))return;
+    if(window.SAMA_NOTOGGLE)return;var h=document.querySelector("header.top .wrap");if(!h||document.getElementById("langBtn"))return;
     var b=document.createElement("button");b.id="langBtn";b.type="button";b.className="btn alt";
     b.textContent=lang==="en"?"العربية":"English";b.setAttribute("aria-label",lang==="en"?"التبديل للعربية":"Switch to English");
     b.style.cssText="padding:5px 9px;font-size:13px;margin-inline-start:6px;white-space:nowrap;flex:0 0 auto";
@@ -93,6 +93,8 @@
     "غامق":"Dark","كحلي":"Navy","برونزي":"Bronze","رصاصي":"Gray","فاتح":"Light","أخضر":"Green","جملي":"Camel","داخلية":"interior","سوداء":"black",
     "ر.س":"SAR","ريال":"SAR","سنة":"years","موديل":"Model","جديدة":"New"
   };
+  if(window.SAMA_EX_APP)for(var k1 in window.SAMA_EX_APP)EX[k1]=window.SAMA_EX_APP[k1];
+  if(window.SAMA_W_APP)for(var k2 in window.SAMA_W_APP)W[k2]=window.SAMA_W_APP[k2];
   var ARAB=/[؀-ۿ]/;
   var WK=Object.keys(W).sort(function(a,b){return b.length-a.length});
   var WR=WK.map(function(k){return [new RegExp("(?<![\\u0600-\\u06FF])"+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?![\\u0600-\\u06FF])","g"),W[k]]});
@@ -112,6 +114,7 @@
     [/^تفاصيل (.+)$/,function(m){return tr(m[1])+" details"}],
     [/^جاري رفع .*$/,function(){return "Uploading…"}]
   ];
+  if(window.SAMA_PAT_APP)PAT=window.SAMA_PAT_APP(function(x){return tr(x)}).concat(PAT);
   function tr(s){
     if(s==null)return s;var t=String(s);if(!ARAB.test(t))return t;
     var k=t.trim(),pre=t.slice(0,t.indexOf(k)),post=t.slice(t.indexOf(k)+k.length);
@@ -145,8 +148,8 @@
   var de=document.documentElement;de.lang="en";de.dir="ltr";
   var ATTRS=["placeholder","aria-label","alt","title"];
   function doNode(n){
-    if(n.nodeType===3){var v=n.nodeValue;if(ARAB.test(v)){var r=tr(v);if(r!==v)n.nodeValue=r}return}
-    if(n.nodeType!==1)return;
+    if(n.nodeType===3){var v=n.nodeValue;if(ARAB.test(v)&&!(n.parentNode&&n.parentNode.closest&&n.parentNode.closest("[data-notr]"))){var r=tr(v);if(r!==v)n.nodeValue=r}return}
+    if(n.nodeType!==1)return;if(n.closest&&n.closest("[data-notr]"))return;
     var tg=n.tagName;if(tg==="SCRIPT"||tg==="STYLE"||tg==="SVG"||tg==="svg")return;
     ATTRS.forEach(function(a){if(n.hasAttribute&&n.hasAttribute(a)){var v=n.getAttribute(a);if(ARAB.test(v)){var r=tr(v);if(r!==v)n.setAttribute(a,r)}}});
     if(tg==="OPTION"||tg==="BUTTON"||true){for(var c=n.firstChild;c;c=c.nextSibling)doNode(c)}}

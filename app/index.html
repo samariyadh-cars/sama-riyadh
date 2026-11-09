@@ -199,6 +199,7 @@ nav.tabs a.on{color:var(--red);font-weight:700}
 .plist{display:flex;flex-direction:column;gap:8px;margin:10px 0}.prow{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}.prow img,.prow .ph0{width:54px;height:42px;object-fit:cover;border-radius:8px;flex:none;background:#E9EAEC}
 .prow .pn{flex:1;min-width:0}.prow .pn b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prow .pn small{font-size:11px;color:var(--mut)}.prow input{width:104px;flex:none;height:42px;text-align:center;font-size:15px}
 .arr{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.arr:last-child{border-bottom:0}.arr>div{flex:1;min-width:0}.arr b{display:block;font-size:14px}.arr small{font-size:12px;color:var(--mut)}.arr .wab{width:44px;height:44px;border-radius:12px;border:0;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}.arr .tg{font-size:11px;background:var(--soon-bg);color:var(--soon);border-radius:8px;padding:3px 8px;flex:none}
+html[dir="ltr"] .back svg{transform:scaleX(-1)}
 .wamsg{background:#DCF8C6;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.7;white-space:pre-line;margin-top:8px;color:#1C1F24}
 .prow.ch{border-color:var(--red);background:#FFF6F7}.prow.ch input{border-color:var(--red);font-weight:700}
 .pcol{margin:-4px 0 4px;padding:6px 10px;background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px}.pcr{display:flex;align-items:center;gap:8px;padding:5px 0}.pcr .cd{width:16px;height:16px;border-radius:50%;flex:none;border:1px solid #D7D9DD}.pcn{flex:1;font-size:12px}.pci{width:104px;height:36px;text-align:center;font-size:14px}.pcr.ch .pci{border-color:var(--red);font-weight:700}
@@ -248,6 +249,7 @@ nav.tabs a.on{color:var(--red);font-weight:700}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="qr.js"></script>
+<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=1"></script><script src="../i18n.js?v=6"></script>
 <script>
 /* ===== إعدادات المعرض ===== */
 var NUM="966554378456",PHONE="0554378456",SHOP="معرض سماء الرياض للسيارات",SNAP="es_99000";
@@ -328,7 +330,7 @@ var app=document.getElementById("app");
 
 function header(){
   return '<header class="top"><div class="wrap"><div class="row"><div class="brand"><div class="logo"><img src="../logo.png" alt="شعار سماء الرياض"></div><div><b>سماء الرياض للسيارات</b><small>الرياض – معارض الشفاء</small></div></div>'+
-  (isOwner()?'<div style="display:flex;gap:8px"><a class="ibtn" href="#/admin" aria-label="إدارة السيارات">'+ICON.tune+'</a><a class="ibtn" href="'+opsLink()+'" aria-label="متابعات سماء">'+ICON.ops+'</a></div></div>':'<a class="ibtn" href="#/contact" aria-label="تواصل معنا">'+ICON.phone+'</a></div>')+
+  (isOwner()?'<div style="display:flex;gap:8px">'+'<button type="button" class="ibtn" id="langBtn" aria-label="'+(window.SAMA_LANG==="en"?"التبديل للعربية":"Switch to English")+'" style="width:auto;padding:0 10px;font-size:13px;font-weight:700">'+(window.SAMA_LANG==="en"?"عربي":"EN")+'</button>'+'<a class="ibtn" href="#/admin" aria-label="إدارة السيارات">'+ICON.tune+'</a><a class="ibtn" href="'+opsLink()+'" aria-label="متابعات سماء">'+ICON.ops+'</a></div></div>':'<div style="display:flex;gap:8px">'+'<button type="button" class="ibtn" id="langBtn" aria-label="'+(window.SAMA_LANG==="en"?"التبديل للعربية":"Switch to English")+'" style="width:auto;padding:0 10px;font-size:13px;font-weight:700">'+(window.SAMA_LANG==="en"?"عربي":"EN")+'</button>'+'<a class="ibtn" href="#/contact" aria-label="تواصل معنا">'+ICON.phone+'</a></div></div>')+
   '<div class="search"><label>'+ICON.search+'<input id="q" type="search" enterkeyhint="search" placeholder="ابحث: كامري، راف فور، LX…" value="'+esc(F.q)+'" aria-label="بحث"></label>'+
   '<button class="fbtn'+(isFiltered()?" on":"")+'" id="fopen" aria-label="فلترة"><i></i>'+ICON.filter+'</button></div></div></header>';
 }
@@ -473,9 +475,10 @@ function vFinance(i){
       "نوع الشراء: "+FM.type+"\nالاسم: "+n+"\nالجوال: "+p+"\nالمدينة: "+(g("fc")||"—")+"\nالجنسية: "+g("fn2")+"\nالعمر: "+(g("fa")||"—")+"\nالراتب: "+(g("fs")||"—")+"\nالدفعة الأولى: "+(g("fd")||"بدون")+"\nالمدة: "+g("fy")+"\nجهة العمل: "+g("fw")+"\nالبنك: "+g("fbk")+(repName()?"\nالمندوب: "+repName():"")+
       "\n\nالالتزامات الشهرية:"+(obTxt==="لا يوجد"?" لا يوجد":"\n• قسط شخصي: "+f(op)+"\n• قسط عقاري: "+f(oh)+"\n• أخرى: "+f(oo)+"\n• المجموع: "+f(ot)+" ريال");
     /* رابط للمعرض يفتح «متابعات سماء» والعميل معبّى */
+    if(window.SAMA_LANG==="en")m+="\n(العميل يفضّل الإنجليزي)";
     m+="\n\nللمعرض: "+opsLink("add",{name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:FM.type,city:g("fc"),age:g("fa"),sector:g("fw"),salary:g("fs"),oblig:obTxt==="لا يوجد"?"0":obTxt,bank:g("fbk"),rep:repName(),note:"طلب تمويل من التطبيق • "+g("fn2")+" • الدفعة الأولى "+(g("fd")||"بدون")+" • المدة "+g("fy")});
     /* يوصل للمتابعات تلقائياً مثل طلبات الموقع */
-    TRK.lead({rep:repName(),name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:({"تقسيط":"أقساط"})[FM.type]||FM.type,down:g("fd"),years:g("fy").replace(/[^\d]/g,"")||(g("fy")==="سنتين"?"2":""),job:g("fw"),salary:g("fs"),city:g("fc"),
+    TRK.lead({lang:window.SAMA_LANG==="en"?"en":"",rep:repName(),name:n,phone:p,car:cc?(cc.b+" "+cc.n+" "+(cc.y||"")+(col?" "+col:"")):"",pay:({"تقسيط":"أقساط"})[FM.type]||FM.type,down:g("fd"),years:g("fy").replace(/[^\d]/g,"")||(g("fy")==="سنتين"?"2":""),job:g("fw"),salary:g("fs"),city:g("fc"),
       src:"التطبيق — طلب تمويل • "+g("fn2")+" • العمر "+(g("fa")||"—")+" • البنك "+g("fbk")+" • الالتزامات "+obTxt});
     window.open(wa(m),"_blank");
   };
@@ -541,7 +544,7 @@ function openNotify(c,col){
     if(!n||p.length<9){er.textContent=!n?"اكتب اسمك من فضلك.":"اكتب رقم جوال صحيح.";er.style.display="block";return}
     var car=c.b+" "+c.n+" "+(c.y||"")+(cl&&cl!=="أي لون"?" "+cl:"");
     this.disabled=true;this.textContent="جاري التسجيل…";
-    TRK.lead({rep:repName(),name:n,phone:p,car:car,src:"التطبيق — ينتظر وصول: "+car}).then(function(){s.remove();toast("تم تسجيلك، نكلمك أول ما توصل")});
+    TRK.lead({rep:repName(),name:n,phone:p,car:car,src:"التطبيق — ينتظر وصول: "+car+(window.SAMA_LANG==="en"?" (يفضّل الإنجليزي)":"")}).then(function(){s.remove();toast("تم تسجيلك، نكلمك أول ما توصل")});
   };
 }
 
@@ -1230,6 +1233,7 @@ function deleteCar(c){var key=ck(c);return ghGetJson("data.json").then(function(
 function route(){
   var h=location.hash.replace(/^#\/?/,""),p=h.split("/"),t="home";
   document.body.classList.remove("has-bar");
+  if(p[0]==="admin")app.setAttribute("data-notr","");else app.removeAttribute("data-notr");
   if(SET.maint&&!isOwner()){vMaint();document.querySelector("nav.tabs").style.display="none";document.getElementById("fab").style.display="none";return}
   if(p[0]==="cars"){t="cars";vCars()}
   else if(p[0]==="car"){t="cars";if(/^k=/.test(p[1]||"")){var kc=byKey(decodeURIComponent(p.slice(1).join("/").slice(2)));if(kc){location.replace("#/car/"+idx(kc));return}}vCar(p[1])}
@@ -1238,6 +1242,7 @@ function route(){
   else if(p[0]==="contact"){t="contact";vContact()}
   else if(p[0]==="admin"){t="admin";if(p[1]==="reps")vReps();else if(p[1]==="new")vNew();else if(p[1]==="prices")vPrices();else if(p[1]==="stats")vStats();else if(p[1]==="arrivals")vArrivals();else if(p[1]==="deliv")vDeliv(p[2]);else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
   else vHome();
+  Array.prototype.forEach.call(app.querySelectorAll("option:not([value])"),function(o){o.value=o.textContent});
   document.getElementById("fab").style.display=(t==="finance"||t==="contact"||t==="admin")?"none":"";
   document.querySelector("nav.tabs").style.display=t==="admin"?"none":"";
   Array.prototype.forEach.call(document.querySelectorAll("nav.tabs a"),function(a){a.classList.toggle("on",a.dataset.t===t)});
@@ -1249,6 +1254,7 @@ document.getElementById("fab").href=wa("السلام عليكم، أتواصل �
   document.addEventListener("pointerdown",function(e){if(!e.target.closest(".logo"))return;stop();t=setTimeout(function(){t=null;if(navigator.vibrate)navigator.vibrate(30);location.href=opsLink()},1500)});
   ["pointerup","pointercancel","pointerleave","scroll"].forEach(function(ev){document.addEventListener(ev,stop,true)});
   document.addEventListener("contextmenu",function(e){if(e.target.closest(".logo"))e.preventDefault()});})();
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#langBtn");if(!b)return;try{localStorage.setItem("sama_lang",window.SAMA_LANG==="en"?"ar":"en")}catch(x){}var q=location.search.replace(/[?&]lang=(en|ar)/,"").replace(/^&/,"?");if(q!==location.search)location.replace(location.pathname+q+location.hash);else location.reload()});
 window.addEventListener("hashchange",function(){try{sessionStorage.setItem("sama_nav","1")}catch(e){}route()});
 load().then(function(){catchRep();route()}).catch(function(){app.innerHTML='<div class="load">تعذّر تحميل السيارات. تأكد من الاتصال بالإنترنت ثم <a href="javascript:location.reload()">أعد المحاولة</a>.</div>'});
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
