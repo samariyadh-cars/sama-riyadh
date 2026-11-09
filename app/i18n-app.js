@@ -24,7 +24,7 @@ window.SAMA_EX_APP={
  "اللون المفضل":"Preferred color","أي لون":"Any color","إلغاء":"Cancel","سجّلني":"Notify me","إغلاق":"Close","قارن مع":"Compare with","⇄ قارن مع سيارة ثانية":"⇄ Compare with another car","مقارنة":"Comparison","القوة":"Power","العزم":"Torque","الإطارات":"Tires","الأبعاد":"Dimensions","استهلاك الوقود":"Fuel economy","المزايا":"Features",
  "نستخدم رقمك للتواصل معك بخصوص هذي السيارة فقط —":"We use your number only to contact you about this car —","تم تسجيلك، نكلمك أول ما توصل":"You're registered — we'll contact you when it arrives",
  "اكتب اسمك من فضلك.":"Please enter your name.","اكتب رقم جوال صحيح.":"Please enter a valid mobile number.","لازم توافق على استخدام بياناتك عشان نقدر ندرس طلبك.":"Please agree to the use of your data so we can review your request.",
- "الموقع تحت الصيانة":"Under maintenance","جديدة":"New","ضمان الوكيل":"Dealer warranty"
+ "الموقع تحت الصيانة":"Under maintenance","(السعر شامل الضريبة)":"(price incl. VAT)","جديدة":"New","ضمان الوكيل":"Dealer warranty"
 };
 window.SAMA_W_APP["ر.س"]="SAR";
 window.SAMA_PAT_APP=function(tr){return [

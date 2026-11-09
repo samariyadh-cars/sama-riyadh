@@ -200,6 +200,7 @@ nav.tabs a.on{color:var(--red);font-weight:700}
 .prow .pn{flex:1;min-width:0}.prow .pn b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prow .pn small{font-size:11px;color:var(--mut)}.prow input{width:104px;flex:none;height:42px;text-align:center;font-size:15px}
 .arr{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.arr:last-child{border-bottom:0}.arr>div{flex:1;min-width:0}.arr b{display:block;font-size:14px}.arr small{font-size:12px;color:var(--mut)}.arr .wab{width:44px;height:44px;border-radius:12px;border:0;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}.arr .tg{font-size:11px;background:var(--soon-bg);color:var(--soon);border-radius:8px;padding:3px 8px;flex:none}
 html[dir="ltr"] .back svg{transform:scaleX(-1)}
+.instcta{display:flex;align-items:center;gap:12px;margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--red-l,#FBE9EC);border:1px solid #F3C3CB;color:var(--ink);text-decoration:none}.instcta>span{font-size:22px}.instcta div{flex:1}.instcta b{display:block;font-size:15px;color:var(--red-d,#9E0C24)}.instcta small{font-size:12px;color:var(--mut)}.instcta i{font-style:normal;font-size:22px;color:var(--red-d,#9E0C24)}html[dir="ltr"] .instcta i{transform:scaleX(-1)}
 .wamsg{background:#DCF8C6;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.7;white-space:pre-line;margin-top:8px;color:#1C1F24}
 .prow.ch{border-color:var(--red);background:#FFF6F7}.prow.ch input{border-color:var(--red);font-weight:700}
 .pcol{margin:-4px 0 4px;padding:6px 10px;background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px}.pcr{display:flex;align-items:center;gap:8px;padding:5px 0}.pcr .cd{width:16px;height:16px;border-radius:50%;flex:none;border:1px solid #D7D9DD}.pcn{flex:1;font-size:12px}.pci{width:104px;height:36px;text-align:center;font-size:14px}.pcr.ch .pci{border-color:var(--red);font-weight:700}
@@ -249,7 +250,7 @@ html[dir="ltr"] .back svg{transform:scaleX(-1)}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="qr.js"></script>
-<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=1"></script><script src="../i18n.js?v=6"></script>
+<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=2"></script><script src="../i18n.js?v=7"></script>
 <script>
 /* ===== إعدادات المعرض ===== */
 var NUM="966554378456",PHONE="0554378456",SHOP="معرض سماء الرياض للسيارات",SNAP="es_99000";
@@ -325,7 +326,7 @@ function load(){
 }
 
 /* ===== الحالة ===== */
-var F={q:"",brand:"all",type:"all",fuel:"all",sort:"def"};
+var F={q:"",brand:"all",type:"all",fuel:"all",sort:"def",bud:"all"},BUD={u100:[0,100000],"100":[100000,150000],"150":[150000,200000],"200":[200000,300000],o300:[300000,1e12]};
 var app=document.getElementById("app");
 
 function header(){
@@ -334,7 +335,7 @@ function header(){
   '<div class="search"><label>'+ICON.search+'<input id="q" type="search" enterkeyhint="search" placeholder="ابحث: كامري، راف فور، LX…" value="'+esc(F.q)+'" aria-label="بحث"></label>'+
   '<button class="fbtn'+(isFiltered()?" on":"")+'" id="fopen" aria-label="فلترة"><i></i>'+ICON.filter+'</button></div></div></header>';
 }
-function isFiltered(){return F.type!=="all"||F.fuel!=="all"||F.sort!=="def"}
+function isFiltered(){return F.type!=="all"||F.fuel!=="all"||F.sort!=="def"||F.bud!=="all"}
 function brands(){var s={},l=[];visible().forEach(function(c){if(!s[c.b]){s[c.b]=1;l.push(c.b)}});return l}
 function brandChips(){var nf=favs().length;return '<div class="chips" role="group" aria-label="الماركات">'+(nf?'<button class="chip favchip" data-fav="1" aria-pressed="'+!!F.fav+'">♥ المفضلة ('+nf+')</button>':'')+["all"].concat(brands()).map(function(b){return '<button class="chip" data-b="'+esc(b)+'" aria-pressed="'+(!F.fav&&F.brand===b)+'">'+(b==="all"?"الكل":esc(b))+'</button>'}).join("")+'</div>'}
 function card(c){var u=firstImg(c);return '<a class="card" href="#/car/'+idx(c)+'"><div class="ph">'+(u?pic(u,"",true):"")+tagOf(c,"tag")+favBtn(c)+'</div><div class="cb"><b>'+esc(c.b+" "+c.n)+'</b><span>'+esc(c.y||"")+(c.colors&&c.colors.length?" · "+c.colors.length+" ألوان":"")+'</span>'+priceLine(c)+'</div></a>'}
@@ -345,6 +346,7 @@ function filtered(){
     if(!F.fav&&F.brand!=="all"&&c.b!==F.brand)return false;
     if(F.type!=="all"&&c.type!==F.type)return false;
     if(F.fuel!=="all"&&fuelOf(c)!==F.fuel)return false;
+    if(F.bud!=="all"){var pv=priceOf(c)*(1+VAT),rg=BUD[F.bud];if(!pv||pv<rg[0]||pv>=rg[1])return false}
     if(q&&(c.b+" "+c.n+" "+(c.type||"")+" "+(c.y||"")).toLowerCase().indexOf(q)<0)return false;
     return true});
   if(F.sort==="lo"||F.sort==="hi"){l.sort(function(a,b){var x=priceOf(a)||1e12,y=priceOf(b)||1e12;if(F.sort==="hi"){x=priceOf(a)||-1;y=priceOf(b)||-1;return y-x}return x-y})}
@@ -386,13 +388,14 @@ function openFilter(){
   var types=[],fu=[];visible().forEach(function(c){if(c.type&&types.indexOf(c.type)<0)types.push(c.type);var f=fuelOf(c);if(fu.indexOf(f)<0)fu.push(f)});
   function grp(key,arr,labels){return '<div class="chips" data-k="'+key+'">'+arr.map(function(v,i){return '<button class="chip" data-v="'+esc(v)+'" aria-pressed="'+(F[key]===v)+'">'+esc(labels?labels[i]:(v==="all"?"الكل":v))+'</button>'}).join("")+'</div>'}
   var s=document.createElement("div");s.className="sheet open";s.innerHTML='<div class="box" role="dialog" aria-label="فلترة"><h3>فلترة السيارات</h3>'+
+   '<h4>الميزانية <span style="font-weight:400;color:var(--mut);font-size:12px">(السعر شامل الضريبة)</span></h4>'+grp("bud",["all","u100","100","150","200","o300"],["الكل","أقل من 100 ألف","100 – 150 ألف","150 – 200 ألف","200 – 300 ألف","أكثر من 300 ألف"])+
    '<h4>النوع</h4>'+grp("type",["all"].concat(types))+'<h4>الوقود</h4>'+grp("fuel",["all"].concat(fu))+
    '<h4>الترتيب</h4>'+grp("sort",["def","new","lo","hi"],["الافتراضي","الأحدث وصولاً","الأقل سعراً","الأعلى سعراً"])+
    '<div class="acts"><button class="btn ghost" id="freset">مسح</button><button class="btn" id="fok">عرض النتائج</button></div></div>';
   document.body.appendChild(s);
   s.addEventListener("click",function(e){if(e.target===s)s.remove()});
   Array.prototype.forEach.call(s.querySelectorAll(".chips[data-k]"),function(g){g.addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;F[g.dataset.k]=b.dataset.v;Array.prototype.forEach.call(g.children,function(x){x.setAttribute("aria-pressed",x===b)})})});
-  s.querySelector("#freset").onclick=function(){F.type="all";F.fuel="all";F.sort="def";s.remove();route()};
+  s.querySelector("#freset").onclick=function(){F.type="all";F.fuel="all";F.sort="def";F.bud="all";s.remove();route()};
   s.querySelector("#fok").onclick=function(){s.remove();if(location.hash==="#/cars")vCars();else location.hash="#/cars"};
 }
 function imgsFor(c,col){var ci=c.cimgs||{},L=[];if(col&&ci[col]&&ci[col].length)L=ci[col];else if(c.imgs&&c.imgs.length)L=c.imgs;else for(var k in ci)if(ci[k].length){L=ci[k];break}var g=(c.gimgs||[]).filter(function(u){return L.indexOf(u)<0});return L.concat(g)}
@@ -413,6 +416,7 @@ function drawCar(){
   var sw=(c.colors||[]).map(function(n){var hx=COLHEX[n]||COLHEX[n.split(" (")[0]]||"#999";return '<button style="background:'+esc(hx)+'" aria-label="'+esc(n)+'" title="'+esc(n)+'" aria-pressed="'+(n===col)+'" data-c="'+esc(n)+'"></button>'}).join("");
   var price=p?'<div class="price one"><div><small>السعر شامل الضريبة</small><b class="p1" style="font-size:24px">'+money(p*(1+VAT))+'</b><small style="margin-top:4px">قبل الضريبة '+money(p)+' + ضريبة 15% '+money(p*VAT)+'</small><small style="margin-top:6px;color:var(--red-d)">لا يشمل رسوم اللوحات والتأمين</small></div></div>'
     :'<div class="price one"><div><small>السعر</small><b class="p1">'+(c.status==="sold"?"تم البيع":"السعر عند التواصل")+'</b></div></div>';
+  if(c.status!=="sold")price+='<a class="instcta" href="#/finance/'+idx(c)+'"><span>💬</span><div><b>اعرف قسطك الشهري</b><small>أرسل بياناتك ونرد عليك بالقسط خلال دقائق</small></div><i>‹</i></a>';
   app.innerHTML='<div class="gal"><div class="track" id="trk">'+(ims.length?ims.map(function(u){return pic(u)}).join(""):'<div class="noimg">لا توجد صور</div>')+'</div>'+
    '<div class="tb"><a href="#/cars" aria-label="رجوع" id="bk">'+ICON.back+'</a><span style="display:flex;gap:8px">'+favBtn(c,"tbfav")+'<button id="shr" aria-label="مشاركة">'+ICON.share+'</button></span></div>'+
    (ims.length>1?'<span class="cnt" id="cnt">1 / '+ims.length+'</span>':"")+'</div>'+

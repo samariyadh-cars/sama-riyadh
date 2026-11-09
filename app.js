@@ -79,7 +79,7 @@ function money(n){return Number(n).toLocaleString("en-US")+" ر.س"}
 function colPrice(c,col){var v=+((c.cprice||{})[col])||0;return v>0?v:(+c.price||0)}
 function basePrice(c,col){if(col)return colPrice(c,col);var L=(c.colors||[]).map(function(x){return colPrice(c,x)}).filter(function(v){return v>0});return L.length?Math.min.apply(null,L):(+c.price||0)}
 function priceVaries(c){if(!c.cprice)return false;var L=(c.colors||[]).map(function(x){return colPrice(c,x)});return L.some(function(v){return v!==L[0]})}
-function dPriceSet(){var c=cur;if(!c)return;$("dPrice").textContent=priceText(c,selColor);var e=$("dPriceNote");if(!e){e=document.createElement("div");e.id="dPriceNote";e.style.cssText="font-size:12px;opacity:.8;margin-top:4px";$("dPrice").insertAdjacentElement("afterend",e)}var p=basePrice(c,selColor),show=p>0&&c.pm!=="hide"&&c.status!=="sold";e.hidden=!show;if(show)e.textContent=(!selColor&&priceVaries(c)?"السعر يختلف حسب اللون — اختر اللون • ":"")+"قبل الضريبة "+money(p)+" + ضريبة 15% "+money(Math.round(p*.15))+" • لا يشمل رسوم اللوحات والتأمين"}
+function dPriceSet(){var c=cur;if(!c)return;(function(){var a=$("dInstCta");if(!a){a=document.createElement("button");a.id="dInstCta";a.type="button";a.className="instcta";a.innerHTML="<span>💬</span><div><b>اعرف قسطك الشهري</b><small>أرسل بياناتك ونرد عليك بالقسط خلال دقائق</small></div>";a.addEventListener("click",function(){var k=cars.indexOf(cur),sel=$("cCar");try{$("dlg").close()}catch(e){}if(sel&&k>=0){sel.value=String(k);try{sel.dispatchEvent(new Event("change"))}catch(e){}}var cf=document.querySelector(".calc");if(cf){cf.scrollIntoView({behavior:"smooth",block:"start"});setTimeout(function(){var n=$("cName");if(n)n.focus({preventScroll:true})},600)}});var pn=$("dPriceNote")||$("dPrice");pn.insertAdjacentElement("afterend",a)}a.hidden=c.status==="sold"})();$("dPrice").textContent=priceText(c,selColor);var e=$("dPriceNote");if(!e){e=document.createElement("div");e.id="dPriceNote";e.style.cssText="font-size:12px;opacity:.8;margin-top:4px";$("dPrice").insertAdjacentElement("afterend",e)}var p=basePrice(c,selColor),show=p>0&&c.pm!=="hide"&&c.status!=="sold";e.hidden=!show;if(show)e.textContent=(!selColor&&priceVaries(c)?"السعر يختلف حسب اللون — اختر اللون • ":"")+"قبل الضريبة "+money(p)+" + ضريبة 15% "+money(Math.round(p*.15))+" • لا يشمل رسوم اللوحات والتأمين"}
 function priceText(c,col){if(c.status==="sold")return "تم البيع";if(c.pm==="hide")return "";var p=basePrice(c,col);return p?(!col&&priceVaries(c)?"يبدأ من ":"")+money(Math.round(p*1.15))+" شامل الضريبة":"السعر عند الطلب"}
 function msgFor(c,pay,color){return "السلام عليكم، أرغب بطلب "+c.b+" "+c.n+" موديل "+c.y+(color?" لون "+color:"")+" "+pay+" من "+SHOP}
 var CAR='<svg viewBox="0 0 240 80" aria-hidden="true"><use href="#car"/></svg>';
@@ -88,7 +88,7 @@ function modelOf(c){if(c.m)return c.m;var n=c.n.trim();if(/^[A-Za-z]/.test(n)){v
 function favs(){try{return JSON.parse(localStorage.getItem("sama_favs")||"[]")}catch(e){return []}}
 function isFav(c){return favs().indexOf(ck(c))>=0}
 var curFav=false;
-var curF="all",curM="all",curS="def",curFu="all",curAv=false;
+var curF="all",curM="all",curS="def",curFu="all",curAv=false,curB="all",BUD={u100:[0,100000],"100":[100000,150000],"150":[150000,200000],"200":[200000,300000],o300:[300000,1e12]};
 function fuelOf(c){var t=c.b+" "+c.n;if(/ديزل/.test(t))return "ديزل";if(/هايبرد|HEV/i.test(t))return "هايبرد";return "بنزين"}
 function drawModels(f){
   var mw=$("models");mw.innerHTML="";
@@ -119,6 +119,7 @@ function render(f){
     if(!(f==="all"||c.b===f||c.type===f))return;
     if(curM!=="all"&&modelOf(c)!==curM)return;
     if(curFu!=="all"&&fuelOf(c)!==curFu)return;
+    if(curB!=="all"){var bp=(c.pm==="hide"||c.status==="sold")?0:basePrice(c)*1.15,br=BUD[curB];if(!bp||bp<br[0]||bp>=br[1])return}
     if(curAv&&c.status==="sold")return;
     if(curCo!=="all"&&!(c.colors||[]).some(function(x){return baseColor(x)===curCo}))return;
     var qv=($("q")&&$("q").value||"").trim().toLowerCase();if(qv&&qv.split(/\s+/).some(function(w){return (c.b+" "+c.n+" "+c.y+" "+c.type).toLowerCase().indexOf(w)<0}))return;
@@ -144,6 +145,7 @@ function render(f){
   if(curFav&&!shown){var nf0=document.createElement("div");nf0.className="noRes";nf0.textContent="ما حفظت سيارات للحين. اضغط القلب على أي سيارة تعجبك.";g.appendChild(nf0);return}
   if(!shown){var nr=document.createElement("div");nr.className="noRes";nr.innerHTML="ما لقينا سيارة بهذي المواصفات.<br>";var na=document.createElement("a");na.className="btn";na.href="#want";na.textContent="اطلب سيارتك وتواصل معك";nr.appendChild(na);g.appendChild(nr)}
 }
+(function(){var bs=$("budget");if(bs)bs.addEventListener("change",function(){curB=bs.value;bs.setAttribute("aria-pressed",curB!=="all"?"true":"false");render(curF)})})();
 $("fuels").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;
   if(b.id==="avOnly"){curAv=!curAv;b.setAttribute("aria-pressed",curAv?"true":"false")}
   else{curFu=b.dataset.fu;document.querySelectorAll("#fuels .chip[data-fu]").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")})}
