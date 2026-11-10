@@ -79,12 +79,52 @@ var NBASE=cars.length;
 (function(){var td=todayYMD();cars.forEach(function(c){if(c.bexp&&c.badge&&c.bexp<td){c.badge="";if(c.loc||(DATA&&DATA.ov&&DATA.ov[ck(c)]||{}).loc){var l=c.loc||DATA.ov[ck(c)].loc;c._lb=l==="show"?"متوفرة فوراً":"تصل قريباً"}}})})();
 function wa(msg){return "https://wa.me/"+NUM+"?text="+encodeURIComponent(window.SAMA_TM?window.SAMA_TM(msg):msg)}
 /* فريق المبيعات: الكاش لموظف الكاش والتقسيط لموظف التقسيط، ولو ما فيه موظف مفعّل يجي للمعرض */
-function teamPick(t){var L=(((DATA&&DATA.set)||{}).team||[]).filter(function(e){return e&&e.p&&(e.t===t||e.t==="all")});if(!L.length)return null;
+function teamPick(t){if(((DATA&&DATA.set)||{}).teamPick){var sv=TM.saved(t);return sv?sv.e:null}var L=(((DATA&&DATA.set)||{}).team||[]).filter(function(e){return e&&e.p&&(e.t===t||e.t==="all")});if(!L.length)return null;
   var k="sama_tm_"+t,v="";try{v=sessionStorage.getItem(k)||""}catch(e){}var e=L.filter(function(x){return x.n===v})[0];
   if(!e){e=L[Math.floor(Math.random()*L.length)];try{sessionStorage.setItem(k,e.n)}catch(x){}}return e}
 function waT(t,msg){var e=teamPick(t);return "https://wa.me/"+(e?e.p:NUM)+"?text="+encodeURIComponent(window.SAMA_TM?window.SAMA_TM(msg):msg)}
 function empOf(t){var e=teamPick(t);return e?e.n:""}
-function setT(a,t,msg){a.href=waT(t,msg);var n=empOf(t);if(n)a.setAttribute("data-emp",n);else a.removeAttribute("data-emp")}
+function chOf(t){if(!((DATA&&DATA.set)||{}).teamPick)return empOf(t)?"auto":"";var sv=TM.saved(t);return sv?sv.k:""}
+function setT(a,t,msg,noPick){a.href=waT(t,msg);var n=empOf(t);if(n)a.setAttribute("data-emp",n);else a.removeAttribute("data-emp");if(!noPick){a.setAttribute("data-pt",t);a.setAttribute("data-msg",msg)}}
+/* اختيار الموظف: لما يكون «العميل يختار» شغّال، الضغط على اطلب كاش/تقسيط يفتح «تبي تكلم مين؟».
+   العميل اللي اختار قبل يكمل مع نفس الموظف على طول. cfg: set() إعدادات الموقع، url(phone,msg) رابط واتساب */
+function mkTM(cfg){
+  var K="sama_emp";
+  function E(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function list(t){return ((cfg.set()||{}).team||[]).filter(function(e){return e&&e.p&&(!t||e.t===t||e.t==="all")})}
+  function on(t){return !!(cfg.set()||{}).teamPick&&list(t).length>0}
+  function saved(t){var o=null;try{o=JSON.parse(localStorage.getItem(K)||"null")}catch(e){}if(!o||!o.n)return null;var e=list(t).filter(function(x){return x.n===o.n})[0];return e?{e:e,k:o.k||"pick"}:null}
+  function keep(n,k){try{localStorage.setItem(K,JSON.stringify({n:n,k:k}))}catch(e){}}
+  function forget(){try{localStorage.removeItem(K)}catch(e){}}
+  function any(t){var L=list(t);return L[Math.floor(Math.random()*L.length)]}
+  function css(){if(document.getElementById("tmcss"))return;var s=document.createElement("style");s.id="tmcss";
+    s.textContent='.tmsh{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}.tmsh .tmb{background:#fff;color:#1C1F24;width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;text-align:right;direction:rtl;font-family:inherit}.tmsh .tmg{width:40px;height:4px;border-radius:2px;background:#D7D9DD;margin:0 auto 2px}.tmsh h3{margin:0;font-size:18px}.tmsh .tms{font-size:12px;color:#5F6670;margin:-4px 0 2px}.tmsh a.tmp{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #E4E6E9;border-radius:12px;background:#fff;color:inherit;text-decoration:none}.tmsh a.tmp.any{border-color:#C8102E;background:#FFF5F6}.tmsh .tmp i{width:44px;height:44px;border-radius:50%;background:#1C1F24;color:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;flex:none;font-size:16px}.tmsh .tmp.any i{background:#C8102E}.tmsh .tmp span{flex:1;min-width:0}.tmsh .tmp b{display:block;font-size:15px}.tmsh .tmp small{color:#5F6670;font-size:12px}.tmsh .tmp em{font-style:normal;height:38px;padding:0 12px;border-radius:10px;background:#1E8E4E;color:#fff;display:flex;align-items:center;font-size:13px;font-weight:700;flex:none}.tmsh .tmn{font-size:12px;color:#5F6670;text-align:center}.tmsh .tmx{height:40px;border:0;background:none;color:#5F6670;font:inherit;font-size:14px;cursor:pointer}'+
+     '.tmline{font-size:13px;color:#5F6670;text-align:center;margin:10px 0 0}.tmline b{color:#1C1F24}.tmline button{border:0;background:none;color:#C8102E;text-decoration:underline;font:inherit;cursor:pointer;padding:0}';
+    document.head.appendChild(s)}
+  var COL=["#1C1F24","#1E73BE","#7A4A08","#5B3FA0","#0F766E"];
+  /* يفتح القائمة. done(emp,ch) ينادى لما العميل يختار (ch: pick = بالاسم، any = أي واحد متاح) */
+  function open(t,msg,done){css();var L=list(t),a0=any(t),s=document.createElement("div");s.className="tmsh";
+    var row=function(e,i,cls,nm,sub){return '<a class="tmp'+(cls?" "+cls:"")+'" target="_blank" rel="noopener" data-tm="1" data-i="'+i+'" href="'+E(cfg.url(e.p,msg))+'"><i'+(cls?'':' style="background:'+COL[i%COL.length]+'"')+'>'+(cls?"⚡":E((e.n||"؟").trim().charAt(0)))+'</i><span><b>'+E(nm)+'</b>'+(sub?'<small>'+E(sub)+'</small>':'')+'</span><em>واتساب</em></a>'};
+    s.innerHTML='<div class="tmb" role="dialog" aria-label="تبي تكلم مين؟"><div class="tmg"></div><h3>تبي تكلم مين؟</h3><div class="tms">'+(t==="cash"?"طلب كاش":"طلب تقسيط")+'</div>'+
+      (L.length>1?row(a0,-1,"any","أي واحد متاح","أسرع رد"):"")+L.map(function(e,i){return row(e,i,"",e.n,e.d||"")}).join("")+
+      '<div class="tmn">الرسالة جاهزة فيها السيارة واللون وطريقة الدفع</div><button type="button" class="tmx">إلغاء</button></div>';
+    (document.querySelector("dialog[open]")||document.body).appendChild(s);var close=function(){s.remove()};
+    s.addEventListener("click",function(ev){if(ev.target===s)close()});s.querySelector(".tmx").onclick=close;
+    Array.prototype.forEach.call(s.querySelectorAll("a.tmp"),function(a){a.addEventListener("click",function(){var i=+a.dataset.i,e=i<0?a0:L[i],k=i<0?"any":"pick";keep(e.n,k);try{done&&done(e.n,k)}catch(x){}setTimeout(function(){close();if(cfg.changed)cfg.changed()},150)})})}
+  /* زر عليه data-pt="cash|inst" و data-msg: لو العميل اختار قبل يروح لموظفه، وإلا تطلع القائمة */
+  document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest("a[data-pt]");if(!a)return;var t=a.getAttribute("data-pt");if(!on(t))return;
+    var msg=a.getAttribute("data-msg")||"",sv=saved(t);
+    if(sv){a.href=cfg.url(sv.e.p,msg);try{cfg.sent&&cfg.sent(a,sv.e.n,sv.k)}catch(x){}return}
+    ev.preventDefault();ev.stopPropagation();open(t,msg,function(n,k){try{cfg.sent&&cfg.sent(a,n,k)}catch(x){}})},true);
+  /* سطر «تكمل مع عاصم · تبي موظف ثاني؟» */
+  function line(){if(!on("cash")&&!on("inst"))return "";var sv=saved("cash")||saved("inst");if(!sv)return "";css();
+    return '<p class="tmline">تكمل مع <b>'+E(sv.e.n)+'</b> 👋 · <button type="button" data-tmf="1">تبي موظف ثاني؟</button></p>'}
+  document.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.closest("[data-tmf]");if(!b)return;forget();var p=b.closest(".tmline");if(p)p.remove();if(cfg.changed)cfg.changed()});
+  return {on:on,saved:saved,open:open,line:line,forget:forget}
+}
+var TM=mkTM({set:function(){return (DATA&&DATA.set)||{}},url:function(p,m){return "https://wa.me/"+p+"?text="+encodeURIComponent(window.SAMA_TM?window.SAMA_TM(m):m)},
+  sent:function(a,n,k){var dg=document.getElementById("dlg");TRK.ev("wa",dg&&dg.open&&cur&&dg.contains(a)?"wa:"+ck(cur):a.id||"wa",n,k)},
+  changed:function(){var x=document.getElementById("dTm");if(x)x.innerHTML=TM.line();if(typeof cur!=="undefined"&&cur)links()}});
 function money(n){return Number(n).toLocaleString("en-US")+" ر.س"}
 /* السعر يُكتب قبل الضريبة في اللوحة، ويظهر للعميل شامل الضريبة 15% */
 function colPrice(c,col){var v=+((c.cprice||{})[col])||0;return v>0?v:(+c.price||0)}
@@ -180,7 +220,8 @@ function zClose(fromPop){var z=$("zv");if(!z.open)return;if(z.close)z.close();el
   window.addEventListener("popstate",function(){zClose(true)});
   swipe($("dGal"),gStep);
 })();
-function links(){setT($("dCash"),"cash",msgFor(cur,"بالدفع كاش",selColor));setT($("dInst"),"inst",msgFor(cur,"بالتقسيط",selColor))}
+function links(){setT($("dCash"),"cash",msgFor(cur,"بالدفع كاش",selColor));setT($("dInst"),"inst",msgFor(cur,"بالتقسيط",selColor));
+  var x=$("dTm");if(!x){x=document.createElement("div");x.id="dTm";var ac=$("dCash").parentNode;ac.parentNode.insertBefore(x,ac)}x.innerHTML=TM.line()}
 function imgsNow(){var c=cur,L=(selColor&&c.cimgs&&c.cimgs[selColor]&&c.cimgs[selColor].length)?c.cimgs[selColor]:(c.imgs||[]);return L.concat((c.gimgs||[]).filter(function(u){return L.indexOf(u)<0}))}
 function buildThumbs(){var th=$("dThumbs");th.innerHTML="";var L=imgsNow();if(L.length>1)L.forEach(function(u,k){var b=document.createElement("button");b.type="button";b.setAttribute("aria-label","صورة "+(k+1));var im=document.createElement("img");im.alt="";thumbImg(im,u);b.appendChild(im);b.addEventListener("click",function(){showImg(k)});th.appendChild(b)})}
 function showImg(k){
@@ -361,7 +402,7 @@ function cMsg(){
   return {c:c,ob:ob,obTxt:ob.none?"لا يوجد":"شخصي "+f(ob.p)+" + عقاري "+f(ob.h)+" + أخرى "+f(ob.o)+" = "+f(ob.t),
    msg:"السلام عليكم، طلب تمويل من موقع "+SHOP+"\n\nالسيارة: "+c.b+" "+c.n+" "+c.y+"\nنوع الشراء: "+cv("cType")+"\nالاسم: "+cv("cName")+"\nالجوال: "+cv("cPhone")+"\nالمدينة: "+(cv("cCity")||"—")+"\nالجنسية: "+cv("cNat")+"\nالعمر: "+(cv("cAge")||"—")+"\nالراتب: "+(cv("cSalary")||"—")+"\nجهة العمل: "+cv("cJob")+"\nالبنك: "+cv("cBank")+"\nالدفعة الأولى: "+$("cDown").value+"%\nالمدة: "+$("cYears").options[$("cYears").selectedIndex].text+
      "\n\nالالتزامات الشهرية:"+(ob.none?" لا يوجد":"\n• قسط شخصي: "+f(ob.p)+"\n• قسط عقاري: "+f(ob.h)+"\n• أخرى: "+f(ob.o)+"\n• المجموع: "+f(ob.t)+" ريال")}}
-function upd(){setT($("cWa"),"inst",cMsg().msg)}
+function upd(){setT($("cWa"),"inst",cMsg().msg,1)}
 ["cName","cPhone","cCar","cDown","cYears","cJob","cSalary","cCity","cNat","cAge","cBank","cType","cOP","cOH","cOO"].forEach(function(i){var e=$(i);if(e){e.addEventListener("input",upd);e.addEventListener("change",upd)}});
 ["cOP","cOH","cOO"].forEach(function(i){$(i).addEventListener("input",function(){if($(i).value.trim())$("cO0").checked=false;upd()})});
 $("cO0").addEventListener("change",function(){["cOP","cOH","cOO"].forEach(function(i){$(i).disabled=$("cO0").checked;if($("cO0").checked)$(i).value=""});upd()});
@@ -370,8 +411,9 @@ $("cWa").addEventListener("click",function(e){
   var bad=!cv("cName")?"اكتب اسمك.":digits(cv("cPhone")).length<9?"اكتب رقم جوال صحيح.":(!anyOb&&!$("cO0").checked)?"اكتب التزاماتك الشهرية، أو اختر «ما عندي أي التزامات».":!$("cAgree").checked?"لازم توافق على استخدام بياناتك عشان نقدر ندرس طلبك.":"";
   if(bad){e.preventDefault();$("cNote").textContent=bad;$("cNote").style.color="#B91C1C";return}
   $("cNote").style.color="";$("cNote").textContent="تم تجهيز الطلب في واتساب، اضغط إرسال هناك.";
-  try{var r=cMsg(),c=r.c,sal=cnum(cv("cSalary"));setT($("cWa"),"inst",r.msg);
-    TRK.lead({emp:empOf("inst"),src:"حاسبة التقسيط • "+cv("cType")+" • "+cv("cNat")+" • العمر "+(cv("cAge")||"—")+" • البنك "+cv("cBank")+" • الالتزامات "+r.obTxt,name:cv("cName"),phone:cv("cPhone"),car:c.b+" "+c.n+" "+c.y,pay:({"تقسيط":"أقساط"})[cv("cType")]||cv("cType"),job:cv("cJob"),salary:sal>0?sal:"",down:$("cDown").value+"%",years:$("cYears").value,city:cv("cCity")})}catch(x){}
+  try{var r=cMsg(),c=r.c,sal=cnum(cv("cSalary"));setT($("cWa"),"inst",r.msg,1);
+    var pk=TM.on("inst")&&!TM.saved("inst");if(pk)e.preventDefault();
+    var LD=({emp:empOf("inst"),ch:chOf("inst"),src:"حاسبة التقسيط • "+cv("cType")+" • "+cv("cNat")+" • العمر "+(cv("cAge")||"—")+" • البنك "+cv("cBank")+" • الالتزامات "+r.obTxt,name:cv("cName"),phone:cv("cPhone"),car:c.b+" "+c.n+" "+c.y,pay:({"تقسيط":"أقساط"})[cv("cType")]||cv("cType"),job:cv("cJob"),salary:sal>0?sal:"",down:$("cDown").value+"%",years:$("cYears").value,city:cv("cCity")});if(pk)TM.open("inst",r.msg,function(en,k){LD.emp=en;LD.ch=k;TRK.lead(LD)});else TRK.lead(LD)}catch(x){}
 });
 function favChip(){var n=favs().length,b=$("favOnly");if(!b){b=document.createElement("button");b.className="chip favc";b.id="favOnly";b.type="button";b.addEventListener("click",function(e){e.stopPropagation();curFav=!curFav;render(curF)});$("fuels").appendChild(b)}
   b.hidden=!n&&!curFav;b.textContent="♥ المفضلة ("+n+")";b.setAttribute("aria-pressed",curFav?"true":"false");if(!n&&curFav)curFav=false}
@@ -416,9 +458,9 @@ var TRK=(function(){
   function mark(k){seen[k]=1;try{sessionStorage.setItem("sama_seen",JSON.stringify(seen))}catch(e){}}
   function send(o){var f={};o.t=Date.now();for(var k in o){if(o[k]==null||o[k]==="")continue;f[k]=typeof o[k]==="number"?{integerValue:String(Math.round(o[k]))}:{stringValue:String(o[k]).slice(0,1500)}}
     try{return fetch(URL_,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify({fields:f})}).catch(function(){})}catch(e){}}
-  function ev(kind,ref,emp){if(owner)return;var k=kind+"|"+(ref||"");if(seen[k])return;mark(k);send({kind:kind,ref:ref||"",emp:emp||""})}
+  function ev(kind,ref,emp,ch){if(owner)return;var k=kind+"|"+(ref||"");if(seen[k])return;mark(k);send({kind:kind,ref:ref||"",emp:emp||"",ch:ch||(emp?"auto":"")})}
   ev("view");
-  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(!a)return;var dg=document.getElementById("dlg");ev("wa",dg&&dg.open&&cur&&dg.contains(a)?"wa:"+ck(cur):a.id||(a.href.indexOf("tel:")===0?"tel":"wa"),a.getAttribute("data-emp")||"")},true);
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href^="tel:"]');if(!a)return;if(a.hasAttribute("data-tm")||(a.hasAttribute("data-pt")&&TM.on(a.getAttribute("data-pt"))))return;var dg=document.getElementById("dlg");ev("wa",dg&&dg.open&&cur&&dg.contains(a)?"wa:"+ck(cur):a.id||(a.href.indexOf("tel:")===0?"tel":"wa"),a.getAttribute("data-emp")||"")},true);
   return {lead:function(o){o.kind="lead";send(o)},ev:ev};
 })();
 var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e){}};
