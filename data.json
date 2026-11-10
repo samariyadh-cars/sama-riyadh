@@ -38,7 +38,8 @@
     "img/cam-le-7.jpg",
     "img/cam-le-8.jpg",
     "img/cam-le-9.jpg"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كامري E بنزين": {
    "colors": [
@@ -54,7 +55,8 @@
     "أسود",
     "فضي",
     "تيتانيوم"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كامري جراندي بنزين": {
    "pm": "hide",
@@ -71,7 +73,8 @@
     "أسود",
     "فضي",
     "تيتانيوم"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كامري E هايبرد": {
    "price": 102000,
@@ -79,7 +82,8 @@
     "أبيض",
     "فضي",
     "تيتانيوم"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كامري E Plus هايبرد": {
    "price": 107000,
@@ -88,7 +92,8 @@
     "أبيض",
     "فضي",
     "رمادي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كامري LE هايبرد": {
    "colors": [
@@ -97,30 +102,35 @@
     "فضي",
     "تيتانيوم",
     "كحلي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كامري لوميير هايبرد": {
    "colors": [
     "أبيض",
     "أسود"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كورولا 1.5 ستاندر": {
    "price": 62000,
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كورولا 2.0 ستاندر": {
    "colors": [
     "رمادي",
     "رصاصي فاتح"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كورولا 2.0 مطور": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا يارس Y بنزين": {
    "colors": [
@@ -130,21 +140,24 @@
     "رمادي بمقصورة بيج",
     "فضي",
     "فضي بمقصورة بيج"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا يارس Y+ بنزين": {
    "colors": [
     "أبيض",
     "أسود",
     "رمادي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا يارس YX بنزين": {
    "colors": [
     "أبيض",
     "رمادي",
     "فضي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فورتشنر GX2 4X2 بنزين": {
    "price": 118000,
@@ -152,33 +165,39 @@
     "أبيض",
     "أسود",
     "فضي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فورتشنر GX2 4X4 بنزين": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فورتشنر VX1 4X4 بنزين V6": {
    "price": 146000,
    "colors": [
     "أسود"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فورتشنر GX2 4X4 ديزل": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فورتشنر VX2 4X4 ديزل": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فورتشنر VX2 بلس رادار 4X4 ديزل": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو TX2 4X4 بنزين": {
    "status": "hidden",
@@ -186,36 +205,42 @@
     "أبيض",
     "أسود",
     "ذهبي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو TXL2 4X4 ديزل": {
    "colors": [
     "ذهبي",
     "أسود"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو TXL3 4X4 بنزين": {
    "colors": [
     "أسود",
     "ذهبي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو VXL3 4X4 بنزين": {
    "colors": [
     "ذهبي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو أدفنشر 4X4 بنزين": {
    "colors": [
     "أسود",
     "رصاصي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو أدفنشر 4X4 ديزل": {
    "colors": [
     "أبيض",
     "ذهبي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا برادو TXL1 4X4 بنزين": {
    "colors": [
@@ -223,10 +248,12 @@
     "أسود",
     "برونزي",
     "رمادي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا لاندكروزر": {
-   "status": "hidden"
+   "status": "hidden",
+   "since": "2026-11-10"
   },
   "تويوتا راف فور LE 4X4 بنزين": {
    "badge": "وصلت جديد",
@@ -234,7 +261,8 @@
     "ذهبي",
     "أبيض",
     "رصاصي فاتح"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا راف فور XLE 4X4 بنزين": {
    "colors": [
@@ -242,35 +270,41 @@
     "رمادي",
     "ذهبي",
     "كحلي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا راف فور LE 4X4 هايبرد": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا راف فور XLE 4X4 هايبرد": {
    "colors": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا راف فور ادفنشر 4X4 هايبرد": {
    "colors": [
     "أسود"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا رايز XLE بنزين": {
    "colors": [
     "أبيض",
     "أسود"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا رايز ليميتد بنزين": {
    "colors": [
     "أبيض",
     "أسود",
     "رمادي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا فيلوز بنزين": {
    "colors": [
@@ -279,7 +313,8 @@
     "رمادي",
     "فضي",
     "أحمر"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "تويوتا كراون بريميوم هايبرد": {
    "colors": [
@@ -296,7 +331,8 @@
     "blob/f73e6ea8dad52568c96f5a59096b460a.jpg",
     "blob/0311052f085f6c471f91de8d926cae2e.jpg",
     "blob/a2e67ffe31579d396a6f135bb0e176f1.jpg"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "لكزس ES250 AA": {
    "colors": [
@@ -307,7 +343,8 @@
     "أسود بمقصورة جملي",
     "تيتانيوم",
     "رمادي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "لكزس IS350 DD": {
    "colors": [
@@ -323,7 +360,8 @@
     "blob/14bab90b80f29d4e8ff2f550116dd500.jpg",
     "blob/18fd76358fe3fc1143a5aa7382d0381a.jpg",
     "blob/c549ab8ee13ac26e1a82fba36a459ec4.jpg"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "لكزس ES350 CC": {
    "y": "2025",
@@ -338,7 +376,8 @@
     "blob/2b8e64d73aabb1509e1e83fbeb4a7f6d.jpg",
     "blob/e9e2c4ceedd23634e74db00dc184df25.jpg",
     "blob/80932e457075ad47a224614b2918baaf.jpg"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "لكزس NX350 AA": {
    "colors": [
@@ -348,13 +387,22 @@
     "أسود بمقصورة أحمر",
     "تيتانيوم بمقصورة أحمر",
     "رمادي بمقصورة جملي"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   "لكزس RX350 BB": {
-   "status": "hidden"
+   "status": "hidden",
+   "since": "2026-11-10"
   },
   "لكزس LX600 BB": {
-   "status": "hidden"
+   "status": "hidden",
+   "since": "2026-11-10"
+  },
+  "تويوتا أوربان GL بنزين": {
+   "since": "2026-11-10"
+  },
+  "تويوتا أوربان GLX بنزين": {
+   "since": "2026-11-10"
   }
  },
  "extra": [
@@ -464,13 +512,15 @@
     "• سجادة صلاة — صنع في السعودية.",
     "• ملصق نوع الوقود — صنع في جنوب أفريقيا."
    ],
-   "specsEn": "## Technical features\nEngine: 2.5L hybrid, 4 cylinders\nTotal power: 218 hp\nGasoline engine torque: 221 Nm at 3,600–5,200 rpm\nTransmission: Continuously variable (E-CVT)\nTire size: 225/55R19\nDimensions (L × W × H): 4,980 × 1,840 × 1,540 mm\nFuel efficiency: 26.1 km/L\nFuel tank capacity: 55 L\n3 driving modes: Normal, Sport, Eco\n## Exterior features\n19-inch alloy wheels\nLED front and rear lights\nPower side mirrors with turn signals, power-folding\nPanoramic roof\n## Interior features\nPremium leather seats\nPower control for driver and front passenger seats\n12.3-inch digital instrument cluster\nThree-spoke leather steering wheel with controls\nAuto-dimming interior mirror\nAutomatic climate control with rear air vents\nFront interior floor lighting\nFolding rear seats 60:40: with center armrest and cup holder\n## Audio and entertainment\n8-inch touchscreen with Bluetooth\nWired Apple CarPlay\n8-speaker audio system\nUSB charging ports: Dual port for front and rear seats, and a data port in the front console\n## Safety and driver assistance\nFront airbags for driver and front passenger, plus side and curtain airbags\nToyota Safety Sense (TSS 3.0)\nPre-Collision System (PCS)\nDynamic Radar Cruise Control (DRCC)\nLane Tracing Assist (LTA)\nLane Departure Alert (LDA)\nRear camera\nFront and rear parking assist sensors\nElectric parking brake (EPB)\nBrake hold function (Auto Hold)\n## Comfort features\nSmart entry with engine start/stop button\nVertical wireless charger for compatible smartphones — made in China\n## Additional equipment\nFabric cargo area cover — made in Thailand\nFabric floor mats — made in Thailand\nSafety kit — made in China\nPrayer mat — made in Saudi Arabia\nFuel type label — made in South Africa"
+   "specsEn": "## Technical features\nEngine: 2.5L hybrid, 4 cylinders\nTotal power: 218 hp\nGasoline engine torque: 221 Nm at 3,600–5,200 rpm\nTransmission: Continuously variable (E-CVT)\nTire size: 225/55R19\nDimensions (L × W × H): 4,980 × 1,840 × 1,540 mm\nFuel efficiency: 26.1 km/L\nFuel tank capacity: 55 L\n3 driving modes: Normal, Sport, Eco\n## Exterior features\n19-inch alloy wheels\nLED front and rear lights\nPower side mirrors with turn signals, power-folding\nPanoramic roof\n## Interior features\nPremium leather seats\nPower control for driver and front passenger seats\n12.3-inch digital instrument cluster\nThree-spoke leather steering wheel with controls\nAuto-dimming interior mirror\nAutomatic climate control with rear air vents\nFront interior floor lighting\nFolding rear seats 60:40: with center armrest and cup holder\n## Audio and entertainment\n8-inch touchscreen with Bluetooth\nWired Apple CarPlay\n8-speaker audio system\nUSB charging ports: Dual port for front and rear seats, and a data port in the front console\n## Safety and driver assistance\nFront airbags for driver and front passenger, plus side and curtain airbags\nToyota Safety Sense (TSS 3.0)\nPre-Collision System (PCS)\nDynamic Radar Cruise Control (DRCC)\nLane Tracing Assist (LTA)\nLane Departure Alert (LDA)\nRear camera\nFront and rear parking assist sensors\nElectric parking brake (EPB)\nBrake hold function (Auto Hold)\n## Comfort features\nSmart entry with engine start/stop button\nVertical wireless charger for compatible smartphones — made in China\n## Additional equipment\nFabric cargo area cover — made in Thailand\nFabric floor mats — made in Thailand\nSafety kit — made in China\nPrayer mat — made in Saudi Arabia\nFuel type label — made in South Africa",
+   "since": "2026-11-10"
   },
   {
    "b": "هيونداي",
    "n": "اكسنت",
    "y": "2026",
-   "type": "سيدان"
+   "type": "سيدان",
+   "since": "2026-11-10"
   },
   {
    "b": "شانجان",
@@ -537,7 +587,8 @@
     "نظام المكابح ABS / EBD",
     "خزان الوقود 51 لتر",
     "قيادة شبه ذاتيه"
-   ]
+   ],
+   "since": "2026-11-10"
   },
   {
    "b": "كيا",
@@ -567,7 +618,8 @@
      "up/1794144887569-ac3whw.jpg",
      "up/1794144889422-byd5e2.jpg"
     ]
-   }
+   },
+   "since": "2026-11-10"
   },
   {
    "b": "تويوتا",
@@ -662,7 +714,8 @@
     "تحكم بالقفل المركزي للأبواب من باب الراكب الأمامي",
     "جهاز نفخ الإطارات",
     "منبه فاخر (بوري) ("
-   ]
+   ],
+   "since": "2026-11-10"
   },
   {
    "b": "تويوتا",
@@ -787,7 +840,8 @@
    "badge": "متوفرة فوراً",
    "call": [
     "أبيض"
-   ]
+   ],
+   "since": "2026-11-10"
   }
  ],
  "specs": {
