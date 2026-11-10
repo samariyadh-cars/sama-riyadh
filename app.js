@@ -174,9 +174,9 @@ function render(f){
     if(curAv&&c.status==="sold")return;
     if(curCo!=="all"&&!(c.colors||[]).some(function(x){return baseColor(x)===curCo}))return;
     var qv=($("q")&&$("q").value||"").trim().toLowerCase();if(qv&&qv.split(/\s+/).some(function(w){return (c.b+" "+c.n+" "+c.y+" "+c.type).toLowerCase().indexOf(w)<0}))return;
-    if(multi&&c.b!==lastB){lastB=c.b;var hh=document.createElement("h3");hh.className="brandh";hh.textContent=c.b;g.appendChild(hh)}
+    if(multi&&c.b!==lastB){lastB=c.b;var hh=document.createElement("h3");hh.className="brandh";hh.innerHTML="<span></span><small class=\"bhx\">إخفاء ▲</small>";hh.firstChild.textContent=c.b;hh.setAttribute("role","button");hh.setAttribute("aria-expanded","true");hh.addEventListener("click",function(){var off=hh.getAttribute("aria-expanded")==="true";hh.setAttribute("aria-expanded",off?"false":"true");hh.lastChild.textContent=off?"إظهار ▼":"إخفاء ▲";var n=hh.nextElementSibling;while(n&&!n.classList.contains("brandh")){n.classList.toggle("bh",off);n=n.nextElementSibling}});g.appendChild(hh)}
     var d=document.createElement("article");d.className="card";
-    d.innerHTML='<button class="pic" type="button"></button><div class="body"><h3><button class="ttl" type="button"></button></h3><div class="meta"></div><div class="price"></div><div class="acts"><a class="btn cash" target="_blank" rel="noopener">اطلب كاش</a><a class="btn alt inst" target="_blank" rel="noopener">اطلب تقسيط</a></div></div>';
+    d.innerHTML='<button class="pic" type="button"></button><div class="body"><h3><button class="ttl" type="button"></button></h3><div class="meta"></div><div class="price"></div><div class="acts"><button class="btn dtl" type="button">التفاصيل</button><a class="btn cash" target="_blank" rel="noopener">اطلب كاش</a><a class="btn alt inst" target="_blank" rel="noopener">اطلب تقسيط</a></div></div>';
     var pic=d.querySelector(".pic");
     if(c.imgs&&c.imgs.length){pic.classList.add("has");var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";thumbImg(im,c.imgs[0]);pic.appendChild(im)}else{pic.innerHTML=CAR;pic.setAttribute("aria-label","تفاصيل "+c.b+" "+c.n)}
     d.querySelector(".ttl").textContent=c.b+" "+c.n;
@@ -189,9 +189,11 @@ function render(f){
     (function(){var fb=document.createElement("button");fb.type="button";fb.className="favb";var on=isFav(c);fb.setAttribute("aria-pressed",on);fb.setAttribute("aria-label",on?"شيلها من المفضلة":"أضف للمفضلة");fb.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>';
       fb.addEventListener("click",function(e){e.stopPropagation();var l=favs(),k=l.indexOf(ck(c));if(k>=0)l.splice(k,1);else l.push(ck(c));try{localStorage.setItem("sama_favs",JSON.stringify(l))}catch(x){}favChip();var y=window.scrollY;render(curF);window.scrollTo(0,y)});d.appendChild(fb)})();
     pic.addEventListener("click",function(){openCar(i)});
+    (function(){var db=d.querySelector(".dtl");if(db)db.addEventListener("click",function(){openCar(i)})})();
     d.querySelector(".ttl").addEventListener("click",function(){openCar(i)});
     g.appendChild(d);shown++;
   });
+  try{var fn=(curFu!=="all"?1:0)+(curB!=="all"?1:0)+(curAv?1:0)+(curCo!=="all"?1:0),ft=$("fTgl");if(ft)ft.textContent="⚙ تصفية"+(fn?" ("+fn+")":"")}catch(e){}
   var ce=$("cnt");if(ce)ce.textContent=shown?((curFav?"المفضلة: ":"عدد السيارات: ")+shown):"";favChip();
   if(curFav&&!shown){var nf0=document.createElement("div");nf0.className="noRes";nf0.textContent="ما حفظت سيارات للحين. اضغط القلب على أي سيارة تعجبك.";g.appendChild(nf0);return}
   if(!shown){var nr=document.createElement("div");nr.className="noRes";nr.innerHTML="ما لقينا سيارة بهذي المواصفات.<br>";var na=document.createElement("a");na.className="btn";na.href="#want";na.textContent="اطلب سيارتك وتواصل معك";nr.appendChild(na);g.appendChild(nr)}
@@ -746,3 +748,5 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
       var u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=fn;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},3000)
     }).catch(function(){}).then(function(){b.disabled=false;b.textContent=t})});
 })();
+
+(function(){var t=$("fTgl");if(t)t.addEventListener("click",function(){var o=document.body.classList.toggle("fo");t.setAttribute("aria-expanded",o?"true":"false")})})();
