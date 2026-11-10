@@ -1,0 +1,27 @@
+name: weekly-data-backup
+# نسخة احتياطية أسبوعية لبيانات الموقع (data.json) — تنحفظ آخر 8 نسخ في مجلد backups
+on:
+  schedule:
+    - cron: "17 21 * * 5"   # كل جمعة 12:17 بعد منتصف الليل بتوقيت الرياض
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: data-backup
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p backups
+          d=$(TZ=Asia/Riyadh date +%F)
+          cp data.json "backups/data-$d.json"
+          ls -1 backups/data-*.json | sort -r | tail -n +9 | xargs -r git rm -q
+          git config user.name "sama-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add backups
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -q -m "نسخة احتياطية أسبوعية لبيانات الموقع $d"
+          for i in 1 2 3; do git pull --rebase -q origin main && git push -q && exit 0; sleep 5; done
+          exit 1
