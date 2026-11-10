@@ -21,7 +21,7 @@ jobs:
       - run: |
           git config user.name "sama-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A c
+          git add -A c sitemap.xml
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
           git commit -m "تحديث معاينة روابط السيارات"
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q && exit 0; sleep 5; done
