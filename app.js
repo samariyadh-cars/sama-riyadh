@@ -400,22 +400,28 @@ function cnum(v){v=String(v||"").replace(/[٠-٩]/g,function(d){return "٠١٢٣
 function cv(i){var e=$(i);return e?String(e.value||"").trim():""}
 function cOb(){var p=cnum(cv("cOP")),h=cnum(cv("cOH")),o=cnum(cv("cOO")),t=p+h+o;$("cTot").textContent=t.toLocaleString("en-US")+" ريال";return {p:p,h:h,o:o,t:t,none:$("cO0").checked||!t}}
 function cMsg(){
-  var c=cars[+$("cCar").value],ob=cOb(),f=function(x){return x.toLocaleString("en-US")};
-  return {c:c,ob:ob,obTxt:ob.none?"لا يوجد":"شخصي "+f(ob.p)+" + عقاري "+f(ob.h)+" + أخرى "+f(ob.o)+" = "+f(ob.t),
-   msg:"السلام عليكم، طلب تمويل من موقع "+SHOP+"\n\nالسيارة: "+c.b+" "+c.n+" "+c.y+"\nنوع الشراء: "+cv("cType")+"\nالاسم: "+cv("cName")+"\nالجوال: "+cv("cPhone")+"\nالمدينة: "+(cv("cCity")||"—")+"\nالجنسية: "+cv("cNat")+"\nالعمر: "+(cv("cAge")||"—")+"\nالراتب: "+(cv("cSalary")||"—")+"\nجهة العمل: "+cv("cJob")+"\nالبنك: "+cv("cBank")+"\nالدفعة الأولى: "+$("cDown").value+"%\nالمدة: "+$("cYears").options[$("cYears").selectedIndex].text+
-     "\n\nالالتزامات الشهرية:"+(ob.none?" لا يوجد":"\n• قسط شخصي: "+f(ob.p)+"\n• قسط عقاري: "+f(ob.h)+"\n• أخرى: "+f(ob.o)+"\n• المجموع: "+f(ob.t)+" ريال")}}
+  var c=cars[+$("cCar").value],ob=cOb(),f=function(x){return x.toLocaleString("en-US")},L=[];
+  var add=function(k,v){if(v)L.push(k+": "+v)};
+  var yr=$("cYears").value?$("cYears").options[$("cYears").selectedIndex].text:"";
+  var obTxt=ob.none?($("cO0").checked?"لا يوجد":""):"شخصي "+f(ob.p)+" + عقاري "+f(ob.h)+" + أخرى "+f(ob.o)+" = "+f(ob.t);
+  var msg="السلام عليكم، طلب تمويل من موقع "+SHOP+"\n\nالسيارة: "+c.b+" "+c.n+" "+c.y+"\nنوع الشراء: "+cv("cType")+"\nالاسم: "+cv("cName")+"\nالجوال: "+cv("cPhone");
+  add("المدينة",cv("cCity"));add("الجنسية",cv("cNat"));add("العمر",cv("cAge"));add("الراتب",cv("cSalary"));add("جهة العمل",cv("cJob"));add("البنك",cv("cBank"));
+  if($("cDown").value!=="")add("الدفعة الأولى",$("cDown").value+"%");add("المدة",yr);
+  if(L.length)msg+="\n"+L.join("\n");
+  if(ob.none?$("cO0").checked:true){msg+="\n\nالالتزامات الشهرية:"+(ob.none?" لا يوجد":"\n• قسط شخصي: "+f(ob.p)+"\n• قسط عقاري: "+f(ob.h)+"\n• أخرى: "+f(ob.o)+"\n• المجموع: "+f(ob.t)+" ريال")}
+  return {c:c,ob:ob,obTxt:obTxt||"—",msg:msg}}
 function upd(){setT($("cWa"),"inst",cMsg().msg,1)}
 ["cName","cPhone","cCar","cDown","cYears","cJob","cSalary","cCity","cNat","cAge","cBank","cType","cOP","cOH","cOO"].forEach(function(i){var e=$(i);if(e){e.addEventListener("input",upd);e.addEventListener("change",upd)}});
 ["cOP","cOH","cOO"].forEach(function(i){$(i).addEventListener("input",function(){if($(i).value.trim())$("cO0").checked=false;upd()})});
 $("cO0").addEventListener("change",function(){["cOP","cOH","cOO"].forEach(function(i){$(i).disabled=$("cO0").checked;if($("cO0").checked)$(i).value=""});upd()});
 $("cWa").addEventListener("click",function(e){
   var anyOb=["cOP","cOH","cOO"].some(function(i){return cv(i)!==""});
-  var bad=!cv("cName")?"اكتب اسمك.":digits(cv("cPhone")).length<9?"اكتب رقم جوال صحيح.":(!anyOb&&!$("cO0").checked)?"اكتب التزاماتك الشهرية، أو اختر «ما عندي أي التزامات».":!$("cAgree").checked?"لازم توافق على استخدام بياناتك عشان نقدر ندرس طلبك.":"";
+  var bad=!cv("cName")?"اكتب اسمك.":digits(cv("cPhone")).length<9?"اكتب رقم جوال صحيح.":!$("cAgree").checked?"لازم توافق على استخدام بياناتك عشان نقدر ندرس طلبك.":"";
   if(bad){e.preventDefault();$("cNote").textContent=bad;$("cNote").style.color="#B91C1C";return}
   $("cNote").style.color="";$("cNote").textContent="تم تجهيز الطلب في واتساب، اضغط إرسال هناك.";
   try{var r=cMsg(),c=r.c,sal=cnum(cv("cSalary"));setT($("cWa"),"inst",r.msg,1);
     var pk=TM.on("inst")&&!TM.saved("inst");if(pk)e.preventDefault();
-    var LD=({emp:empOf("inst"),ch:chOf("inst"),src:"حاسبة التقسيط • "+cv("cType")+" • "+cv("cNat")+" • العمر "+(cv("cAge")||"—")+" • البنك "+cv("cBank")+" • الالتزامات "+r.obTxt,name:cv("cName"),phone:cv("cPhone"),car:c.b+" "+c.n+" "+c.y,pay:({"تقسيط":"أقساط"})[cv("cType")]||cv("cType"),job:cv("cJob"),salary:sal>0?sal:"",down:$("cDown").value+"%",years:$("cYears").value,city:cv("cCity")});if(pk)TM.open("inst",r.msg,function(en,k){LD.emp=en;LD.ch=k;TRK.lead(LD)});else TRK.lead(LD)}catch(x){}
+    var LD=({emp:empOf("inst"),ch:chOf("inst"),src:"حاسبة التقسيط • "+cv("cType")+" • "+(cv("cNat")||"—")+" • العمر "+(cv("cAge")||"—")+" • البنك "+(cv("cBank")||"—")+" • الالتزامات "+r.obTxt,name:cv("cName"),phone:cv("cPhone"),car:c.b+" "+c.n+" "+c.y,pay:({"تقسيط":"أقساط"})[cv("cType")]||cv("cType"),job:cv("cJob"),salary:sal>0?sal:"",down:$("cDown").value!==""?$("cDown").value+"%":"",years:$("cYears").value,city:cv("cCity")});if(pk)TM.open("inst",r.msg,function(en,k){LD.emp=en;LD.ch=k;TRK.lead(LD)});else TRK.lead(LD)}catch(x){}
 });
 function favChip(){var n=favs().length,b=$("favOnly");if(!b){b=document.createElement("button");b.className="chip favc";b.id="favOnly";b.type="button";b.addEventListener("click",function(e){e.stopPropagation();curFav=!curFav;render(curF)});$("fuels").appendChild(b)}
   b.hidden=!n&&!curFav;b.textContent="♥ المفضلة ("+n+")";b.setAttribute("aria-pressed",curFav?"true":"false");if(!n&&curFav)curFav=false}
@@ -788,3 +794,9 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
   var fr=P.filter(function(c){return /جديد|وصل/.test(c.badge||"")}).slice(0,10);
   if(fr.length>=2){var row=$("frRow");fr.forEach(function(c){var b=document.createElement("button");b.type="button";var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";im.src=c.imgs[0];var t=document.createElement("b");t.textContent=c.b+" "+c.n;b.appendChild(im);b.appendChild(t);b.addEventListener("click",function(){openCar(cars.indexOf(c))});row.appendChild(b)});$("fresh").hidden=false}
 })();
+
+/* تبويبات اطلب سيارة / اطلب تقسيط */
+(function(){function tab(k){var inst=k==="inst";$("pnCar").hidden=inst;$("pnInst").hidden=!inst;[["tabCar",!inst],["tabInst",inst]].forEach(function(x){var b=$(x[0]);b.classList.toggle("on",x[1]);b.setAttribute("aria-selected",x[1]?"true":"false")})}
+  var t=document.querySelector(".otabs");if(t)t.addEventListener("click",function(e){var b=e.target.closest("[data-otab]");if(b)tab(b.dataset.otab)});
+  function h(){if(location.hash==="#inst"||location.hash==="#pay-inst"){tab("inst");var s=$("want");if(s)s.scrollIntoView()}}
+  window.addEventListener("hashchange",h);h();window.openInstTab=function(){tab("inst");var s=$("want");if(s)s.scrollIntoView({behavior:"smooth"})}})();

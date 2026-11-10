@@ -260,6 +260,17 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 #fresh{background:var(--bg)}#fresh .wrap{padding-top:18px;padding-bottom:6px}#fresh h2{font-size:20px;margin:0 0 10px}.fr{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px}
 .fr button{all:unset;cursor:pointer;flex:0 0 138px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}.fr img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}.fr b{padding:6px 8px 8px;font-size:13px;line-height:1.35}
 </style>
+<style id="ord">
+.otabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#dbe6f0;padding:5px;border-radius:12px;margin:0 0 12px}.otabs button{font:inherit;font-weight:700;border:0;border-radius:9px;padding:10px 6px;background:transparent;color:#51657a;cursor:pointer}.otabs button.on{background:#1e73be;color:#fff}
+.calc details.more{grid-column:1/-1;border:2px dashed var(--line);border-radius:12px;padding:0 12px}.calc details.more summary{cursor:pointer;font-weight:700;padding:11px 0;color:var(--ink)}.calc .calcg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;padding:4px 0 14px}.calc .calcg label{display:flex;flex-direction:column;gap:4px;font-weight:500}.calc .calcg select,.calc .calcg input{font:inherit;padding:9px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+.info.one{grid-template-columns:1fr}.info.one p{display:flex;gap:8px;align-items:flex-start;margin:6px 0;line-height:1.8}.info.one i{font-style:normal}
+@media(max-width:640px){
+ .pays{grid-template-columns:1fr 1fr;gap:8px}.pays div{padding:10px 11px}.pays h3{font-size:15px}.pays p{font-size:12.5px;line-height:1.5}
+ .ptg{grid-template-columns:repeat(3,1fr);gap:6px}.ptx .pt{min-height:44px;font-size:11.5px;padding:6px 3px}
+ .whyg{grid-template-columns:1fr 1fr;gap:8px}.whyg>div{padding:10px 11px}.whyg b{font-size:14px;margin-bottom:3px}.whyg p{font-size:12.5px;line-height:1.55}
+ #pay .ptT{font-size:17px;margin-top:16px}
+}
+</style>
 </head>
 <body>
 <div id="promo" hidden></div>
@@ -301,8 +312,10 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 </div></section>
 
 <section id="want"><div class="wrap">
-<h2>ما لقيت سيارتك؟ اطلبها</h2>
-<p class="sub">اكتب لنا السيارة اللي تبغاها، ونوفرها لك ونتواصل معك على واتساب.</p>
+<h2>اطلب سيارتك أو تمويلك</h2>
+<p class="sub">اختر اللي تبغاه ونتواصل معك على واتساب.</p>
+<div class="otabs" role="tablist"><button type="button" class="on" id="tabCar" role="tab" aria-selected="true" data-otab="car">اطلب سيارة</button><button type="button" id="tabInst" role="tab" aria-selected="false" data-otab="inst">اطلب تقسيط</button></div>
+<div id="pnCar" role="tabpanel">
 <form class="want" id="wForm">
 <label>الاسم<input id="wName" type="text" autocomplete="name" required></label>
 <label>رقم الجوال<input id="wPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" placeholder="05xxxxxxxx" required></label>
@@ -314,75 +327,75 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <div class="res"><button class="btn" type="submit">أرسل الطلب عبر واتساب</button></div>
 <p class="note" id="wNote" style="grid-column:1/-1;margin:0">نرد عليك بالتوفر والموعد المتوقع.</p>
 </form>
-</div></section>
-
-<section id="pay"><div class="wrap">
-<h2>طرق الدفع</h2>
-<p class="sub">اختر الطريقة اللي تناسبك، ونرتب لك كل شي من المعرض.</p>
-<div class="pays">
-<div><h3>كاش</h3><p>تدفع كامل المبلغ وتستلم سيارتك بأسرع وقت.</p></div>
-<div><h3>تقسيط</h3><p>دفعة أولى ومدة تصل إلى 5 سنوات، والموافقة حسب جهة التمويل.</p></div>
-<div><h3>دفعتين</h3><p>تدفع جزء الآن والباقي على دفعة ثانية متفق عليها.</p></div>
-<div><h3>تأجير منتهي بالتمليك</h3><p>قسط شهري مريح، وتتملك السيارة بنهاية العقد.</p></div>
 </div>
-<h3 class="ptT">💳 نساعدك في التمويل</h3>
-<p class="sub" style="margin:0 0 10px">عن طريق البنوك وشركات التمويل — ونخلّص لك الإجراءات. نتعامل مع جهات منها:</p>
-<div class="ptg ptx"><div class="pt">مصرف الراجحي</div><div class="pt">البنك الأهلي التجاري</div><div class="pt">البنك العربي الوطني</div><div class="pt">بنك الرياض</div><div class="pt">بنك البلاد</div><div class="pt">مصرف الإنماء</div><div class="pt">بنك الجزيرة</div><div class="pt">البنك السعودي الفرنسي</div><div class="pt">بنك الإمارات دبي الوطني</div><div class="pt">عبد اللطيف جميل للتمويل</div><div class="pt">شركة راية للتمويل</div></div>
-<p class="ptN">ضمان الوكيل · الموافقة حسب شروط جهة التمويل</p>
-<div class="banks" id="banks" hidden></div>
-<div class="ship"><p><b>نشحن لجميع مدن المملكة</b> — من المعرض في الرياض إلى باب بيتك.</p><a class="btn" id="shipWa" target="_blank" rel="noopener" href="#">اسأل عن الشحن لمدينتك</a></div>
-<h3 style="margin:28px 0 0;font-size:20px">اطلب تقسيط</h3>
-<p class="sub" style="margin-bottom:0">عبّي بياناتك ونرسل لك القسط على واتساب. <a id="docQ" target="_blank" rel="noopener" href="#" style="color:var(--wa);font-weight:700;white-space:nowrap">📄 وش المستندات المطلوبة؟</a></p>
+<div id="pnInst" role="tabpanel" hidden>
+<p class="sub" style="margin:0 0 4px">عبّي بياناتك ونرسل لك القسط على واتساب. <a id="docQ" target="_blank" rel="noopener" href="#" style="color:var(--wa);font-weight:700;white-space:nowrap">📄 وش المستندات المطلوبة؟</a></p>
 <div class="calc">
 <label>الاسم<input id="cName" type="text" autocomplete="name"></label>
 <label>رقم الجوال<input id="cPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" placeholder="05xxxxxxxx"></label>
-<label>المدينة<input id="cCity" list="cCityL" placeholder="مثل: الرياض"><datalist id="cCityL"><option value="الرياض"><option value="جدة"><option value="مكة المكرمة"><option value="المدينة المنورة"><option value="الدمام"><option value="الخبر"><option value="القصيم"><option value="أبها"><option value="خميس مشيط"><option value="تبوك"><option value="حائل"><option value="جازان"><option value="نجران"><option value="الطائف"><option value="الأحساء"><option value="الجوف"></datalist></label>
-<label>الجنسية<select id="cNat"><option>سعودي</option><option>مقيم</option></select></label>
-<label>العمر<input id="cAge" type="text" inputmode="numeric" placeholder="سنة"></label>
-<label>الراتب الشهري (ريال)<input id="cSalary" type="text" inputmode="numeric"></label>
-<label>جهة العمل<select id="cJob"><option>حكومي</option><option>عسكري</option><option>قطاع خاص</option><option>متقاعد</option><option>أعمال حرة</option></select></label>
-<label>البنك الذي ينزل فيه راتبك<select id="cBank"><option>مصرف الراجحي</option><option>البنك الأهلي التجاري</option><option>بنك الرياض</option><option>بنك البلاد</option><option>مصرف الإنماء</option><option>بنك الجزيرة</option><option>البنك السعودي الفرنسي</option><option>البنك العربي الوطني</option><option>بنك الإمارات دبي الوطني</option><option>بنك آخر</option></select></label>
 <label>السيارة<select id="cCar"></select></label>
+<label>الراتب الشهري (ريال)<input id="cSalary" type="text" inputmode="numeric"></label>
 <label>نوع الشراء<select id="cType"><option>تقسيط</option><option>دفعتين</option><option>تأجير منتهي بالتمليك</option></select></label>
-<label>الدفعة الأولى<select id="cDown"><option value="0">بدون دفعة</option><option value="10">10%</option><option value="20" selected>20%</option><option value="30">30%</option><option value="40">40%</option></select></label>
-<label>مدة التقسيط<select id="cYears"><option value="1">سنة</option><option value="2">سنتان</option><option value="3">3 سنوات</option><option value="4">4 سنوات</option><option value="5" selected>5 سنوات</option></select></label>
+<details class="more"><summary>تفاصيل أكثر (اختياري)</summary><div class="calcg">
+<label>المدينة<input id="cCity" list="cCityL" placeholder="مثل: الرياض"><datalist id="cCityL"><option value="الرياض"><option value="جدة"><option value="مكة المكرمة"><option value="المدينة المنورة"><option value="الدمام"><option value="الخبر"><option value="القصيم"><option value="أبها"><option value="خميس مشيط"><option value="تبوك"><option value="حائل"><option value="جازان"><option value="نجران"><option value="الطائف"><option value="الأحساء"><option value="الجوف"></datalist></label>
+<label>الجنسية<select id="cNat"><option value="">—</option><option>سعودي</option><option>مقيم</option></select></label>
+<label>العمر<input id="cAge" type="text" inputmode="numeric" placeholder="سنة"></label>
+<label>جهة العمل<select id="cJob"><option value="">—</option><option>حكومي</option><option>عسكري</option><option>قطاع خاص</option><option>متقاعد</option><option>أعمال حرة</option></select></label>
+<label>البنك الذي ينزل فيه راتبك<select id="cBank"><option value="">—</option><option>مصرف الراجحي</option><option>البنك الأهلي التجاري</option><option>بنك الرياض</option><option>بنك البلاد</option><option>مصرف الإنماء</option><option>بنك الجزيرة</option><option>البنك السعودي الفرنسي</option><option>البنك العربي الوطني</option><option>بنك الإمارات دبي الوطني</option><option>بنك آخر</option></select></label>
+<label>الدفعة الأولى<select id="cDown"><option value="">—</option><option value="0">بدون دفعة</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option></select></label>
+<label>مدة التقسيط<select id="cYears"><option value="">—</option><option value="1">سنة</option><option value="2">سنتان</option><option value="3">3 سنوات</option><option value="4">4 سنوات</option><option value="5">5 سنوات</option></select></label>
 <fieldset class="obl"><legend>الالتزامات الشهرية</legend>
 <div class="obg"><label>قسط شخصي<input id="cOP" type="text" inputmode="numeric" placeholder="0"></label><label>قسط عقاري<input id="cOH" type="text" inputmode="numeric" placeholder="0"></label><label>أخرى (سيارة، بطاقات)<input id="cOO" type="text" inputmode="numeric" placeholder="0"></label></div>
 <div class="obt"><span>المجموع الشهري</span><b id="cTot">0 ريال</b></div>
 <label class="chk"><input type="checkbox" id="cO0">ما عندي أي التزامات</label></fieldset>
+</div></details>
 <label class="chk agr"><input type="checkbox" id="cAgree"><span>أوافق على استخدام بياناتي لدراسة طلب التمويل والتواصل معي بخصوصه فقط، وفق <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">سياسة الخصوصية</a></span></label>
 <div class="res"><a class="btn" id="cWa" target="_blank" rel="noopener" href="#">أرسل طلب التقسيط عبر واتساب</a></div>
-<p class="note" id="cNote">نراجع بياناتك ونرد عليك بالقسط على واتساب.</p>
+<p class="note" id="cNote">باقي البيانات (جهة العمل، والبنك، والالتزامات) نسألك عنها على واتساب.</p>
 </div>
+</div>
+</div></section>
+
+<section id="pay"><div class="wrap">
+<h2>طرق الدفع</h2>
+<div class="pays">
+<div><h3>كاش</h3><p>تدفع كامل المبلغ وتستلم بسرعة.</p></div>
+<div><h3>تقسيط</h3><p>دفعة أولى ومدة تصل إلى 5 سنوات.</p></div>
+<div><h3>دفعتين</h3><p>جزء الآن والباقي في دفعة ثانية.</p></div>
+<div><h3>تأجير منتهي بالتمليك</h3><p>قسط شهري وتتملك بنهاية العقد.</p></div>
+</div>
+<h3 class="ptT">💳 نتعامل مع أكثر من جهة تمويل</h3>
+<div class="ptg ptx"><div class="pt">مصرف الراجحي</div><div class="pt">البنك الأهلي التجاري</div><div class="pt">البنك العربي الوطني</div><div class="pt">بنك الرياض</div><div class="pt">بنك البلاد</div><div class="pt">مصرف الإنماء</div><div class="pt">بنك الجزيرة</div><div class="pt">البنك السعودي الفرنسي</div><div class="pt">بنك الإمارات دبي الوطني</div><div class="pt">عبد اللطيف جميل للتمويل</div><div class="pt">شركة راية للتمويل</div></div>
+<p class="ptN">ضمان الوكيل · الموافقة حسب شروط جهة التمويل</p>
+<div class="banks" id="banks" hidden></div>
+<div class="ship"><p><b>نشحن لجميع مدن المملكة</b> — من المعرض في الرياض إلى باب بيتك.</p><a class="btn" id="shipWa" target="_blank" rel="noopener" href="#">اسأل عن الشحن لمدينتك</a></div>
 </div></section>
 
 <section id="why"><div class="wrap">
 <h2>ليش معرض سماء الرياض</h2>
 <p class="sub">أربع أشياء تهمك لما تشتري سيارتك.</p>
 <div class="whyg">
-<div><b>🚗 سيارات جديدة</b><p>سيارات جديدة بموديلات حديثة، وتقدر تشوف الصور والمواصفات كاملة قبل لا تتواصل.</p></div>
-<div><b>💳 دفع على كيفك</b><p>كاش، أقساط، دفعتين، أو تأجير منتهي بالتمليك، ونرتّب لك الأنسب.</p></div>
-<div><b>🏦 تمويل من عدة جهات</b><p>نتعامل مع أكثر من جهة تمويل، ونساعدك في تجهيز الأوراق للحصول على أفضل خيار.</p></div>
-<div><b>🚚 نشحن لباب بيتك</b><p>سواء كنت في الرياض أو أي مدينة ثانية في المملكة، نوصل لك السيارة.</p></div>
+<div><b>🚗 سيارات جديدة</b><p>صور ومواصفات كاملة.</p></div>
+<div><b>💳 دفع على كيفك</b><p>كاش أو أقساط أو دفعتين.</p></div>
+<div><b>🏦 تمويل من عدة جهات</b><p>نجهز لك الأوراق.</p></div>
+<div><b>🚚 نشحن لباب بيتك</b><p>لجميع مدن المملكة.</p></div>
 </div>
-<p style="margin-top:14px"><a class="btn" href="#want">ما لقيت سيارتك؟ اطلبها</a></p>
 </div></section>
-<section id="visit"><div class="wrap">
-<h2>موقعنا</h2>
-<p class="sub">معرض سماء الرياض للسيارات في الرياض – معارض الشفاء، ونشحن سيارتك لجميع مدن المملكة.</p>
-<div class="info">
-<div><h3>العنوان</h3><p>الرياض، الشفاء، حي المروءة، شارع جبريل بن جميل، مقابل شيخ المعارض</p></div>
-<div><h3>ساعات الرد</h3><p>من 9 صباحًا إلى 1 ظهرًا<br>ومن 4 عصرًا إلى 9 مساءً</p></div>
-<div><h3>تواصل معنا</h3><p><a href="tel:0554378456" dir="ltr">0554378456</a><br>أو راسلنا على واتساب</p></div>
-</div>
-<div class="mapw"><iframe title="موقع المعرض على الخريطة" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=%D9%85%D8%B9%D8%B1%D8%B6%20%D8%B3%D9%85%D8%A7%D8%A1%20%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6%20%D9%84%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%D8%8C%20%D8%B4%D8%A7%D8%B1%D8%B9%20%D8%AC%D8%A8%D8%B1%D9%8A%D9%84%20%D8%A8%D9%86%20%D8%AC%D9%85%D9%8A%D9%84%D8%8C%20%D8%AD%D9%8A%20%D8%A7%D9%84%D9%85%D8%B1%D9%88%D8%A1%D8%A9%D8%8C%20%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6&amp;hl=ar&amp;z=16&amp;output=embed"></iframe></div>
-<a class="btn mapb" href="https://maps.app.goo.gl/kaLWQuUvmypJye6EA?g_st=ic" target="_blank" rel="noopener">افتح موقع المعرض في خرائط قوقل</a>
-</div></section>
-
 <section id="reviews"><div class="wrap">
 <h2>آراء عملائنا</h2>
 <p class="sub">تقييمات عملائنا على خرائط قوقل، وشاركنا رأيك بعد شرائك.</p>
 <p style="display:flex;gap:10px;flex-wrap:wrap;margin:0"><a class="btn" href="https://maps.app.goo.gl/kaLWQuUvmypJye6EA?g_st=ic" target="_blank" rel="noopener">⭐ شاهد التقييمات</a><a class="btn ghost" style="color:#0E2238;border-color:#0E2238" href="https://g.page/r/CR16Ud_Qn-XHEBE/review" target="_blank" rel="noopener">قيّمنا على قوقل</a></p>
+</div></section>
+<section id="visit"><div class="wrap">
+<h2>موقعنا</h2>
+<p class="sub">معرض سماء الرياض للسيارات في الرياض – معارض الشفاء، ونشحن سيارتك لجميع مدن المملكة.</p>
+<div class="info one">
+<div><p><i aria-hidden="true">📍</i><span>الرياض، الشفاء، حي المروءة، شارع جبريل بن جميل، مقابل شيخ المعارض</span></p>
+<p><i aria-hidden="true">🕘</i><span>من 9 صباحًا إلى 1 ظهرًا، ومن 4 عصرًا إلى 9 مساءً</span></p>
+<p><i aria-hidden="true">📞</i><a href="tel:0554378456" dir="ltr">0554378456</a><span>أو راسلنا على واتساب</span></p></div>
+</div>
+<div class="mapw"><iframe title="موقع المعرض على الخريطة" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=%D9%85%D8%B9%D8%B1%D8%B6%20%D8%B3%D9%85%D8%A7%D8%A1%20%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6%20%D9%84%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%D8%8C%20%D8%B4%D8%A7%D8%B1%D8%B9%20%D8%AC%D8%A8%D8%B1%D9%8A%D9%84%20%D8%A8%D9%86%20%D8%AC%D9%85%D9%8A%D9%84%D8%8C%20%D8%AD%D9%8A%20%D8%A7%D9%84%D9%85%D8%B1%D9%88%D8%A1%D8%A9%D8%8C%20%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6&amp;hl=ar&amp;z=16&amp;output=embed"></iframe></div>
+<a class="btn mapb" href="https://maps.app.goo.gl/kaLWQuUvmypJye6EA?g_st=ic" target="_blank" rel="noopener">افتح موقع المعرض في خرائط قوقل</a>
 </div></section>
 <dialog id="zv" aria-label="عرض الصورة"><button class="zx" type="button" aria-label="إغلاق">✕</button><img alt=""><button class="gnav p" type="button" aria-label="السابقة">›</button><button class="gnav n" type="button" aria-label="التالية">‹</button><span class="gcnt" dir="ltr"></span></dialog>
 <dialog class="dlg" id="dlg" aria-labelledby="dTitle">
@@ -430,10 +443,10 @@ header.top .wrap{gap:6px}header.top .logo{min-width:0;flex:0 1 auto}header.top .
 <a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
-<link rel="preload" href="app.js?v=41" as="script">
-<script src="i18n.js?v=12"></script><script src="specs_en.js?v=2"></script><script src="ad2.js?v=3"></script>
+<link rel="preload" href="app.js?v=42" as="script">
+<script src="i18n.js?v=13"></script><script src="specs_en.js?v=2"></script><script src="ad2.js?v=3"></script>
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=41";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=42";document.body.appendChild(s)});
 </script>
 <script>if("serviceWorker"in navigator&&location.protocol==="https:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
