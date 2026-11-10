@@ -750,3 +750,41 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
 })();
 
 (function(){var t=$("fTgl");if(t)t.addEventListener("click",function(){var o=document.body.classList.toggle("fo");t.setAttribute("aria-expanded",o?"true":"false")})})();
+
+/* شريط الواجهة المتغيّر + وصلت حديثاً + قائمة الماركات التلقائية */
+(function(){
+  function vis(c){return c.status!=="hidden"&&c.status!=="sold"}
+  function pool(){return cars.filter(function(c){return vis(c)&&c.imgs&&c.imgs.length})}
+  // الماركات تلقائياً
+  try{var bl=[];cars.forEach(function(c){if(c.status!=="hidden"&&c.b&&bl.indexOf(c.b)<0)bl.push(c.b)});var tb=$("trBrands");
+    if(tb&&bl.length){tb.textContent="";bl.forEach(function(b,i){if(i){tb.appendChild(document.createTextNode(" · "))}var sp=document.createElement("span");sp.textContent=b;tb.appendChild(sp)})}}catch(e){}
+  // اختيار الشرائح: اللي عليها شارة أولاً ثم تعبئة بالتناوب بين الماركات
+  var P=pool(),feat=P.filter(function(c){return c.badge||c._lb}),rest=P.filter(function(c){return !(c.badge||c._lb)}),by={},order=[];
+  rest.forEach(function(c){if(!by[c.b]){by[c.b]=[];order.push(c.b)}by[c.b].push(c)});
+  var pick=feat.slice(0,6);for(var r=0;pick.length<6&&r<6;r++){order.forEach(function(b){if(pick.length<6&&by[b][r])pick.push(by[b][r])})}
+  var box=document.querySelector(".hx-pic");
+  if(box&&pick.length>=2){
+    var sl=document.createElement("div");sl.className="hsl";sl.setAttribute("role","region");sl.setAttribute("aria-label","سيارات المعرض");
+    var dots=document.createElement("div");dots.className="hdots";
+    pick.forEach(function(c,k){var s=document.createElement("div");s.className="hs"+(k?"":" on");
+      var im=document.createElement("img");im.alt=c.b+" "+c.n;if(k)im.loading="lazy";im.decoding="async";im.src=c.imgs[0];s.appendChild(im);
+      var bd=c.badge||c._lb||"";if(bd){var e=document.createElement("span");e.className="hbd";e.textContent=bd;s.appendChild(e)}
+      var cp=document.createElement("div");cp.className="hcp";var a=document.createElement("small");a.textContent=c.b+" · موديل "+c.y;var n=document.createElement("b");n.textContent=c.b+" "+c.n;var t=document.createElement("span");t.textContent="جديدة · "+c.type;var bt=document.createElement("button");bt.type="button";bt.textContent="التفاصيل";
+      bt.addEventListener("click",function(){openCar(cars.indexOf(c))});[a,n,t,bt].forEach(function(x){cp.appendChild(x)});s.appendChild(cp);sl.appendChild(s);
+      var d=document.createElement("button");d.type="button";d.setAttribute("aria-label","الشريحة "+(k+1));if(!k)d.className="on";d.addEventListener("click",function(){go(k,true)});dots.appendChild(d)});
+    var nx=document.createElement("button"),pv=document.createElement("button");nx.className="har hnx";pv.className="har hpv";nx.type=pv.type="button";nx.textContent="‹";pv.textContent="›";nx.setAttribute("aria-label","التالي");pv.setAttribute("aria-label","السابق");
+    sl.appendChild(pv);sl.appendChild(nx);sl.appendChild(dots);
+    box.classList.add("sl");box.innerHTML="";box.appendChild(sl);
+    var cur=0,tm=null,slides=sl.querySelectorAll(".hs"),dd=dots.children,still=false;
+    function go(k,user){cur=(k+slides.length)%slides.length;for(var i=0;i<slides.length;i++){slides[i].classList.toggle("on",i===cur);dd[i].classList.toggle("on",i===cur)}if(user)restart()}
+    function restart(){clearInterval(tm);if(still||document.hidden)return;try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return}catch(e){}tm=setInterval(function(){go(cur+1)},5500)}
+    nx.addEventListener("click",function(){go(cur+1,true)});pv.addEventListener("click",function(){go(cur-1,true)});
+    var x0=null;sl.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;still=true;clearInterval(tm)},{passive:true});
+    sl.addEventListener("touchend",function(e){var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));still=false;restart()},{passive:true});
+    sl.addEventListener("mouseenter",function(){still=true;clearInterval(tm)});sl.addEventListener("mouseleave",function(){still=false;restart()});
+    document.addEventListener("visibilitychange",restart);restart();
+  }
+  // وصلت حديثاً
+  var fr=P.filter(function(c){return /جديد|وصل/.test(c.badge||"")}).slice(0,10);
+  if(fr.length>=2){var row=$("frRow");fr.forEach(function(c){var b=document.createElement("button");b.type="button";var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";im.src=c.imgs[0];var t=document.createElement("b");t.textContent=c.b+" "+c.n;b.appendChild(im);b.appendChild(t);b.addEventListener("click",function(){openCar(cars.indexOf(c))});row.appendChild(b)});$("fresh").hidden=false}
+})();
