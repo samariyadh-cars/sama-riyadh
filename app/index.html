@@ -257,7 +257,7 @@ html[dir="ltr"] .back svg{transform:scaleX(-1)}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="qr.js"></script>
-<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=5"></script><script src="../i18n.js?v=8"></script>
+<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=6"></script><script src="../i18n.js?v=8"></script>
 <script>
 /* ===== إعدادات المعرض ===== */
 var NUM="966554378456",PHONE="0554378456",SHOP="معرض سماء الرياض للسيارات",SNAP="es_99000";
@@ -415,7 +415,7 @@ function simHtml(c){var L=similarCars(c);if(!L.length)return "";
   return (c.status==="sold"?'<div class="soldbar">✅ هذي السيارة <b>انباعت</b> — شوف سيارات قريبة منها 👇</div>':'')+'<div class="sec" style="margin-top:18px"><h2 style="font-size:17px">سيارات مشابهة</h2><span style="font-size:12px;color:var(--mut)">نفس النوع وقريبة بالسعر</span></div><div class="simr">'+
    L.map(function(x){var u=firstImg(x),p=priceOf(x);return '<a href="#/car/'+idx(x)+'">'+(u?pic(u,"",true):'<span class="ph0"></span>')+'<span><b>'+esc(x.n)+'</b><em>'+(p?money(p*(1+VAT)):"السعر عند التواصل")+'</em></span></a>'}).join("")+'</div>'}
 /* ===== ما لقيت سيارتك؟ اطلبها ===== */
-function reqCard(){return '<div class="reqc"><div style="font-size:30px">🔎</div><b>ما لقيت سيارتك؟</b><p>قول لنا وش تبي، ونوفرها لك من الوكالة أو المعارض</p><button type="button" class="btn" id="reqb">اطلب سيارتك</button></div>'}
+function reqCard(){return '<div class="reqc"><div style="font-size:30px">🔎</div><b>ما لقيت سيارتك؟</b><p>قول لنا وش تبي، ونوفرها لك</p><button type="button" class="btn" id="reqb">اطلب سيارتك</button></div>'}
 function openReq(){var s=document.createElement("div");s.className="sheet open";var pay="كاش";
   s.innerHTML='<div class="box form" role="dialog" aria-label="اطلب سيارتك"><h3>اطلب سيارتك</h3><p style="margin:0;color:var(--mut);font-size:14px">نتواصل معك أول ما نلقاها</p>'+
    '<label>السيارة<input id="rqc" placeholder="مثل: لاندكروزر GXR" value="'+esc(F.q||"")+'"></label><div class="two"><label>الموديل<input id="rqy" inputmode="numeric" value="2026"></label><label>اللون<input id="rqo" placeholder="أي لون"></label></div>'+
