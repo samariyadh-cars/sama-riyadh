@@ -51,6 +51,10 @@ main{padding:16px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;height:42px;padding:0 18px;border-radius:21px;border:1px solid var(--line2);background:#fff;color:var(--ink);font-weight:600;font-size:14px;cursor:pointer}
 .chip[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.chips.lgs{gap:10px;padding:4px 2px 6px}.chip.lg{height:auto;padding:0;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:62px;font-size:12px;font-weight:600;color:var(--ink)}
+.chip.lg .lgc{width:56px;height:56px;border-radius:50%;background:#fff;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s}.chip.lg .lgc img{width:38px;height:32px;object-fit:contain}.chip.lg .lgc b{font-size:20px;color:var(--ink)}
+.chip.lg[aria-pressed=true]{background:none;color:var(--red);font-weight:800}.chip.lg[aria-pressed=true] .lgc{border-color:var(--red);box-shadow:0 0 0 2px var(--red)}.chip.lg .lgt small{display:block;color:var(--mut);font-weight:400;font-size:11px;margin-top:1px}
+.dt .hd .hdl{display:flex;align-items:center;gap:10px;min-width:0}.hlg{width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;font-style:normal}.hlg img{width:32px;height:28px;object-fit:contain}.hlg b{font-size:18px}
 /* البنر */
 .promo{background:var(--ink2);color:#fff;border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px}
 .promo small{display:block;font-size:11px;font-weight:600;color:#FF9AA6}
@@ -78,7 +82,7 @@ main{padding:16px}
 .cb em.ask{color:var(--wa)}
 .fav{position:absolute;top:8px;left:8px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
 .fav[aria-pressed=true]{color:var(--red)}.fav[aria-pressed=true] svg{fill:var(--red)}
-.chip.favchip{border-color:var(--red);color:var(--red)}.chip.favchip[aria-pressed=true]{background:var(--red);color:#fff}
+.chip.favchip{border-color:var(--red);color:var(--red)}.chip.favchip[aria-pressed=true]{background:var(--red);color:#fff}.chip.lg.favchip,.chip.lg.favchip[aria-pressed=true]{background:none;border:0}.chip.lg.favchip[aria-pressed=true]{color:var(--red)}
 .empty{text-align:center;color:var(--mut);padding:40px 10px}
 /* لوحة الفلتر */
 .sheet{position:fixed;inset:0;background:rgba(28,31,36,.45);z-index:30;display:none;align-items:flex-end;justify-content:center}
@@ -259,7 +263,7 @@ html[dir="ltr"] .back svg{transform:scaleX(-1)}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="qr.js"></script>
-<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=6"></script><script src="../i18n.js?v=10"></script>
+<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=7"></script><script src="../i18n.js?v=10"></script>
 <script>
 /* ===== إعدادات المعرض ===== */
 var NUM="966554378456",PHONE="0554378456",SHOP="معرض سماء الرياض للسيارات",SNAP="es_99000";
@@ -395,7 +399,14 @@ function header(){
 }
 function isFiltered(){return F.type!=="all"||F.fuel!=="all"||F.sort!=="def"||F.bud!=="all"}
 function brands(){var s={},l=[];visible().forEach(function(c){if(!s[c.b]){s[c.b]=1;l.push(c.b)}});return l}
-function brandChips(){var nf=favs().length;return '<div class="chips" role="group" aria-label="الماركات">'+(nf?'<button class="chip favchip" data-fav="1" aria-pressed="'+!!F.fav+'">♥ المفضلة ('+nf+')</button>':'')+["all"].concat(brands()).map(function(b){return '<button class="chip" data-b="'+esc(b)+'" aria-pressed="'+(!F.fav&&F.brand===b)+'">'+(b==="all"?"الكل":esc(b))+'</button>'}).join("")+'</div>'}
+/* شعارات الماركات: نفس ملفات الموقع، واللي ما له شعار يطلع أول حرف من اسمه */
+var BLG={"تويوتا":"toyota","لكزس":"lexus","كيا":"kia","هيونداي":"hyundai","شانجان":"changan"};
+function bLogo(b){var k=BLG[b];return k?'<img src="'+BASE+'img/brands/'+k+'.png" alt="" loading="lazy">':'<b>'+esc(String(b||"؟").trim().charAt(0))+'</b>'}
+function brandChips(home){var nf=favs().length,cnt={};visible().forEach(function(c){cnt[c.b]=(cnt[c.b]||0)+1});
+  var it=function(cls,attr,on,lg,nm,sub){return '<button class="chip lg'+cls+'" '+attr+' aria-pressed="'+on+'"><span class="lgc">'+lg+'</span><span class="lgt">'+nm+(home&&sub?'<small>'+sub+'</small>':'')+'</span></button>'};
+  return (home?'<div class="sec" style="margin-top:4px"><h2>تصفّح حسب الماركة</h2></div>':'')+'<div class="chips lgs" role="group" aria-label="الماركات">'+
+   (nf?it(" favchip",'data-fav="1"',!!F.fav,'<b style="color:var(--red)">♥</b>',"المفضلة",nf+" سيارة"):'')+
+   ["all"].concat(brands()).map(function(b){return it(b==="all"?" lga":"",'data-b="'+esc(b)+'"',!F.fav&&F.brand===b,b==="all"?'<img src="'+BASE+'logo.png" alt="">':bLogo(b),b==="all"?"الكل":esc(b),(b==="all"?visible().length:cnt[b]||0)+" سيارة")}).join("")+'</div>'}
 function card(c){var u=firstImg(c);return '<a class="card" href="#/car/'+idx(c)+'"><div class="ph">'+(u?pic(u,"",true):"")+tagOf(c,"tag")+favBtn(c)+'</div><div class="cb"><b>'+esc(c.b+" "+c.n)+'</b><span>'+esc(c.y||"")+(c.colors&&c.colors.length?" · "+c.colors.length+" ألوان":"")+'</span>'+priceLine(c)+(offerLeft(c)!=null?'<em class="cdn">'+offerTxt(offerLeft(c),1)+'</em>':'')+'</div></a>'}
 function filtered(){
   var q=F.q.trim().toLowerCase();
@@ -418,7 +429,7 @@ function vHome(){
   var feat=visible().filter(function(c){return c.status!=="sold"});
   feat.sort(function(a,b){return ((b.badge?1:0)-(a.badge?1:0))});
   var news=feat.slice(0,6);
-  var h=header()+'<main class="wrap">'+brandChips()+
+  var h=header()+'<main class="wrap">'+brandChips(true)+
    (promo?'<div class="promo"><div><small>عرض المعرض</small><b>'+esc(promo)+'</b><span>شحن لجميع مدن المملكة</span></div>'+(SET.promoLink?'<a href="'+esc(SET.promoLink)+'">'+esc(SET.promoLinkText||"شوفها")+'</a>':'<a href="#/cars">شوفها</a>')+'</div>'
      :'<div class="info"><div class="ic">'+ICON.truck+'</div><div><b>شحن لجميع مدن المملكة</b><span>كاش · تقسيط · دفعتين · تأجير منتهي بالتمليك</span></div></div>')+
    '<div class="sec"><h2>وصل حديثاً</h2><a href="#/cars">عرض الكل</a></div><div class="grid">'+news.map(card).join("")+'</div>'+
@@ -483,6 +494,7 @@ function bindTop(where){
   q.addEventListener("input",function(){F.q=q.value;if(where==="cars"){var p=q.selectionStart;vCars();var n=document.getElementById("q");n.focus();try{n.setSelectionRange(p,p)}catch(e){}}});
   q.addEventListener("keydown",function(e){if(e.key==="Enter"&&where!=="cars"){location.hash="#/cars"}});
   if(where!=="cars")q.addEventListener("change",function(){if(F.q)location.hash="#/cars"});
+  (function(){var on=document.querySelector(".chips.lgs .chip[aria-pressed=true]"),row=on&&on.parentNode;if(on&&row.scrollWidth>row.clientWidth){var r=on.getBoundingClientRect(),rr=row.getBoundingClientRect();row.scrollLeft+=(r.left+r.width/2)-(rr.left+rr.width/2)}})();
   Array.prototype.forEach.call(document.querySelectorAll(".chip[data-b]"),function(b){b.onclick=function(){F.brand=b.dataset.b;F.fav=false;if(where==="cars")vCars();else location.hash="#/cars"}});
   var fc=document.querySelector(".chip[data-fav]");if(fc)fc.onclick=function(){F.fav=!F.fav;if(where==="cars")vCars();else{F.fav=true;location.hash="#/cars"}};
   document.getElementById("fopen").onclick=openFilter;
@@ -525,7 +537,7 @@ function drawCar(){
   app.innerHTML='<div class="gal"><div class="track" id="trk">'+(ims.length?ims.map(function(u){return pic(u)}).join(""):'<div class="noimg">لا توجد صور</div>')+'</div>'+
    '<div class="tb"><a href="#/cars" aria-label="رجوع" id="bk">'+ICON.back+'</a><span style="display:flex;gap:8px">'+favBtn(c,"tbfav")+'<button id="shr" aria-label="مشاركة">'+ICON.share+'</button></span></div>'+
    (ims.length>1?'<span class="cnt" id="cnt">1 / '+ims.length+'</span>':"")+'</div>'+
-   '<div class="dt wrap"><div class="hd"><div><h1>'+esc(c.b+" "+c.n)+'</h1><span>'+esc(c.y||"")+' · جديدة · ضمان الوكيل</span></div>'+tagOf(c,"pill")+'</div>'+price+'<div id="tmslot">'+TM.line()+'</div>'+
+   '<div class="dt wrap"><div class="hd"><div class="hdl"><i class="hlg" aria-hidden="true">'+bLogo(c.b)+'</i><div><h1>'+esc(c.b+" "+c.n)+'</h1><span>'+esc(c.y||"")+' · جديدة · ضمان الوكيل</span></div></div>'+tagOf(c,"pill")+'</div>'+price+'<div id="tmslot">'+TM.line()+'</div>'+
    (sw?'<div class="lbl">اللون</div><div class="sw" id="sw">'+sw+'</div><div class="swn">'+esc(col)+(colSoon(c,col)?' — <b style="color:var(--soon)">يصل قريباً</b>':"")+'</div>':"")+
    (isOwner()?'<div class="box" style="border-color:var(--red)"><b style="font-size:14px">أدوات المعرض <span style="font-weight:400;color:var(--mut);font-size:12px">(تظهر لك أنت بس)</span></b><div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/'+idx(c)+'">تعديل</a><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="hrj">إعلان حراج</button><a class="btn ghost" style="height:46px;font-size:14px" href="#/admin/deliv/'+idx(c)+'">🎉 تسليم</a></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="adimg">صورة إعلان</button><button type="button" class="btn ghost" style="height:46px;font-size:14px" id="carqr">باركود</button><a class="btn" style="height:46px;font-size:14px" href="'+opsLink("quote",{car:c.b+" "+c.n,year:c.y||"2026",color:col})+'">عرض سعر لها</a><a class="btn ghost" style="height:46px;font-size:14px" href="'+opsLink()+'">المتابعات</a></div></div>':'')+
    '<div class="box"><b style="font-size:14px">طرق الشراء</b><div class="pays"><span>كاش</span><span>تقسيط</span><span>دفعتين</span><span>تأجير منتهي بالتمليك</span></div><div class="note">شحن لجميع مدن المملكة · نساعدك في التمويل عن طريق البنوك وشركات التمويل</div></div>'+

@@ -1,6 +1,6 @@
 /* ترجمة واجهة التطبيق للعميل (تكمّل قاموس الموقع i18n.js). لوحة الإدارة تبقى بالعربي. */
 window.SAMA_W_APP={"كيا":"Kia","شانجان":"Changan","هيونداي":"Hyundai","نيسان":"Nissan","هايلكس":"Hilux","شاص":"Shas","ربع":"Land Cruiser 70","غمارتين":"Double Cab","غمارة":"Single Cab","دبل":"4WD","ستاندر":"Standard","فتحة":"Sunroof","يوني":"UNI","سبورت":"Sport","فيلوز":"Veloz","كورلا":"Corolla","رايز":"Raize","أوربان":"Urban","برادو":"Prado","كروزر":"Cruiser","هاتشباك":"Hatchback","عائلية":"Family","بيك أب":"Pickup","سيدان":"Sedan"};
-window.SAMA_EX_APP={
+window.SAMA_EX_APP={"تصفّح حسب الماركة":"Browse by brand","كل الماركات":"All brands",
  "سماء الرياض للسيارات":"Sama Riyadh Cars","الرياض – معارض الشفاء":"Riyadh – Al Shifa Showrooms","عربي":"عربي",
  "الرئيسية":"Home","السيارات":"Cars","التمويل":"Finance","تواصل":"Contact","عرض المعرض":"Showroom offers","شوفها":"See it","وصل حديثاً":"Just arrived","عرض الكل":"View all",
  "متوفرة فوراً":"Available now","تصل قريباً":"Arriving soon","وصلت جديد":"Just arrived","عرض خاص":"Special offer","يصل قريباً":"Arriving soon","تم البيع":"Sold",
