@@ -771,6 +771,20 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
     }).catch(function(){}).then(function(){b.disabled=false;b.textContent=t})});
 })();
 
+(function(){
+  var LG={"تويوتا":"toyota","لكزس":"lexus","كيا":"kia","هيونداي":"hyundai","شانجان":"changan"};
+  var ch=$("chips"),sr=document.querySelector("#cars .srch"),ft=$("fTgl"),ss=$("sortSel"),hd=document.querySelector("header.top");if(!ch||!sr||!ft||!ss)return;
+  var sb=document.createElement("div");sb.id="sbar";var r1=document.createElement("div");r1.className="sb1";var sent=document.createElement("div");sent.id="sbs";
+  sr.parentNode.insertBefore(sent,sr);sr.parentNode.insertBefore(sb,sr);sb.appendChild(r1);r1.appendChild(sr);r1.appendChild(ft);
+  var lab=ss.closest("label");if(lab)r1.appendChild(lab);sb.appendChild(ch);
+  function deco(){ch.querySelectorAll(".chip").forEach(function(b){if(b.dataset.lg)return;var f=b.dataset.f;
+    if(f==="all"){b.dataset.lg="1";b.classList.add("lg","lga");var t=b.textContent;b.textContent="";var s=document.createElement("span");s.className="lgc";s.textContent=t;b.appendChild(s);return}
+    var k=LG[f];if(!k)return;b.dataset.lg="1";b.classList.add("lg");var t2=b.textContent;b.textContent="";var s2=document.createElement("span");s2.className="lgc";var im=document.createElement("img");im.src="img/brands/"+k+".png";im.alt="";s2.appendChild(im);var l=document.createElement("span");l.className="lgt";l.textContent=t2;b.appendChild(s2);b.appendChild(l)})}
+  deco();try{new MutationObserver(deco).observe(ch,{childList:true})}catch(e){}
+  function off(){return hd?hd.offsetHeight:60}
+  function place(){sb.style.top=off()+"px"}place();window.addEventListener("resize",place);
+  try{var io=new IntersectionObserver(function(es){var e=es[0];sb.classList.toggle("stk",!e.isIntersecting&&e.boundingClientRect.top<off())},{rootMargin:"-"+(off()+1)+"px 0px 0px 0px",threshold:0});io.observe(sent)}catch(e){}
+})();
 (function(){var t=$("fTgl");if(t)t.addEventListener("click",function(){var o=document.body.classList.toggle("fo");t.setAttribute("aria-expanded",o?"true":"false")})})();
 
 /* شريط الواجهة المتغيّر + وصلت حديثاً + قائمة الماركات التلقائية */
