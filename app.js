@@ -369,9 +369,9 @@ function updCmpBar(){
 }
 (function(){var _r=render;render=function(f){_r(f);updCmpBar()}})();
 var gen=wa("السلام عليكم، أرغب بالاستفسار عن السيارات المتوفرة في "+SHOP);
-(function(){var S=(DATA&&DATA.set)||{},pm=$("promo");if(pm&&S.promo){var k=S.promo+"|"+(S.promoAt||"");var seen="";try{seen=sessionStorage.getItem("sama_promo")||""}catch(e){}
+(function(){var S=(DATA&&DATA.set)||{},pm=$("promo");if(pm&&S.promo){var k=S.promo+"|"+(S.promoAt||"");var seen="";try{seen=localStorage.getItem("sama_promo")||""}catch(e){}
   if(seen!==k){pm.hidden=false;var sp=document.createElement("span");sp.textContent=S.promo;pm.appendChild(sp);if(S.promoLink){var al=document.createElement("a");al.textContent=" ← "+(S.promoLinkText||"التفاصيل");al.href=S.promoLink;al.target="_blank";al.rel="noopener";pm.appendChild(al)}
-  var x=document.createElement("button");x.type="button";x.setAttribute("aria-label","إغلاق");x.textContent="✕";x.addEventListener("click",function(){pm.hidden=true;try{sessionStorage.setItem("sama_promo",k)}catch(e){}});pm.appendChild(x)}}
+  var x=document.createElement("button");x.type="button";x.setAttribute("aria-label","إغلاق");x.textContent="✕";x.addEventListener("click",function(){pm.hidden=true;try{localStorage.setItem("sama_promo",k)}catch(e){}});pm.appendChild(x)}}
 var bk=(S.banks||[]).filter(Boolean),w=$("banks");if(bk.length){w.hidden=false;var b=document.createElement("b");b.textContent="جهات التمويل:";w.appendChild(b);bk.forEach(function(n){var s=document.createElement("span");s.textContent=n;w.appendChild(s)})}var dq=$("docQ");if(dq)dq.href=wa("السلام عليكم، أبغى أعرف المستندات المطلوبة للتمويل من "+SHOP);var sw=$("shipWa");if(sw)sw.href=wa("السلام عليكم، أبغى أعرف عن شحن السيارة لمدينتي من "+SHOP)})();
 var SITE=location.origin+location.pathname.replace(/index\.html$/,"");
 function carLink(c){return SITE+"#car="+encodeURIComponent(ck(c))}
