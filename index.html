@@ -309,7 +309,10 @@ section#want.acc{padding:6px 0!important}
 .dtools{display:flex;flex-wrap:wrap;gap:8px}.dtw{display:contents}.dtb{flex:1;padding:9px 8px;font-size:14px}.dmenu{order:5;flex:1 1 100%;margin-top:0!important}
 .dmenu{display:flex;flex-direction:column;gap:6px;margin-top:6px}.dmenu[hidden]{display:none}.dmenu .btn{width:100%;font-size:14px;padding:9px 8px}
 #dSpecs.col li.cx{display:none}.dmore{padding:8px;font-size:14px}.dmore[hidden]{display:none}
-.dlg .sw{gap:6px}.dlg .sw .chip{flex:0 0 auto;padding:5px 11px;font-size:13px}
+.dlg .sw{gap:12px;padding:6px 0}.dlg .sw .chip{width:38px;height:38px;padding:0;border-radius:50%;font-size:0;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:2px solid var(--line)}
+.dlg .sw .chip .dot{width:27px;height:27px;margin:0;border-radius:50%;border:1px solid rgba(0,0,0,.2)}.dlg .sw .chip small{display:none}
+.dlg .sw .chip[aria-pressed=true]{border-color:#1e73be;box-shadow:0 0 0 2px #1e73be}.dlg .sw .chip.soon{border-style:dashed;opacity:.55}
+.colname{min-height:22px;font-weight:800;color:#1e73be;margin:2px 0 0}
 .dlg .acts{position:sticky;bottom:0;z-index:3;background:var(--surface);padding:10px 0 4px;box-shadow:0 -8px 12px -8px rgba(0,0,0,.2)}
 </style>
 </head>
@@ -484,10 +487,10 @@ section#want.acc{padding:6px 0!important}
 <a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
-<link rel="preload" href="app.js?v=47" as="script">
+<link rel="preload" href="app.js?v=48" as="script">
 <script src="i18n.js?v=14"></script><script src="specs_en.js?v=2"></script><script src="ad2.js?v=3"></script>
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=47";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=48";document.body.appendChild(s)});
 </script>
 <script>if("serviceWorker"in navigator&&location.protocol==="https:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 <script>

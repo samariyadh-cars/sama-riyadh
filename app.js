@@ -370,6 +370,10 @@ $("dCmp").addEventListener("click",function(){if(cur)openCmp(cur)});
   var more=document.createElement("button");more.type="button";more.className="btn alt dmore";more.hidden=true;sp.parentNode.insertBefore(more,sp.nextSibling);
   more.addEventListener("click",function(){var c=sp.classList.toggle("col");more.textContent=c?"عرض كل المواصفات ▾":"إخفاء المواصفات ▴"});
   var _p=openCar;openCar=function(i){_p(i);document.querySelectorAll(".dmenu").forEach(function(x){x.hidden=true});
+    (function(){var cw=$("dColWrap"),cl=$("dColors"),nm=$("dColName");if(!nm){nm=document.createElement("div");nm.id="dColName";nm.className="colname";cw.insertBefore(nm,cl)}nm.textContent="";
+      cl.querySelectorAll(".chip").forEach(function(ch){var sm=ch.querySelector("small"),name=ch.textContent.replace(sm?sm.textContent:"","").trim();ch.setAttribute("aria-label",name+(sm?" - "+sm.textContent:""));ch.title=name;if(sm)ch.classList.add("soon");
+        ch.addEventListener("click",function(){nm.textContent=ch.getAttribute("aria-pressed")==="true"?name+(sm?" — "+sm.textContent:""):""})})})();
+
     var li=sp.querySelectorAll("li"),N=8;li.forEach(function(x,k){x.classList.toggle("cx",k>=N)});
     if(li.length>N){sp.classList.add("col");more.hidden=false;more.textContent="عرض كل المواصفات ▾"}else{sp.classList.remove("col");more.hidden=true}}})();
 function updCmpBar(){
