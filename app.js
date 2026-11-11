@@ -251,7 +251,7 @@ function openCar(i){
   links();$("dCash").hidden=$("dInst").hidden=(c.status==="sold");
   (function(){var G=$("dSimG"),W=$("dSim");G.innerHTML="";var me=cars.indexOf(c),p0=+c.price||0;
     var L=[];cars.forEach(function(x,k){if(k===me||x.status==="hidden"||x.status==="sold"||x.type!==c.type)return;var sc=(x.b===c.b?0:1000000)+(p0&&+x.price?Math.abs(+x.price-p0):500000);L.push([sc,k])});
-    L.sort(function(u,v){return u[0]-v[0]});L=L.slice(0,4);W.hidden=!L.length;
+    L.sort(function(u,v){return u[0]-v[0]});L=L.slice(0,2);W.hidden=!L.length;
     L.forEach(function(u){var x=cars[u[1]],b=document.createElement("button");b.type="button";b.className="simc";var im=document.createElement("img");im.alt="";im.loading="lazy";if(x.imgs&&x.imgs[0])thumbImg(im,x.imgs[0]);b.appendChild(im);var s=document.createElement("span");s.textContent=x.b+" "+x.n;var sm=document.createElement("small");sm.textContent=priceText(x);s.appendChild(sm);b.appendChild(s);b.addEventListener("click",function(){openCar(u[1])});G.appendChild(b)})})();
   var nf=$("dNotify"),cso=(c.csoon||[]),soonB=/تصل|قريب|شحن/.test(c.badge||c._lb||"");nf.hidden=!(c.status==="sold"||soonB||cso.length);$("nfPhone").value="";$("nfName").value="";$("nfNote").textContent="";
   $("nfTitle").textContent=c.status==="sold"?"🔔 نبّهني إذا وصلت سيارة مثلها":(!soonB&&cso.length)?"🔔 نبّهني إذا وصل اللون":"🔔 نبّهني إذا وصلت";
@@ -360,6 +360,18 @@ $("cmp").addEventListener("click",function(e){if(e.target===$("cmp"))$("cmp").cl
 $("cmpDiff").addEventListener("change",drawCmp);
 $("dCmp").addEventListener("click",function(){if(cur)openCmp(cur)});
 (function(){var _o=openCar;openCar=function(i){_o(i);var c=cars[i];$("dCmp").hidden=famOf(c).length<2}})();
+(function(){
+  var cmp=$("dCmp"),cmp2=$("dCmp2"),sh=$("dShare"),cp=$("dCopy"),cd=$("dCard");if(!cmp||!sh)return;
+  var bar=document.createElement("div");bar.className="dtools";
+  function mk(label,btns){var w=document.createElement("div");w.className="dtw";var t=document.createElement("button");t.type="button";t.className="btn alt dtb";t.textContent=label+" ▾";var m=document.createElement("div");m.className="dmenu";m.hidden=true;btns.forEach(function(b){m.appendChild(b)});
+    t.addEventListener("click",function(){var o=m.hidden;document.querySelectorAll(".dmenu").forEach(function(x){x.hidden=true});m.hidden=!o});w.appendChild(t);w.appendChild(m);bar.appendChild(w)}
+  mk("⇄ قارن",[cmp,cmp2]);mk("↗ مشاركة",[sh,cp,cd]);
+  var sp=$("dSpecs");sp.parentNode.insertBefore(bar,sp.nextSibling);
+  var more=document.createElement("button");more.type="button";more.className="btn alt dmore";more.hidden=true;sp.parentNode.insertBefore(more,sp.nextSibling);
+  more.addEventListener("click",function(){var c=sp.classList.toggle("col");more.textContent=c?"عرض كل المواصفات ▾":"إخفاء المواصفات ▴"});
+  var _p=openCar;openCar=function(i){_p(i);document.querySelectorAll(".dmenu").forEach(function(x){x.hidden=true});
+    var li=sp.querySelectorAll("li"),N=8;li.forEach(function(x,k){x.classList.toggle("cx",k>=N)});
+    if(li.length>N){sp.classList.add("col");more.hidden=false;more.textContent="عرض كل المواصفات ▾"}else{sp.classList.remove("col");more.hidden=true}}})();
 function updCmpBar(){
   var bar=$("cmpBar");bar.innerHTML="";bar.hidden=true;
   if(curM==="all")return;
