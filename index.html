@@ -293,12 +293,23 @@ section h2{margin-bottom:8px}
 @media(min-width:700px){.whyg{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:640px){.hx h1{font-size:16px!important;white-space:nowrap}.hx-txt{padding:10px 14px!important}.hx-txt .row .btn{padding:8px 12px;font-size:14px}.trust .wrap{gap:4px;padding-left:8px;padding-right:8px}.trust div{font-size:11.5px;white-space:nowrap}.trust div::before{content:none!important}}
 </style>
+<style id="ac">
+section.acc{padding:0!important}section.acc>.wrap{padding-top:0;padding-bottom:0}
+section.acc>.wrap>h2.ach{margin:0;padding:16px 4px;font-size:18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line,#dde)}
+section.acc>.wrap>h2.ach::after{content:"▾";font-size:16px;color:#6a7787;transition:transform .2s}
+section.acc.op>.wrap>h2.ach::after{transform:rotate(180deg)}
+section.acc>.wrap>.acb{display:none;padding-bottom:22px}section.acc.op>.wrap>.acb{display:block}
+section#want.acc>.wrap>h2.ach{background:#c8102e;color:#fff;border-radius:12px;padding:15px 16px;margin:14px 0 6px;border:0}section#want.acc>.wrap>h2.ach::after{color:#fff}
+section#want.acc{padding:6px 0!important}
+.hloc{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid #5A5F68;color:#fff;text-decoration:none;font-size:18px;flex:0 0 auto}
+@media(max-width:640px){.hloc{display:none}}
+</style>
 </head>
 <body>
 <div id="promo" hidden></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="car" viewBox="0 0 240 80"><path fill="currentColor" d="M12 56c0-8 3-12 10-14l26-8 22-18c3-3 7-4 11-4h52c6 0 11 2 15 6l20 16 30 6c8 2 12 8 12 16v6c0 3-2 5-5 5h-14a22 22 0 0 0-44 0H93a22 22 0 0 0-44 0H17c-3 0-5-2-5-5z"/><path fill="var(--surface,#fff)" opacity=".85" d="M84 34l16-14h42l22 14zM108 20h30l14 14h-52z" /><circle cx="71" cy="62" r="13" fill="#0E2238"/><circle cx="71" cy="62" r="5" fill="#9DB2C6"/><circle cx="187" cy="62" r="13" fill="#0E2238"/><circle cx="187" cy="62" r="5" fill="#9DB2C6"/></symbol></svg>
 
-<header class="top"><div class="wrap"><a class="logo" href="#" aria-label="معرض سماء الرياض للسيارات"><span class="lk"><span class="lk-m"></span><span class="lk-t"><span class="lk-1">معرض <b>سماء الرياض</b></span><span class="lk-2">للسيارات<i></i><em dir="ltr">SAMA RIYADH</em></span></span></span></a><a class="btn hcall" href="tel:0554378456">اتصال</a><a class="btn" id="topWa" href="#">واتساب</a></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="#" aria-label="معرض سماء الرياض للسيارات"><span class="lk"><span class="lk-m"></span><span class="lk-t"><span class="lk-1">معرض <b>سماء الرياض</b></span><span class="lk-2">للسيارات<i></i><em dir="ltr">SAMA RIYADH</em></span></span></span></a><a class="hloc" href="#visit" aria-label="موقع المعرض">📍</a><a class="btn hcall" href="tel:0554378456">اتصال</a><a class="btn" id="topWa" href="#">واتساب</a></div></header>
 
 <div class="hero hero2 hx">
 <div class="hx-in">
@@ -465,11 +476,25 @@ section h2{margin-bottom:8px}
 <a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
-<link rel="preload" href="app.js?v=43" as="script">
+<link rel="preload" href="app.js?v=44" as="script">
 <script src="i18n.js?v=14"></script><script src="specs_en.js?v=2"></script><script src="ad2.js?v=3"></script>
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=43";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=44";document.body.appendChild(s)});
 </script>
 <script>if("serviceWorker"in navigator&&location.protocol==="https:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
+<script>
+(function(){var ids=["want","pay","reviews","visit","why"];
+function openAcc(s,on){s.classList.toggle("op",on);var h=s.querySelector("h2.ach");if(h)h.setAttribute("aria-expanded",on?"true":"false")}
+ids.forEach(function(id){var s=document.getElementById(id);if(!s)return;var w=s.querySelector(".wrap"),h2=w&&w.querySelector("h2");if(!h2)return;
+ var b=document.createElement("div");b.className="acb";var n=h2.nextSibling;while(n){var nx=n.nextSibling;b.appendChild(n);n=nx}w.appendChild(b);
+ h2.className="ach";h2.setAttribute("role","button");h2.tabIndex=0;h2.setAttribute("aria-expanded","false");s.classList.add("acc");
+ function tg(){var was=s.classList.contains("op");ids.forEach(function(j){var o=document.getElementById(j);if(o&&o!==s)openAcc(o,false)});openAcc(s,!was)}
+ h2.addEventListener("click",tg);h2.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();tg()}})});
+function openFor(el){var s=el&&el.closest&&el.closest("section.acc");if(s&&!s.classList.contains("op")){ids.forEach(function(j){var o=document.getElementById(j);if(o&&o!==s)openAcc(o,false)});openAcc(s,true)}}
+var _s=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(){openFor(this);return _s.apply(this,arguments)};
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var id=a.getAttribute("href").slice(1),t=ids.indexOf(id)>=0&&document.getElementById(id);if(t){e.preventDefault();t.scrollIntoView({behavior:"smooth"})}});
+function hh(){var id=(location.hash||"").slice(1);if(id==="inst"||id==="pay-inst")id="want";var t=ids.indexOf(id)>=0&&document.getElementById(id);if(t)setTimeout(function(){t.scrollIntoView()},300)}
+window.addEventListener("hashchange",hh);hh();window.__openAcc=function(id){var t=document.getElementById(id);if(t)t.scrollIntoView()}})();
+</script>
 </body>
 </html>
