@@ -365,7 +365,7 @@ $("dCmp").addEventListener("click",function(){if(cur)openCmp(cur)});
   var bar=document.createElement("div");bar.className="dtools";
   function mk(label,btns){var w=document.createElement("div");w.className="dtw";var t=document.createElement("button");t.type="button";t.className="btn alt dtb";t.textContent=label+" ▾";var m=document.createElement("div");m.className="dmenu";m.hidden=true;btns.forEach(function(b){m.appendChild(b)});
     t.addEventListener("click",function(){var o=m.hidden;document.querySelectorAll(".dmenu").forEach(function(x){x.hidden=true});m.hidden=!o});w.appendChild(t);w.appendChild(m);bar.appendChild(w)}
-  mk("⇄ قارن",[cmp,cmp2]);mk("↗ مشاركة",[sh,cp,cd]);
+  mk("⇄ قارن",[cmp,cmp2]);sh.className="btn alt dtb";sh.textContent="↗ مشاركة";bar.appendChild(sh);cp.hidden=true;cd.hidden=true;
   var sp=$("dSpecs");sp.parentNode.insertBefore(bar,sp.nextSibling);
   var more=document.createElement("button");more.type="button";more.className="btn alt dmore";more.hidden=true;sp.parentNode.insertBefore(more,sp.nextSibling);
   more.addEventListener("click",function(){var c=sp.classList.toggle("col");more.textContent=c?"عرض كل المواصفات ▾":"إخفاء المواصفات ▴"});
@@ -393,7 +393,7 @@ $("dCopy").addEventListener("click",function(){if(!cur)return;var u=SITE+"#car="
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,fb);else fb()});
 $("dShare").addEventListener("click",function(){if(!cur)return;var c=cur,b=$("dShare");var cols=(c.colors&&c.colors.length?c.colors:DEFCOL);var ks=[];(c.specs||[]).forEach(function(r){if(r instanceof Array&&ks.length<4&&/الوقود|المحرك|القوة|ناقل/.test(r[0]))ks.push("• "+r[0]+": "+r[1])});
   var txt=c.b+" "+c.n+" موديل "+c.y+" جديدة"+(c.price&&c.status!=="sold"?"\n"+priceText(c):"")+"\nالألوان: "+cols.join("، ")+(ks.length?"\n"+ks.join("\n"):"")+"\nكاش، أقساط، دفعتين، تأجير منتهي بالتمليك — وشحن لجميع المدن\n"+SHOP+"\nشوف الصور والتفاصيل من الرابط:";var url=SITE+"c/"+carSlug(ck(c))+".html";
-  function done(m){b.textContent=m;setTimeout(function(){b.textContent="شارك هذي السيارة"},2200)}
+  function done(m){b.textContent=m;setTimeout(function(){b.textContent="↗ مشاركة"},2200)}
   if(navigator.share){navigator.share({title:c.b+" "+c.n,text:txt,url:url}).catch(function(){})}
   else if(navigator.clipboard){navigator.clipboard.writeText(txt+"\n"+url).then(function(){done("تم نسخ الرابط")},function(){window.open(wa(txt+"\n"+url),"_blank")})}
   else window.open(wa(txt+"\n"+url),"_blank")});
