@@ -519,14 +519,18 @@
     "رمادي"
    ],
    "since": "2026-11-10",
-   "imgs": [
-    "up/1792512210277-0nmjdn.jpg",
-    "blob/e5cb8601e7ef2d6567c8401611d41e4f.jpg",
-    "blob/e3823c790608c72c76b920baf08f14e6.jpg",
-    "blob/2b8e64d73aabb1509e1e83fbeb4a7f6d.jpg",
-    "blob/e9e2c4ceedd23634e74db00dc184df25.jpg",
-    "blob/80932e457075ad47a224614b2918baaf.jpg"
-   ]
+   "cimgs": {
+    "رمادي": [
+     "up/1794492766830-zfwpr6.jpg",
+     "up/1794492771149-86dzs0.jpg",
+     "up/1794492775487-nk1fb2.jpg",
+     "up/1794492780068-ogr4l0.jpg",
+     "up/1794492783868-i9lcqx.jpg",
+     "up/1794492787978-07f3nk.jpg",
+     "up/1794492792026-vg0rmu.jpg",
+     "up/1794492795475-2k56ra.jpg"
+    ]
+   }
   },
   "لكزس NX350 AA": {
    "colors": [
