@@ -15,6 +15,7 @@
     "أبيض": 115000,
     "أسود": 114000
    },
+   "since": "2026-11-10",
    "loc": "ship",
    "call": [
     "أبيض",
@@ -38,43 +39,42 @@
     "img/cam-le-7.jpg",
     "img/cam-le-8.jpg",
     "img/cam-le-9.jpg"
-   ],
-   "since": "2026-11-10"
+   ]
   },
   "تويوتا كامري E بنزين": {
+   "price": 105000,
+   "badge": "متوفرة فوراً",
    "colors": [
     "أبيض",
     "أسود",
     "فضي",
     "تيتانيوم"
    ],
+   "since": "2026-11-10",
+   "loc": "show",
    "call": [
     "أبيض",
     "أزرق غامق",
     "أسود",
     "فضي",
     "تيتانيوم"
-   ],
-   "since": "2026-11-10",
-   "price": 105000,
-   "badge": "متوفرة فوراً",
-   "loc": "show"
+   ]
   },
   "تويوتا كامري جراندي بنزين": {
+   "y": "2025",
+   "price": 128000,
    "badge": "متوفرة فوراً",
    "colors": [
     "أبيض"
    ],
+   "since": "2026-11-10",
    "loc": "show",
    "call": [
     "أبيض",
     "أسود",
     "فضي",
     "تيتانيوم"
-   ],
-   "since": "2026-11-10",
-   "price": 128000,
-   "y": "2025"
+   ]
   },
   "تويوتا كامري E هايبرد": {
    "price": 102000,
@@ -96,12 +96,12 @@
    "since": "2026-11-10"
   },
   "تويوتا كامري LE هايبرد": {
+   "price": 120000,
+   "badge": "متوفرة فوراً",
    "colors": [
     "تيتانيوم"
    ],
    "since": "2026-11-10",
-   "price": 120000,
-   "badge": "متوفرة فوراً",
    "call": [
     "أبيض",
     "أسود",
@@ -111,12 +111,12 @@
    ]
   },
   "تويوتا كامري لوميير هايبرد": {
+   "status": "hidden",
    "colors": [
     "أبيض",
     "أسود"
    ],
    "since": "2026-11-10",
-   "status": "hidden",
    "call": [
     "أبيض",
     "أسود"
@@ -130,14 +130,14 @@
    "since": "2026-11-10"
   },
   "تويوتا كورولا 2.0 ستاندر": {
+   "price": 73000,
+   "badge": "متوفرة فوراً",
    "colors": [
     "رمادي",
     "رصاصي فاتح",
     "ابيض"
    ],
    "since": "2026-11-10",
-   "price": 73000,
-   "badge": "متوفرة فوراً",
    "call": [
     "رمادي",
     "رصاصي فاتح",
@@ -145,12 +145,12 @@
    ]
   },
   "تويوتا كورولا 2.0 مطور": {
+   "price": 76000,
+   "badge": "متوفرة فوراً",
    "colors": [
     "أبيض"
    ],
    "since": "2026-11-10",
-   "price": 76000,
-   "badge": "متوفرة فوراً",
    "call": [
     "أبيض"
    ]
@@ -278,6 +278,12 @@
    "status": "hidden",
    "since": "2026-11-10"
   },
+  "تويوتا أوربان GL بنزين": {
+   "since": "2026-11-10"
+  },
+  "تويوتا أوربان GLX بنزين": {
+   "since": "2026-11-10"
+  },
   "تويوتا راف فور LE 4X4 بنزين": {
    "badge": "وصلت جديد",
    "colors": [
@@ -344,6 +350,7 @@
     "أسود",
     "تيتانيوم"
    ],
+   "since": "2026-11-10",
    "imgs": [
     "blob/2b0a07beb087bdfc07e094fdd0a9b58d.jpg",
     "blob/2e028dd798bb80fc3b7878097417fdbc.jpg",
@@ -354,8 +361,7 @@
     "blob/f73e6ea8dad52568c96f5a59096b460a.jpg",
     "blob/0311052f085f6c471f91de8d926cae2e.jpg",
     "blob/a2e67ffe31579d396a6f135bb0e176f1.jpg"
-   ],
-   "since": "2026-11-10"
+   ]
   },
   "لكزس ES250 AA": {
    "colors": [
@@ -373,6 +379,7 @@
    "colors": [
     "أبيض"
    ],
+   "since": "2026-11-10",
    "imgs": [
     "blob/a632c420e0112c5dc3d4ba00e0aca8f3.jpg",
     "blob/a9aae767a49669cdc4da79357216e290.jpg",
@@ -383,8 +390,7 @@
     "blob/14bab90b80f29d4e8ff2f550116dd500.jpg",
     "blob/18fd76358fe3fc1143a5aa7382d0381a.jpg",
     "blob/c549ab8ee13ac26e1a82fba36a459ec4.jpg"
-   ],
-   "since": "2026-11-10"
+   ]
   },
   "لكزس ES350 CC": {
    "y": "2025",
@@ -392,6 +398,7 @@
     "كحلي",
     "رمادي"
    ],
+   "since": "2026-11-10",
    "imgs": [
     "up/1792512210277-0nmjdn.jpg",
     "blob/e5cb8601e7ef2d6567c8401611d41e4f.jpg",
@@ -399,8 +406,7 @@
     "blob/2b8e64d73aabb1509e1e83fbeb4a7f6d.jpg",
     "blob/e9e2c4ceedd23634e74db00dc184df25.jpg",
     "blob/80932e457075ad47a224614b2918baaf.jpg"
-   ],
-   "since": "2026-11-10"
+   ]
   },
   "لكزس NX350 AA": {
    "colors": [
@@ -419,12 +425,6 @@
   },
   "لكزس LX600 BB": {
    "status": "hidden",
-   "since": "2026-11-10"
-  },
-  "تويوتا أوربان GL بنزين": {
-   "since": "2026-11-10"
-  },
-  "تويوتا أوربان GLX بنزين": {
    "since": "2026-11-10"
   }
  },
@@ -449,6 +449,7 @@
     "up/1792511722608-5zfudz.jpg",
     "up/1792511728659-lu1j4i.jpg"
    ],
+   "since": "2026-11-10",
    "specs": [
     {
      "h": "المزايا التقنية"
@@ -535,8 +536,7 @@
     "• سجادة صلاة — صنع في السعودية.",
     "• ملصق نوع الوقود — صنع في جنوب أفريقيا."
    ],
-   "specsEn": "## Technical features\nEngine: 2.5L hybrid, 4 cylinders\nTotal power: 218 hp\nGasoline engine torque: 221 Nm at 3,600–5,200 rpm\nTransmission: Continuously variable (E-CVT)\nTire size: 225/55R19\nDimensions (L × W × H): 4,980 × 1,840 × 1,540 mm\nFuel efficiency: 26.1 km/L\nFuel tank capacity: 55 L\n3 driving modes: Normal, Sport, Eco\n## Exterior features\n19-inch alloy wheels\nLED front and rear lights\nPower side mirrors with turn signals, power-folding\nPanoramic roof\n## Interior features\nPremium leather seats\nPower control for driver and front passenger seats\n12.3-inch digital instrument cluster\nThree-spoke leather steering wheel with controls\nAuto-dimming interior mirror\nAutomatic climate control with rear air vents\nFront interior floor lighting\nFolding rear seats 60:40: with center armrest and cup holder\n## Audio and entertainment\n8-inch touchscreen with Bluetooth\nWired Apple CarPlay\n8-speaker audio system\nUSB charging ports: Dual port for front and rear seats, and a data port in the front console\n## Safety and driver assistance\nFront airbags for driver and front passenger, plus side and curtain airbags\nToyota Safety Sense (TSS 3.0)\nPre-Collision System (PCS)\nDynamic Radar Cruise Control (DRCC)\nLane Tracing Assist (LTA)\nLane Departure Alert (LDA)\nRear camera\nFront and rear parking assist sensors\nElectric parking brake (EPB)\nBrake hold function (Auto Hold)\n## Comfort features\nSmart entry with engine start/stop button\nVertical wireless charger for compatible smartphones — made in China\n## Additional equipment\nFabric cargo area cover — made in Thailand\nFabric floor mats — made in Thailand\nSafety kit — made in China\nPrayer mat — made in Saudi Arabia\nFuel type label — made in South Africa",
-   "since": "2026-11-10"
+   "specsEn": "## Technical features\nEngine: 2.5L hybrid, 4 cylinders\nTotal power: 218 hp\nGasoline engine torque: 221 Nm at 3,600–5,200 rpm\nTransmission: Continuously variable (E-CVT)\nTire size: 225/55R19\nDimensions (L × W × H): 4,980 × 1,840 × 1,540 mm\nFuel efficiency: 26.1 km/L\nFuel tank capacity: 55 L\n3 driving modes: Normal, Sport, Eco\n## Exterior features\n19-inch alloy wheels\nLED front and rear lights\nPower side mirrors with turn signals, power-folding\nPanoramic roof\n## Interior features\nPremium leather seats\nPower control for driver and front passenger seats\n12.3-inch digital instrument cluster\nThree-spoke leather steering wheel with controls\nAuto-dimming interior mirror\nAutomatic climate control with rear air vents\nFront interior floor lighting\nFolding rear seats 60:40: with center armrest and cup holder\n## Audio and entertainment\n8-inch touchscreen with Bluetooth\nWired Apple CarPlay\n8-speaker audio system\nUSB charging ports: Dual port for front and rear seats, and a data port in the front console\n## Safety and driver assistance\nFront airbags for driver and front passenger, plus side and curtain airbags\nToyota Safety Sense (TSS 3.0)\nPre-Collision System (PCS)\nDynamic Radar Cruise Control (DRCC)\nLane Tracing Assist (LTA)\nLane Departure Alert (LDA)\nRear camera\nFront and rear parking assist sensors\nElectric parking brake (EPB)\nBrake hold function (Auto Hold)\n## Comfort features\nSmart entry with engine start/stop button\nVertical wireless charger for compatible smartphones — made in China\n## Additional equipment\nFabric cargo area cover — made in Thailand\nFabric floor mats — made in Thailand\nSafety kit — made in China\nPrayer mat — made in Saudi Arabia\nFuel type label — made in South Africa"
   },
   {
    "b": "هيونداي",
@@ -557,6 +557,7 @@
    "imgs": [
     "up/1794143942912-rdyhxi.jpg"
    ],
+   "since": "2026-11-10",
    "nm": "يوني V سبورت",
    "call": [
     "أسود"
@@ -610,8 +611,7 @@
     "نظام المكابح ABS / EBD",
     "خزان الوقود 51 لتر",
     "قيادة شبه ذاتيه"
-   ],
-   "since": "2026-11-10"
+   ]
   },
   {
    "b": "كيا",
@@ -624,6 +624,7 @@
    "imgs": [
     "up/1794144870937-laxord.jpg"
    ],
+   "since": "2026-11-10",
    "nm": "K3 ستاندر",
    "call": [
     "فضي"
@@ -641,8 +642,7 @@
      "up/1794144887569-ac3whw.jpg",
      "up/1794144889422-byd5e2.jpg"
     ]
-   },
-   "since": "2026-11-10"
+   }
   },
   {
    "b": "تويوتا",
@@ -654,6 +654,7 @@
     "أبيض",
     "رمادي"
    ],
+   "since": "2026-11-10",
    "cimgs": {
     "أبيض": [
      "up/1794207675862-62ipro.jpg",
@@ -737,18 +738,26 @@
     "تحكم بالقفل المركزي للأبواب من باب الراكب الأمامي",
     "جهاز نفخ الإطارات",
     "منبه فاخر (بوري) ("
-   ],
-   "since": "2026-11-10"
+   ]
   },
   {
    "b": "تويوتا",
    "n": "هايلكس غمارتين GL دبل",
    "y": "2026",
    "type": "بيك أب",
+   "price": 125000,
+   "badge": "متوفرة فوراً",
    "colors": [
     "أبيض"
    ],
-   "price": 125000,
+   "imgs": [
+    "up/1794228392970-m5bswf.jpg"
+   ],
+   "since": "2026-11-10",
+   "loc": "show",
+   "call": [
+    "أبيض"
+   ],
    "cimgs": {
     "أبيض": [
      "up/1794228392970-m5bswf.jpg",
@@ -763,9 +772,6 @@
      "up/1794228417390-3umpiw.jpg"
     ]
    },
-   "imgs": [
-    "up/1794228392970-m5bswf.jpg"
-   ],
    "specs": [
     "Hilux",
     "SC-GL-2.7L-4X4 MT",
@@ -858,13 +864,7 @@
     "حقيبة السلامة (صنع في الصين)*",
     "شعار \"GL\" (صنع في الهند)*",
     "ملصق نوع الوقود 91 (صنع في جنوب أفريقيا) *"
-   ],
-   "loc": "show",
-   "badge": "متوفرة فوراً",
-   "call": [
-    "أبيض"
-   ],
-   "since": "2026-11-10"
+   ]
   }
  ],
  "specs": {
@@ -4922,10 +4922,10 @@
  "specsEn": {},
  "set": {
   "banks": [],
-  "promo": "وصلت دفعه جديده من تويوتا كامري",
+  "promo": "وصلت دفعه جديده من تويوتا برادو TXL3",
   "promoLink": "",
   "promoLinkText": "",
-  "promoAt": "1792863144050",
+  "promoAt": "1794488212774",
   "ad": {},
   "brands": [
    "شانجان"
