@@ -1508,7 +1508,14 @@ document.getElementById("fab").href=wa("السلام عليكم، أتواصل �
   ["pointerup","pointercancel","pointerleave","scroll"].forEach(function(ev){document.addEventListener(ev,stop,true)});
   document.addEventListener("contextmenu",function(e){if(e.target.closest(".logo"))e.preventDefault()});})();
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#langBtn");if(!b)return;try{localStorage.setItem("sama_lang",window.SAMA_LANG==="en"?"ar":"en")}catch(x){}var q=location.search.replace(/[?&]lang=(en|ar)/,"").replace(/^&/,"?");if(q!==location.search)location.replace(location.pathname+q+location.hash);else location.reload()});
-window.addEventListener("hashchange",function(){try{sessionStorage.setItem("sama_nav","1")}catch(e){}route()});
+var CURY=0,LASTH=location.hash,ADMY=0,BACKY=null;
+window.addEventListener("scroll",function(){CURY=window.scrollY},{passive:true});
+window.addEventListener("hashchange",function(){try{sessionStorage.setItem("sama_nav","1")}catch(e){}
+  var from=LASTH,to=location.hash;
+  if(from==="#/admin"||from==="#/admin/")ADMY=CURY;
+  BACKY=((to==="#/admin"||to==="#/admin/")&&/^#\/admin\/./.test(from))?ADMY:null;
+  LASTH=to;route();
+  if(BACKY!=null){var y=BACKY;BACKY=null;window.scrollTo(0,y);setTimeout(function(){window.scrollTo(0,y)},60)}});
 /* ===== التحديث: اسحب لتحت، وشريط «فيه تحديث جديد»، وتحديث تلقائي لما ترجع ===== */
 function busyEditing(){var h=location.hash;return !!document.querySelector(".sheet")||/^#\/admin\/(\d+|new|prices|photos|specs|deliv)/.test(h)&&!!(AE&&AE.d||NW||(window.PB&&(Object.keys(PB.ch).length||Object.keys(PB.cc).length)))}
 var REFRESHING=false;
