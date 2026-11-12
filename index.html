@@ -146,6 +146,19 @@ dialog.cmpd{max-width:1040px}
 .adm details{grid-column:1/-1;border-top:1px dashed var(--line);padding-top:8px}
 .adm summary{cursor:pointer;color:var(--sky);font-weight:700;font-size:14px}
 .adm details[open] summary{margin-bottom:8px}
+.adm .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line)}
+.adm .tabs button,.adm .tabs a{flex:1;text-align:center;padding:10px 4px;font:inherit;font-weight:700;font-size:15px;color:var(--muted);background:none;border:0;border-bottom:3px solid transparent;cursor:pointer;text-decoration:none}
+.adm .tabs [aria-pressed=true]{color:var(--ink);border-bottom-color:var(--brass,#C9A45C)}
+.adm .crow{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;cursor:pointer;background:var(--bg)}
+.adm .crow .th{width:78px;height:54px;border-radius:8px;object-fit:cover;background:var(--line);flex:none}
+.adm .crow .nm{flex:1;min-width:0}.adm .crow .nm b{display:block;font-size:16px}
+.adm .crow .q{display:flex;flex-direction:column;gap:4px}.adm .crow .q .chip{font-size:13px;padding:3px 10px}
+.adm .pill{font-size:12px;padding:1px 9px;border-radius:999px;background:var(--line);color:var(--ink)}
+.adm .pill-g{background:#dff3e6;color:#1f6b3a}.adm .pill-r{background:#fbe3e3;color:#a22}.adm .pill-y{background:#fff0d0;color:#8a5a00}.adm .pill-b{background:#e8eef8;color:#234}
+.adm .edh{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.adm .sec{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.adm .shd{all:unset;box-sizing:border-box;display:flex;justify-content:space-between;width:100%;padding:13px 14px;font-weight:700;font-size:16px;cursor:pointer}
+.adm .cnt .chip{font-size:14px}
 .adm .row1.sold3{opacity:.75}
 .srch{display:flex;gap:8px;margin-bottom:16px}.srch input{flex:1;min-width:0;font:inherit;padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
 .want{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
@@ -502,10 +515,10 @@ section#want.acc{padding:6px 0!important}
 <a class="btn float call" id="floatCall" href="tel:0554378456" aria-label="اتصل بالمعرض">📞 اتصل الحين</a>
 <a class="btn float" id="floatWa" href="#">اطلب عبر واتساب</a>
 
-<link rel="preload" href="app.js?v=49" as="script">
+<link rel="preload" href="app.js?v=50" as="script">
 <script src="i18n.js?v=14"></script><script src="specs_en.js?v=2"></script><script src="ad2.js?v=3"></script>
 <script>
-fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=49";document.body.appendChild(s)});
+fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(d){window.__DATA=d;var s=document.createElement("script");s.src="app.js?v=50";document.body.appendChild(s)});
 </script>
 <script>if("serviceWorker"in navigator&&location.protocol==="https:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 <script>

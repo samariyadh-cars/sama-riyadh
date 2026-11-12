@@ -530,14 +530,14 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
     var dlg=el("dialog","adm");dlg.setAttribute("aria-label","لوحة التحكم");
     var inn=el("div","in");dlg.appendChild(inn);
     inn.appendChild(el("h2","","لوحة التحكم"));
-    inn.appendChild(el("p","meta","عدّل السعر أو الحالة أو الألوان، أو أضف سيارة جديدة. ثم اضغط حفظ ويظهر التغيير للعملاء خلال دقيقة تقريبًا."));
+    inn.appendChild(el("p","meta","بعد التعديل اضغط حفظ ويظهر للعملاء خلال دقيقة."));
     var S0=(DATA&&DATA.set)||{},set=Object.assign({},S0,{banks:(S0.banks||[]).slice(),promo:S0.promo||"",promoLink:S0.promoLink||"",promoLinkText:S0.promoLinkText||"",promoAt:S0.promoAt||"",ad:Object.assign({},S0.ad||{})});
     var tools=el("div","tools");var q=el("input");q.type="search";q.placeholder="اكتب اسم السيارة، مثال: برادو";tools.appendChild(lab("بحث",q));
-    var stF=sel([["all","الكل"],["","المتوفرة"],["sold","المباعة"],["hidden","المخفية"]],"all",function(){filt()});tools.appendChild(lab("عرض",stF));
+    var stF=sel([["all","الكل"],["","المتوفرة"],["sold","المباعة"],["hidden","المخفية"]],"all",function(){filt()});
     var cnt=el("div","cnt");cnt.style.flexBasis="100%";tools.appendChild(cnt);inn.appendChild(tools);
-    function filt(){var v=q.value.trim(),f=stF.value;box.querySelectorAll(".row1[data-q]").forEach(function(r){var ok=(!v||r.dataset.q.indexOf(v)>-1)&&(f==="all"||r.dataset.s===f);r.hidden=!ok})}
+    function filt(){var v=q.value.trim(),f=stF.value;box.querySelectorAll(".crow[data-q]").forEach(function(r){var ok=(!v||r.dataset.q.indexOf(v)>-1)&&(f==="all"||r.dataset.s===f);r.hidden=!ok})}
     q.addEventListener("input",filt);
-    function counts(){var a=0,s=0,h=0;st.concat(xs.filter(function(m){return !m.del&&m.n})).forEach(function(m){if(m.status==="sold")s++;else if(m.status==="hidden")h++;else a++});cnt.innerHTML="";[["متوفرة",a],["مباعة",s],["مخفية",h]].forEach(function(p){cnt.appendChild(el("span","",p[0]+": "+p[1]))})}
+    function counts(){var a=0,s=0,h=0;st.concat(xs.filter(function(m){return !m.del&&m.n})).forEach(function(m){if(m.status==="sold")s++;else if(m.status==="hidden")h++;else a++});cnt.innerHTML="";[["all","الكل",a+s+h],["","متوفرة",a],["sold","مباعة",s],["hidden","مخفية",h]].forEach(function(p){var b=el("button","chip",p[1]+" "+p[2]);b.type="button";b.setAttribute("aria-pressed",stF.value===p[0]?"true":"false");b.addEventListener("click",function(){stF.value=p[0];filt();counts()});cnt.appendChild(b)})}
     var box=el("div","");box.style.display="flex";box.style.flexDirection="column";box.style.gap="12px";inn.appendChild(box);
     var bar=el("div","bar");var sv=el("button","btn","حفظ");sv.type="button";var cn=el("button","btn alt","إغلاق");cn.type="button";var ms=el("span","msg","");bar.appendChild(sv);bar.appendChild(cn);bar.appendChild(ms);inn.appendChild(bar);
     function setBusy(d){busy+=d;sv.disabled=busy>0;ms.textContent=busy>0?"جاري رفع الصور...":""}
@@ -704,35 +704,69 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
           if(f&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:o.title}).catch(function(){})}else{var a=document.createElement("a");a.href=pv._u;a.download=fn;document.body.appendChild(a);a.click();a.remove()}});
         draw()}
       bt.addEventListener("click",function(){if(w.hidden){w.hidden=false;bt.textContent="إخفاء صورة الإعلان";if(!built)build()}else{w.hidden=true;bt.textContent="🖼 صورة إعلان (القالب القديم)"}})}
-    function draw(){
-      box.innerHTML="";
-      var add=el("button","btn","+ إضافة سيارة جديدة");add.type="button";add.addEventListener("click",function(){xs.unshift({b:"تويوتا",n:"",y:"2026",type:"سيدان",pm:"",price:"",status:"",badge:"",colors:DEFCOL.slice(),imgs:[],cimgs:{},stext:"",etext:"",del:false,_new:1});draw();var nc=box.querySelector("[data-new]");if(nc){nc.scrollIntoView({block:"start"});var fi=nc.querySelector("input[type=text]");if(fi)try{fi.focus({preventScroll:true})}catch(e){}}});
-      add.style.alignSelf="flex-start";box.appendChild(add);
-      if(xs.some(function(m){return !m.del}))box.appendChild(el("h3","","السيارات المضافة من اللوحة"));
-      xs.forEach(function(m,j){
-        if(m.del)return;
-        var r=el("div","row1");r.dataset.q=m.b+" "+m.n;if(m._new){r.dataset.new="1";r.style.outline="2px solid var(--brass,#C9A45C)"}r.appendChild(el("h3","",m.n?m.b+" "+m.n:"سيارة جديدة"));
-        r.appendChild(lab("الماركة",sel(BRANDS,m.b,function(v){m.b=v})));
-        var ni=inp("text",m.n,function(v){m.n=v.trim()},"مثال: كورولا XLI");r.appendChild(lab("الاسم والفئة",ni));
-        r.appendChild(lab("الموديل",inp("text",m.y,function(v){m.y=v.trim()})));
-        r.appendChild(lab("النوع",sel(TYPES,m.type,function(v){m.type=v})));
-        var pl=el("label","","الصور (الأولى هي الغلاف)");pl.style.gridColumn="1/-1";pl.appendChild(photos(m.imgs));r.appendChild(pl);
-        common(r,m);
-        specBox(r,m);adBox(r,function(){return adText(m.b,m.n,m.y||"2026",m.colors,parseSpecs(m.stext))},function(){var L=(m.imgs||[]).slice();Object.keys(m.cimgs||{}).forEach(function(k){L=L.concat(m.cimgs[k]||[])});return {title:m.b+" "+m.n,brand:m.b,model:m.n,y:m.y||"2026",badge:m.badge,imgs:L,cimgs:m.cimgs||{},specs:parseSpecs(m.stext)}});
-                var d=el("button","btn alt","حذف السيارة");d.type="button";var armed=false;d.addEventListener("click",function(){if(!armed){armed=true;d.textContent="اضغط مرة ثانية للتأكيد";return}m.del=true;draw()});r.appendChild(d);
-        box.appendChild(r)});
-      var h1=el("h3","","السيارات الحالية");box.appendChild(h1);
-      base.forEach(function(c,i){var r=el("div","row1");r.dataset.q=c.b+" "+c.n+" "+c.y;r.appendChild(el("h3","",c.b+" "+c.n+" "+st[i].y));r.appendChild(lab("الموديل (السنة)",inp("text",st[i].y,function(v){st[i].y=v.trim()})));common(r,st[i]);var bpl=el("label","","صور السيارة (الأولى هي الغلاف)");bpl.style.gridColumn="1/-1";bpl.appendChild(photos(st[i].imgs));r.appendChild(bpl);specBox(r,st[i]);adBox(r,function(){return adText(c.b,c.n,c.y,st[i].colors,parseSpecs(st[i].stext))},function(){var ci=st[i].cimgs||{},k0=Object.keys(ci).filter(function(k){return ci[k]&&ci[k].length})[0];var L=(st[i].imgs||[]).slice();Object.keys(st[i].cimgs||{}).forEach(function(k){L=L.concat(st[i].cimgs[k]||[])});return {title:c.b+" "+c.n,brand:c.b,model:c.n,y:st[i].y||c.y,badge:st[i].badge,imgs:L,cimgs:st[i].cimgs||{},specs:parseSpecs(st[i].stext)}});box.appendChild(r)});
+    var tab="cars",ed=null,dirty=false;
+    function mark(){dirty=true;if(!busy)ms.textContent="تغييرات غير محفوظة ●"}
+    dlg.addEventListener("input",mark);dlg.addEventListener("change",mark);
+    var tabs=el("div","tabs");[["cars","🚗 السيارات"],["set","⚙️ الإعدادات"]].forEach(function(z){var b=el("button","",z[1]);b.type="button";b.dataset.t=z[0];b.addEventListener("click",function(){tab=z[0];ed=null;draw()});tabs.appendChild(b)});
+    var opl=el("a","","📋 العملاء");opl.href="ops.html";tabs.appendChild(opl);
+    inn.insertBefore(tabs,tools);
+    var addb=el("button","btn","+ سيارة جديدة");addb.type="button";bar.insertBefore(addb,sv);
+    addb.addEventListener("click",function(){var m={b:"تويوتا",n:"",y:"2026",type:"سيدان",pm:"",price:"",status:"",badge:"",colors:DEFCOL.slice(),imgs:[],cimgs:{},stext:"",etext:"",del:false,_new:1};xs.unshift(m);tab="cars";ed={k:"x",m:m};mark();draw()});
+    function stTxt(s){return s==="sold"?["تم البيع","r"]:s==="hidden"?["مخفية","y"]:["متوفرة","g"]}
+    function listRow(m,title,yr,imgs,onOpen){
+      var r=el("div","crow");r.dataset.q=title;r.dataset.s=m.status||"";
+      var im=el("img","th");im.alt="";if(imgs&&imgs[0])thumbImg(im,imgs[0]);r.appendChild(im);
+      var nm=el("div","nm");nm.appendChild(el("b","",title));var meta=el("div","meta","");nm.appendChild(meta);r.appendChild(nm);
+      var q=el("div","q");
+      var b1=el("button","chip","");b1.type="button";var b2=el("button","chip","");b2.type="button";q.appendChild(b1);q.appendChild(b2);r.appendChild(q);
+      function sync(){var p=stTxt(m.status);meta.innerHTML="";meta.appendChild(document.createTextNode((yr?yr+" ":"")));var pl=el("span","pill pill-"+p[1],p[0]);meta.appendChild(pl);if(m.badge){meta.appendChild(document.createTextNode(" "));meta.appendChild(el("span","pill pill-b",m.badge))}
+        b1.textContent=m.status==="sold"?"إرجاع للمتوفرة":"تم البيع";b2.textContent=m.status==="hidden"?"إظهار":"إخفاء";r.dataset.s=m.status||"";r.classList.toggle("sold3",m.status==="sold")}
+      b1.addEventListener("click",function(e){e.stopPropagation();m.status=m.status==="sold"?"":"sold";sync();mark();counts();filt()});
+      b2.addEventListener("click",function(e){e.stopPropagation();m.status=m.status==="hidden"?"":"hidden";sync();mark();counts();filt()});
+      r.addEventListener("click",onOpen);sync();return r}
+    function sect(title,open){
+      var w=el("div","sec"),hd=el("button","shd",title);hd.type="button";var ar=el("span","","");hd.appendChild(ar);var g=el("div","row1 sbody");g.style.border="0";g.style.borderTop="1px solid var(--line)";
+      function set(o){g.style.display=o?"":"none";ar.textContent=o?"▾":"‹"}set(open);hd.addEventListener("click",function(){set(g.style.display==="none")});
+      w.appendChild(hd);w.appendChild(g);return {w:w,g:g}}
+    function editor(){
+      var k=ed.k,m=k==="x"?ed.m:st[ed.i],c=k==="x"?null:base[ed.i];
+      var title=k==="x"?(m.n?m.b+" "+m.n:"سيارة جديدة"):c.b+" "+c.n;
+      var hd=el("div","edh");var back=el("button","btn alt","‹ رجوع للقائمة");back.type="button";back.addEventListener("click",function(){ed=null;draw()});hd.appendChild(back);hd.appendChild(el("b","",title));box.appendChild(hd);
+      var S1=sect("🚘 الأساسي",true);
+      if(k==="x"){S1.g.appendChild(lab("الماركة",sel(BRANDS.some(function(x){return (x instanceof Array?x[0]:x)===m.b})?BRANDS:[m.b].concat(BRANDS),m.b,function(v){m.b=v})));S1.g.appendChild(lab("الاسم والفئة",inp("text",m.n,function(v){m.n=v.trim()},"مثال: كورولا XLI")));S1.g.appendChild(lab("الموديل",inp("text",m.y,function(v){m.y=v.trim()})));S1.g.appendChild(lab("النوع",sel(TYPES,m.type,function(v){m.type=v})))}
+      else S1.g.appendChild(lab("الموديل (السنة)",inp("text",m.y,function(v){m.y=v.trim()})));
+      var tmp=el("div","");common(tmp,m);var kids=Array.prototype.slice.call(tmp.children);
+      kids.slice(0,5).forEach(function(x){S1.g.appendChild(x)});
+      box.appendChild(S1.w);
+      var S2=sect("🖼️ الصور",false);var pl=el("label","",k==="x"?"الصور (الأولى هي الغلاف)":"صور السيارة (الأولى هي الغلاف)");pl.style.gridColumn="1/-1";pl.appendChild(photos(m.imgs));S2.g.appendChild(pl);box.appendChild(S2.w);
+      var S3=sect("🎨 الألوان",false);kids.slice(5).forEach(function(x){S3.g.appendChild(x)});box.appendChild(S3.w);
+      var S4=sect("📋 المواصفات",false);specBox(S4.g,m);box.appendChild(S4.w);
+      var S5=sect("📣 الإعلانات",false);
+      var tl=k==="x"?function(){return m.b+" "+m.n}:function(){return c.b+" "+c.n};
+      adBox(S5.g,function(){return adText(k==="x"?m.b:c.b,k==="x"?m.n:c.n,(m.y||(c&&c.y)||"2026"),m.colors,parseSpecs(m.stext))},function(){var L=(m.imgs||[]).slice();Object.keys(m.cimgs||{}).forEach(function(q){L=L.concat(m.cimgs[q]||[])});return {title:tl(),brand:k==="x"?m.b:c.b,model:k==="x"?m.n:c.n,y:m.y||(c&&c.y)||"2026",badge:m.badge,imgs:L,cimgs:m.cimgs||{},specs:parseSpecs(m.stext)}});
+      box.appendChild(S5.w);
+      if(k==="x"){var S6=sect("🗑️ حذف السيارة",false);var d=el("button","btn alt","حذف السيارة");d.type="button";var armed=false;d.addEventListener("click",function(){if(!armed){armed=true;d.textContent="اضغط مرة ثانية للتأكيد";return}m.del=true;mark();ed=null;draw()});S6.g.appendChild(d);box.appendChild(S6.w)}
+      dlg.scrollTop=0}
+    function settings(){
       var sr=el("div","row1");sr.appendChild(el("h3","","إعدادات الموقع"));var bt=el("textarea");bt.rows=4;bt.value=set.banks.join("\n");bt.placeholder="اكتب كل جهة في سطر، مثال:\nبنك الراجحي\nبنك الرياض";bt.style.cssText="font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%";bt.addEventListener("input",function(){set.banks=bt.value.split("\n").map(function(x){return x.trim()}).filter(Boolean)});var pr=el("input");pr.type="text";pr.value=set.promo;pr.placeholder="مثال: وصلت دفعة جديدة من الكامري 2026";pr.addEventListener("input",function(){set.promo=pr.value.trim();set.promoAt=String(Date.now())});sr.appendChild(lab("شريط العروض أعلى الموقع (اتركه فاضي لإخفائه)",pr,true));
       var pl=el("input");pl.type="text";pl.value=set.promoLink;pl.placeholder="رابط اختياري، مثال: https://wa.me/966554378456";pl.setAttribute("dir","ltr");pl.addEventListener("input",function(){set.promoLink=pl.value.trim();set.promoAt=String(Date.now())});sr.appendChild(lab("رابط الشريط (اختياري)",pl,true));
       var AL=[["اسم صاحب المعرض (الإعلان)","owner"],["الجوال (الإعلان)","phone"],["السناب (الإعلان)","snap"],["العنوان (الإعلان)","addr"],["عبارة الشحن (الإعلان)","ship"],["عبارة التمويل (الإعلان)","bank"],["شريط الدفع (الإعلان)","pay"]];AL.forEach(function(z){var i=el("input");i.type="text";i.value=adFixed()[z[1]];i.addEventListener("input",function(){set.ad[z[1]]=i.value});sr.appendChild(lab(z[0],i,true))});
       sr.appendChild(lab("جهات التمويل اللي تظهر في قسم طرق الدفع (اتركها فاضية لإخفائها)",bt,true));box.appendChild(sr);
+    }
+    function draw(){
+      box.innerHTML="";
+      Array.prototype.forEach.call(tabs.children,function(b){if(b.dataset.t)b.setAttribute("aria-pressed",b.dataset.t===tab?"true":"false")});
+      var lst=tab==="cars"&&!ed;tools.style.display=lst?"":"none";addb.style.display=lst?"":"none";
+      if(tab==="set"){settings();return}
+      if(ed){editor();return}
+      xs.forEach(function(m){if(m.del)return;box.appendChild(listRow(m,m.n?m.b+" "+m.n:"سيارة جديدة",m.y,m.imgs,function(){ed={k:"x",m:m};draw()}))});
+      base.forEach(function(c,i){var s=st[i];box.appendChild(listRow(s,c.b+" "+c.n,s.y||c.y,s.imgs&&s.imgs.length?s.imgs:c.imgs,function(){ed={k:"b",i:i};draw()}))});
       counts();filt();
     }
     draw();
     document.body.appendChild(dlg);
     var fab=el("button","btn admfab","لوحة التحكم");fab.type="button";document.body.appendChild(fab);
-    fab.addEventListener("click",function(){dlg.showModal()});cn.addEventListener("click",function(){dlg.close()});
+    fab.addEventListener("click",function(){dlg.showModal()});cn.addEventListener("click",function(){if(dirty&&!confirm("فيه تغييرات غير محفوظة. تبغى تغلق بدون حفظ؟"))return;dlg.close()});
     
     sv.addEventListener("click",function(){
       var ov={},specs={},specsEn={};
@@ -742,10 +776,10 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
       m.colors.concat((px.call||[]).filter(function(x){return m.colors.indexOf(x)<0})).forEach(function(col){var a=(m.cimgs||{})[col];if(a&&a.length)ci[col]=a});if(Object.keys(ci).length)o.cimgs=ci;var sp=parseSpecs(m.stext);if(sp.length)o.specs=sp;if((m.etext||"").trim())o.specsEn=m.etext;extra.push(o)});
       var json=JSON.stringify({ov:ov,extra:extra,specs:specs,specsEn:specsEn,set:set,views:(DATA&&DATA.views)||{}},null,1);
       sv.disabled=true;ms.textContent="جاري الحفظ...";
-      art.publish(json).then(function(){sv.disabled=false;ms.textContent="تم الحفظ ✓ يظهر للعملاء خلال دقيقة تقريبًا"}).catch(function(e){sv.disabled=false;var s=e&&e.status;ms.textContent=s===401?"مفتاح الدخول غير صحيح أو منتهي.":s===403||s===404?"المفتاح ما عنده صلاحية على المستودع.":s===409?"صار تعديل من مكان ثاني، حدّث الصفحة وأعد المحاولة.":"تعذر الحفظ، تأكد من الإنترنت وحاول مرة ثانية."});
+      art.publish(json).then(function(){sv.disabled=false;dirty=false;ms.textContent="تم الحفظ ✓ يظهر للعملاء خلال دقيقة تقريبًا"}).catch(function(e){sv.disabled=false;var s=e&&e.status;ms.textContent=s===401?"مفتاح الدخول غير صحيح أو منتهي.":s===403||s===404?"المفتاح ما عنده صلاحية على المستودع.":s===409?"صار تعديل من مكان ثاني، حدّث الصفحة وأعد المحاولة.":"تعذر الحفظ، تأكد من الإنترنت وحاول مرة ثانية."});
     });
   }
-  function start(){var lo=el("button","btn alt","خروج");lo.type="button";lo.style.marginInlineStart="auto";lo.addEventListener("click",function(){setTok("");location.reload()});init(art,assets);var b=document.querySelector(".adm .bar");if(b)b.appendChild(lo);var h2=document.querySelector(".adm .in h2");if(h2){var op=el("a","btn","📋 العملاء والمتابعات وعروض الأسعار");op.href="ops.html";op.style.alignSelf="flex-start";h2.insertAdjacentElement("afterend",op)}}
+  function start(){var lo=el("button","btn alt","خروج");lo.type="button";lo.style.cssText="padding:4px 12px;font-size:14px;position:absolute;top:22px;inset-inline-end:18px";lo.addEventListener("click",function(){setTok("");location.reload()});init(art,assets);var b=document.querySelector(".adm .bar");var hh=document.querySelector(".adm .in");if(hh){hh.style.position="relative";hh.appendChild(lo)}}
   function login(){var t=prompt("الصق مفتاح الدخول (GitHub token):");if(!t)return;t=t.trim();fetch("https://api.github.com/repos/"+GH.owner+"/"+GH.repo,{headers:{"Authorization":"Bearer "+t}}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.permissions&&j.permissions.push){setTok(t);start();var f=document.querySelector(".admfab");if(f)f.click()}else alert("المفتاح غير صحيح أو ما عنده صلاحية تعديل.")}).catch(function(){alert("تعذر التحقق، تأكد من الإنترنت.")})}
   var ft=document.querySelector("footer");if(ft){var lk=el("button","","دخول المعرض");lk.type="button";lk.style.cssText="all:unset;cursor:pointer;color:inherit;opacity:.55;font-size:13px;display:block;margin:6px auto 0";lk.addEventListener("click",function(){if(tok()){var f=document.querySelector(".admfab");if(f)f.click()}else login()});ft.appendChild(lk)}
   if(tok())start();
