@@ -183,6 +183,10 @@ nav.tabs a.on{color:var(--red);font-weight:700}
 .t{font-style:normal;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;background:var(--bg);color:var(--mut)}.t.on{background:var(--ok-bg);color:var(--ok)}.t.hid{background:var(--ink);color:#fff}.t.sold{background:var(--soon-bg);color:var(--soon)}
 .tog{width:52px;height:32px;border-radius:16px;border:0;background:#C4C8CE;position:relative;flex:none;cursor:pointer}.tog span{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:right .15s}
 .tog[aria-checked=true]{background:var(--wa)}.tog[aria-checked=true] span{right:24px}
+.alsec{margin-bottom:18px}.alh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0 2px;font-size:15px;flex-wrap:wrap}.alh small{color:var(--mut);font-weight:400}.cd2{display:inline-block;width:16px;height:16px;border-radius:50%;border:1px solid #C4C8CE;vertical-align:-3px;margin-inline-end:6px}
+.alb{height:34px;padding:0 12px;border-radius:17px;border:1px solid var(--line2);background:#fff;font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-inline-start:6px;color:var(--ink)}.alb.alsend{background:var(--wa);border-color:var(--wa);color:#fff}
+.alimg{border:0;padding:0;background:#ddd;cursor:pointer}.alimg .alck{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.6);border:2px solid #fff;color:transparent;display:flex;align-items:center;justify-content:center;font-size:14px}
+.alimg.sel{outline:3px solid var(--red);outline-offset:-3px}.alimg.sel .alck{background:var(--red);color:#fff}.alimg .al1{position:absolute;bottom:6px;left:6px;width:34px;height:34px;border-radius:50%;background:rgba(28,31,36,.78);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
 .egrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
 .eadd,.eimg{aspect-ratio:1;border-radius:12px;overflow:hidden;position:relative}
 .eadd{border:2px dashed var(--red);background:var(--red-l);color:var(--red-d);display:flex!important;flex-direction:column!important;align-items:center;justify-content:center;gap:4px;margin:0!important;font-size:12px;cursor:pointer}
@@ -727,7 +731,7 @@ function vAdmin(){
   var chip=function(k,t){return '<button class="chip" data-st="'+k+'" aria-pressed="'+(AF.st===k)+'">'+t+'</button>'},cnt=function(k){return cars.filter(function(c){return c.loc===k}).length};
   app.innerHTML='<header class="top"><div class="wrap"><div class="row"><div class="brand"><a class="back" href="#/" aria-label="رجوع" style="background:#2A2E35;border-color:#3A3F47;color:#fff">'+ICON.back+'</a><div><b>إدارة السيارات</b><small>التعديل يظهر في الموقع والتطبيق خلال دقيقة</small></div></div><a class="ibtn" href="#/admin/new" aria-label="سيارة جديدة" style="background:var(--red);border-color:var(--red);font-size:24px;text-decoration:none">+</a></div>'+
    '<div class="search"><label>'+ICON.search+'<input id="aq" type="search" placeholder="ابحث باسم السيارة" value="'+esc(AF.q)+'"></label></div></div></header>'+
-   '<main class="wrap"><div class="atools"><a href="#/admin/stats">📊<span>الإحصائيات</span></a><a href="#/admin/prices">💰<span>الأسعار</span></a><a href="#/admin/deliv">🎉<span>صورة تسليم</span></a><a href="#/admin/arrivals">🔔<span>ينتظرون الوصول</span></a><a href="#/admin/replies">💬<span>ردود جاهزة</span></a><a href="#/admin/team">👥<span>فريق المبيعات</span></a><button type="button" id="shopQr">'+ICON.qr+'باركود المعرض</button><button type="button" id="mtog" class="'+(SET.maint?"on":"")+'">'+ICON.tune+(SET.maint?"الصيانة: شغّالة":"وضع الصيانة")+'</button></div>'+
+   '<main class="wrap"><div class="atools"><a href="#/admin/album">🖼️<span>ألبوم الصور</span></a><a href="#/admin/stats">📊<span>الإحصائيات</span></a><a href="#/admin/prices">💰<span>الأسعار</span></a><a href="#/admin/deliv">🎉<span>صورة تسليم</span></a><a href="#/admin/arrivals">🔔<span>ينتظرون الوصول</span></a><a href="#/admin/replies">💬<span>ردود جاهزة</span></a><a href="#/admin/team">👥<span>فريق المبيعات</span></a><button type="button" id="shopQr">'+ICON.qr+'باركود المعرض</button><button type="button" id="mtog" class="'+(SET.maint?"on":"")+'">'+ICON.tune+(SET.maint?"الصيانة: شغّالة":"وضع الصيانة")+'</button></div>'+
    '<div class="chips" id="ast" style="flex-wrap:wrap">'+chip("all","الكل ("+cars.length+")")+chip("on","ظاهرة")+chip("hidden","مخفية")+chip("sold","تم البيع")+chip("show","🏢 المعرض ("+cnt("show")+")")+chip("ship","🚢 الشحن ("+cnt("ship")+")")+chip("dealer","🏭 الموزع ("+cnt("dealer")+")")+chip("arch","📦 الأرشيف ("+cars.filter(function(c){return c.arch}).length+")")+(STALE&&Object.keys(STALE).length?chip("stale","🐢 راكدة ("+Object.keys(STALE).length+")"):"")+'</div><div class="alist">'+
    (AF.st==="arch"&&!l.length?'<div class="empty">الأرشيف فاضي.</div>':'')+l.map(function(c){var st=c.status||"",u=firstImg(c),p=priceOf(c);
      return '<div class="arow"><a class="ainfo" href="#/admin/'+idx(c)+'">'+(u?pic(u,"",true):'<span class="ph0"></span>')+'<span><b>'+esc(c.b+" "+c.n)+'</b>'+
@@ -1483,6 +1487,55 @@ function deleteCar(c){var key=ck(c);return ghGetJson("data.json").then(function(
   return ghPut("data.json",u8b64(new TextEncoder().encode(JSON.stringify(D,null,1))),"حذف سيارة من التطبيق: "+key,g.sha)}).then(function(){cars.splice(idx(c),1)})}
 
 /* ===== التنقل ===== */
+/* ===== ألبوم الصور: ادخل باسم السيارة وأرسل الصور واللون للعميل ===== */
+var AL={q:"",i:-1,sel:{},cache:{}};
+function alCols(c){var ci=c.cimgs||{},cols=(c.allColors||c.colors||[]).slice();Object.keys(ci).forEach(function(k){if(cols.indexOf(k)<0)cols.push(k)});return cols.filter(function(k){return (ci[k]||[]).length})}
+function alSecs(c){var ci=c.cimgs||{},s=alCols(c).map(function(k){return {t:k,col:k,l:ci[k].slice()}}),seen={};s.forEach(function(x){x.l.forEach(function(u){seen[u]=1})});
+  var b=(c.imgs||[]).filter(function(u){return !seen[u]});if(b.length){s.push({t:s.length?"صور أساسية":"الصور",col:"",l:b});b.forEach(function(u){seen[u]=1})}
+  var g=(c.gimgs||[]).filter(function(u){return !seen[u]});if(g.length)s.push({t:"المقصورة والتفاصيل",col:"",l:g});return s}
+function alCount(c){var n=0;alSecs(c).forEach(function(s){n+=s.l.length});return n}
+function alBlob(u){return AL.cache[u]||(AL.cache[u]=fetch(img(u),{cache:"force-cache"}).then(function(r){if(!r.ok)throw new Error("x");return r.blob()}).catch(function(e){delete AL.cache[u];throw e}))}
+function alName(s){return String(s||"").replace(/[\\\/:*?"<>|]+/g,"").replace(/\s+/g," ").trim()}
+function alReady(d){var o=document.createElement("div");o.style.cssText="position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center";
+  o.innerHTML='<div style="background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + var(--safe-b));text-align:center"><b>الصور جاهزة ('+d.files.length+')</b><button type="button" class="btn" id="alGo" style="margin-top:12px">📤 اضغط للإرسال</button><button type="button" class="btn ghost" id="alNo" style="margin-top:8px">إلغاء</button></div>';
+  document.body.appendChild(o);o.querySelector("#alNo").onclick=function(){o.remove()};
+  o.querySelector("#alGo").onclick=function(){navigator.share(d).catch(function(){}).then(function(){o.remove()})}}
+function alSend(items,title,text){
+  toast("جاري تجهيز "+items.length+" صورة…");
+  return Promise.all(items.map(function(it){return alBlob(it.u).then(function(b){return new File([b],alName(it.n)+".jpg",{type:"image/jpeg"})})})).then(function(files){
+    var d={files:files,title:title,text:text};
+    if(!(navigator.canShare&&navigator.canShare(d))){files.forEach(function(f,i){setTimeout(function(){var a=document.createElement("a");a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();a.remove()},i*400)});toast("انحفظت الصور في الجهاز");return}
+    return navigator.share(d).catch(function(e){if(e&&e.name==="AbortError")return;alReady(d)})
+  }).catch(function(){toast("تعذر تجهيز الصور — تأكد من الاتصال")})}
+function vAlbum(i){if(!isOwner())return needOwner();
+  if(i!=null&&i!==""&&cars[+i])return vAlbumCar(+i);
+  var q=AL.q.trim().toLowerCase(),l=cars.filter(function(c){return !c.arch&&alCount(c)&&(!q||(c.b+" "+c.n).toLowerCase().indexOf(q)>=0)});
+  app.innerHTML='<header class="top"><div class="wrap"><div class="row"><div class="brand"><a class="back" href="#/admin" aria-label="رجوع" style="background:#2A2E35;border-color:#3A3F47;color:#fff">'+ICON.back+'</a><div><b>ألبوم الصور</b><small>اختر السيارة وأرسل صورها للعميل</small></div></div></div>'+
+   '<div class="search"><label>'+ICON.search+'<input id="alq" type="search" placeholder="ابحث باسم السيارة" value="'+esc(AL.q)+'"></label></div></div></header>'+
+   '<main class="wrap"><div class="alist">'+(l.length?l.map(function(c){var u=firstImg(c),n=alCols(c).length;
+     return '<div class="arow"><a class="ainfo" href="#/admin/album/'+idx(c)+'">'+(u?pic(u,"",true):'<span class="ph0"></span>')+'<span><b>'+esc(c.b+" "+c.n)+'</b><small>'+(n?'<i class="t">'+n+' ألوان</i>':"")+'<i class="t">'+alCount(c)+' صورة</i>'+(c.status==="sold"?'<i class="t sold">تم البيع</i>':c.status==="hidden"?'<i class="t hid">مخفية</i>':"")+'</small></span></a></div>'}).join(""):'<div class="empty">ما لقيت سيارة بهذا الاسم.</div>')+'</div></main>';
+  var aq=document.getElementById("alq");aq.oninput=function(){AL.q=aq.value;var p=aq.selectionStart;vAlbum();var n=document.getElementById("alq");n.focus();try{n.setSelectionRange(p,p)}catch(e){}}}
+function vAlbumCar(i){var c=cars[i],S=alSecs(c),title=c.b+" "+c.n;
+  if(AL.i!==i){AL.i=i;AL.sel={}}
+  app.innerHTML='<div class="sub"><a class="back" href="#/admin/album" aria-label="رجوع">'+ICON.back+'</a><div style="flex:1;min-width:0"><small style="color:var(--mut);font-size:12px">ألبوم الصور</small><h1 style="font-size:17px">'+esc(title)+'</h1></div></div><main class="wrap" style="padding-bottom:120px">'+
+   (S.length?S.map(function(s,si){var hx=s.col?(COLHEX[s.col]||COLHEX[s.col.split(" (")[0]]||COLHEX[s.col.split(" بمقصورة")[0]]||"#999"):"";
+     return '<div class="alsec"><div class="alh"><b>'+(s.col?'<i class="cd2" style="background:'+esc(hx)+'"></i>':'')+esc(s.t)+' <small>('+s.l.length+')</small></b><span><button type="button" class="alb" data-sa="'+si+'">تحديد الكل</button><button type="button" class="alb alsend" data-ss="'+si+'">📤 أرسل الكل</button></span></div><div class="egrid">'+
+      s.l.map(function(u,k){return '<button type="button" class="eimg alimg'+(AL.sel[u]?" sel":"")+'" data-si="'+si+'" data-k="'+k+'">'+pic(u,"",true)+'<span class="alck">✓</span><span class="al1" data-one="1">📤</span></button>'}).join("")+'</div></div>'}).join(""):'<div class="empty">ما في صور لهذي السيارة.</div>')+'</main><div class="bar" id="albar" hidden><div class="in"><button type="button" class="btn ghost" id="alclr">إلغاء التحديد</button><button type="button" class="btn" id="alsend">📤 إرسال</button></div></div>';
+  function secItems(s){return s.l.map(function(u,k){return {u:u,n:title+(s.col?" "+s.col:"")+" "+(k+1)}})}
+  function secText(s){return title+(s.col?" — اللون: "+s.col:"")}
+  function bar(){var n=Object.keys(AL.sel).length,b=document.getElementById("albar");b.hidden=!n;document.body.classList.toggle("has-bar",!!n);document.getElementById("alsend").textContent="📤 إرسال ("+n+")"}
+  function selItems(){var it=[],cs=[];S.forEach(function(s){s.l.forEach(function(u,k){if(AL.sel[u]){it.push({u:u,n:title+(s.col?" "+s.col:"")+" "+(k+1)});if(s.col&&cs.indexOf(s.col)<0)cs.push(s.col)}})});return {it:it,text:title+(cs.length?" — اللون: "+cs.join("، "):"")}}
+  var main=app.querySelector("main");
+  main.onclick=function(e){
+    var one=e.target.closest("[data-one]"),im=e.target.closest(".alimg");
+    if(one&&im){e.stopPropagation();var s=S[+im.dataset.si],k=+im.dataset.k;alSend([{u:s.l[k],n:title+(s.col?" "+s.col:"")+" "+(k+1)}],title,secText(s));return}
+    if(im){var s2=S[+im.dataset.si],u=s2.l[+im.dataset.k];if(AL.sel[u]){delete AL.sel[u];im.classList.remove("sel")}else{AL.sel[u]=1;im.classList.add("sel");alBlob(u).catch(function(){})}bar();return}
+    var sa=e.target.closest("[data-sa]");if(sa){var s3=S[+sa.dataset.sa],all=s3.l.every(function(u){return AL.sel[u]});s3.l.forEach(function(u){if(all)delete AL.sel[u];else{AL.sel[u]=1;alBlob(u).catch(function(){})}});
+      sa.closest(".alsec").querySelectorAll(".alimg").forEach(function(b){b.classList.toggle("sel",!all)});bar();return}
+    var ss=e.target.closest("[data-ss]");if(ss){var s4=S[+ss.dataset.ss];alSend(secItems(s4),title,secText(s4))}};
+  document.getElementById("alclr").onclick=function(){AL.sel={};app.querySelectorAll(".alimg.sel").forEach(function(b){b.classList.remove("sel")});bar()};
+  document.getElementById("alsend").onclick=function(){var x=selItems();if(x.it.length)alSend(x.it,title,x.text)};
+  document.body.classList.add("has-bar");bar()}
 function route(){
   var h=location.hash.replace(/^#\/?/,""),p=h.split("/"),t="home";
   document.body.classList.remove("has-bar");
@@ -1493,7 +1546,7 @@ function route(){
   else if(p[0]==="cmp"){t="cars";vCmp(p[1],p[2])}
   else if(p[0]==="finance"){t="finance";vFinance(p[1])}
   else if(p[0]==="contact"){t="contact";vContact()}
-  else if(p[0]==="admin"){t="admin";if(p[1]==="reps"){location.replace("#/admin");return}else if(p[1]==="new")vNew();else if(p[1]==="prices")vPrices();else if(p[1]==="stats")vStats();else if(p[1]==="arrivals")vArrivals();else if(p[1]==="replies")vReplies();else if(p[1]==="team")vTeam();else if(p[1]==="deliv")vDeliv(p[2]);else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
+  else if(p[0]==="admin"){t="admin";if(p[1]==="reps"){location.replace("#/admin");return}else if(p[1]==="new")vNew();else if(p[1]==="prices")vPrices();else if(p[1]==="stats")vStats();else if(p[1]==="arrivals")vArrivals();else if(p[1]==="replies")vReplies();else if(p[1]==="team")vTeam();else if(p[1]==="deliv")vDeliv(p[2]);else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]==="album")vAlbum(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
   else vHome();
   Array.prototype.forEach.call(app.querySelectorAll("option:not([value])"),function(o){o.value=o.textContent});
   document.getElementById("fab").style.display=(t==="finance"||t==="contact"||t==="admin")?"none":"";
