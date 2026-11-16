@@ -1,0 +1,29 @@
+name: image-thumbs
+on:
+  push:
+    branches: [main]
+    paths: [up/**, img/**, tools/thumbs.py]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: thumbs
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pillow
+      - run: python tools/thumbs.py
+      - run: |
+          git config user.name "sama-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A up img t
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "نسخ خفيفة للصور الجديدة"
+          for i in 1 2 3 4; do git pull --rebase -q origin main && git push -q && exit 0; sleep 8; done
+          exit 1
