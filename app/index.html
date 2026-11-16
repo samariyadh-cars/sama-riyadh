@@ -469,7 +469,7 @@ function rvHtml(){var l=rvGet().map(byKey).filter(function(c){return c&&c.status
 /* «الأكثر طلباً»: سيارة وحدة، تنحسب في «متابعات سماء» من مشاهدات وطلبات آخر 7 أيام */
 function isHot(c){return !!DATA.hot&&DATA.hot===ck(c)&&c.status!=="sold"&&c.status!=="hidden"}
 function card(c){var u=firstImg(c);return '<a class="card" href="#/car/'+idx(c)+'"><div class="ph">'+(u?pic(u,"",true):"")+tagOf(c,"tag")+favBtn(c)+(isHot(c)?'<span class="hot">🔥 الأكثر طلباً</span>':'')+'</div><div class="cb"><b>'+esc(c.b+" "+c.n)+'</b><span>'+esc(c.y||"")+(c.colors&&c.colors.length?" · "+c.colors.length+" ألوان":"")+'</span>'+priceLine(c)+(offerLeft(c)!=null?'<em class="cdn">'+offerTxt(offerLeft(c),1)+'</em>':'')+'</div></a>'}
-function arN(t){return String(t||"").toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\u064B-\u0652\u0640]/g,"")}
+function arN(t){return String(t||"").toLowerCase().replace(/[\u200B-\u200F\u061C\u202A-\u202E\u2066-\u2069\uFEFF]/g,"").replace(/[.،,؟?!؛;:"'«»()\-]/g," ").replace(/[أإآٱ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\u064B-\u0652\u0640]/g,"")}
 function filtered(){
   var q=F.q.trim().toLowerCase();
   var l=visible().filter(function(c){
@@ -566,12 +566,16 @@ function bindTop(where){
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition||null;
 function voiceSearch(where){if(!SR)return;var en=window.SAMA_LANG==="en",r;try{r=new SR()}catch(e){toast("البحث بالصوت ما يشتغل على هذا الجوال");return}
   r.lang=en?"en-US":"ar-SA";r.interimResults=true;r.maxAlternatives=1;r.continuous=false;
-  var s=document.createElement("div");s.className="sheet open";s.innerHTML='<div class="box vbox" role="dialog" aria-label="بحث بالصوت"><div class="vpul">'+ICON.mic+'</div><p class="note" id="vst" style="margin:0">أسمعك… قل اسم السيارة</p><div class="vsaid" id="vsd"></div><p class="note" style="margin:0">مثلاً: «برادو ذهبي» أو «كامري هايبرد»</p><button type="button" class="btn ghost" id="vx" style="margin-top:14px;width:100%">إلغاء</button></div>';
-  document.body.appendChild(s);var txt="",done=false,close=function(){done=true;try{r.abort()}catch(e){}s.remove()};
-  s.addEventListener("click",function(e){if(e.target===s)close()});s.querySelector("#vx").onclick=close;
-  r.onresult=function(e){txt="";for(var i=0;i<e.results.length;i++)txt+=e.results[i][0].transcript;txt=txt.replace(/[.؟?!،,]+$/,"").trim();var d=document.getElementById("vsd");if(d)d.textContent=txt?"«"+txt+"»":""};
+  var s=document.createElement("div");s.className="sheet open";s.innerHTML='<div class="box vbox" role="dialog" aria-label="بحث بالصوت"><div class="vpul">'+ICON.mic+'</div><p class="note" id="vst" style="margin:0">أسمعك… قل اسم السيارة</p><div class="vsaid" id="vsd"></div><p class="note" style="margin:0">مثلاً: «برادو ذهبي» أو «كامري هايبرد»</p><button type="button" class="btn" id="vgo" style="margin-top:14px;width:100%" hidden>ابحث</button><button type="button" class="btn ghost" id="vx" style="margin-top:8px;width:100%">إلغاء</button></div>';
+  document.body.appendChild(s);var txt="",done=false,tm=null,close=function(){done=true;clearTimeout(tm);try{r.abort()}catch(e){}s.remove()};
+  /* الآيفون أحياناً يتأخر في إنهاء الاستماع، فنبحث أول ما تجي الكلمة النهائية أو بعد سكوت ثانية ونص */
+  var finish=function(){if(done||!txt)return;done=true;clearTimeout(tm);try{r.stop()}catch(e){}s.remove();F.q=txt;if(where==="cars")vCars();else location.hash="#/cars"};
+  s.addEventListener("click",function(e){if(e.target===s)close()});s.querySelector("#vx").onclick=close;s.querySelector("#vgo").onclick=finish;
+  r.onresult=function(e){txt="";var fin=false;for(var i=0;i<e.results.length;i++){txt+=e.results[i][0].transcript;if(e.results[i].isFinal)fin=true}txt=arN(txt).replace(/\s+/g," ").trim();
+    var d=document.getElementById("vsd");if(d)d.textContent=txt?"«"+txt+"»":"";var g=document.getElementById("vgo");if(g)g.hidden=!txt;
+    clearTimeout(tm);if(fin)finish();else if(txt)tm=setTimeout(finish,1500)};
   r.onerror=function(e){if(done)return;var m=e.error==="not-allowed"||e.error==="service-not-allowed"?"اسمح للتطبيق بالمايك من إعدادات الجوال":e.error==="no-speech"?"ما سمعت شي — جرّب مرة ثانية":"ما قدرت أسمعك — جرّب مرة ثانية";var st=document.getElementById("vst");if(st)st.textContent=m;var pu=s.querySelector(".vpul");if(pu)pu.classList.add("off")};
-  r.onend=function(){if(done)return;if(!txt){var pu=s.querySelector(".vpul");if(pu)pu.classList.add("off");return}done=true;s.remove();F.q=txt;if(where==="cars")vCars();else location.hash="#/cars"};
+  r.onend=function(){if(done)return;if(!txt){var pu=s.querySelector(".vpul");if(pu)pu.classList.add("off");var st=document.getElementById("vst");if(st&&/أسمعك/.test(st.textContent))st.textContent="ما سمعت شي — جرّب مرة ثانية";return}finish()};
   try{r.start()}catch(e){close();toast("ما قدرت أشغّل المايك")}}
 function openFilter(){
   var types=[],fu=[];visible().forEach(function(c){if(c.type&&types.indexOf(c.type)<0)types.push(c.type);var f=fuelOf(c);if(fu.indexOf(f)<0)fu.push(f)});
