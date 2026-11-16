@@ -1,6 +1,6 @@
 /* ترجمة واجهة التطبيق للعميل (تكمّل قاموس الموقع i18n.js). لوحة الإدارة تبقى بالعربي. */
 window.SAMA_W_APP={"كيا":"Kia","شانجان":"Changan","هيونداي":"Hyundai","نيسان":"Nissan","هايلكس":"Hilux","شاص":"Shas","ربع":"Land Cruiser 70","غمارتين":"Double Cab","غمارة":"Single Cab","دبل":"4WD","ستاندر":"Standard","فتحة":"Sunroof","يوني":"UNI","سبورت":"Sport","فيلوز":"Veloz","كورلا":"Corolla","رايز":"Raize","أوربان":"Urban","برادو":"Prado","كروزر":"Cruiser","هاتشباك":"Hatchback","عائلية":"Family","بيك أب":"Pickup","سيدان":"Sedan"};
-window.SAMA_EX_APP={"👀 شوهدت مؤخراً":"👀 Recently viewed","مسح":"Clear","🔥 الأكثر طلباً":"🔥 Most requested","تصفّح حسب الماركة":"Browse by brand","كل الماركات":"All brands",
+window.SAMA_EX_APP={"🟢 مفتوح الحين":"🟢 Open now","المسافة بينك وبين المعرض":"Distance to the showroom","اضغط «كم تبعد عنا؟»":"Tap “How far are we?”","📏 كم تبعد عنا؟":"📏 How far are we?","🧭 ودّني":"🧭 Take me there","جاري التحديد…":"Locating…","👀 شوهدت مؤخراً":"👀 Recently viewed","مسح":"Clear","🔥 الأكثر طلباً":"🔥 Most requested","تصفّح حسب الماركة":"Browse by brand","كل الماركات":"All brands",
  "سماء الرياض للسيارات":"Sama Riyadh Cars","الرياض – معارض الشفاء":"Riyadh – Al Shifa Showrooms","عربي":"عربي",
  "الرئيسية":"Home","السيارات":"Cars","التمويل":"Finance","تواصل":"Contact","عرض المعرض":"Showroom offers","شوفها":"See it","وصل حديثاً":"Just arrived","عرض الكل":"View all",
  "متوفرة فوراً":"Available now","تصل قريباً":"Arriving soon","وصلت جديد":"Just arrived","عرض خاص":"Special offer","يصل قريباً":"Arriving soon","تم البيع":"Sold",
@@ -28,6 +28,10 @@ window.SAMA_EX_APP={"👀 شوهدت مؤخراً":"👀 Recently viewed","مس�
 };
 window.SAMA_W_APP["ر.س"]="SAR";
 window.SAMA_PAT_APP=function(tr){return [
+ [/^(🔴 )?(نفتح|يقفل) (بكرة |(?:الأحد|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة|السبت) )?([\d:]+) (الصبح|الظهر|العصر|بالليل)$/,function(m){var D={"الأحد":"Sunday","الاثنين":"Monday","الثلاثاء":"Tuesday","الأربعاء":"Wednesday","الخميس":"Thursday","الجمعة":"Friday","السبت":"Saturday"},d=(m[3]||"").trim(),h=parseInt(m[4],10),pm=m[5]!=="الصبح"&&!(m[5]==="بالليل"&&h<4);return (m[1]||"")+(m[2]==="نفتح"?"Opens ":"Closes ")+(d==="بكرة"?"tomorrow ":d?D[d]+" ":"")+m[4]+(pm?" PM":" AM")}],
+ [/^🟢 مفتوح الحين · يقفل ([\d:]+) (.+)$/,function(m){return "🟢 Open now · closes "+m[1]+" PM"}],
+ [/^تقريباً (\d+) دقيقة بالسيارة$/,function(m){return "About "+m[1]+" min by car"}],
+ [/^([\d.,]+|أقل من 1) كم$/,function(m){return (m[1]==="أقل من 1"?"Under 1":m[1])+" km"}],
  [/^(\d{4}) · (\d+) ألوان$/,function(m){return m[1]+" · "+m[2]+(m[2]==="1"?" color":" colors")}],
  [/^العرض ينتهي اليوم$/,function(){return "Offer ends today"}],[/^العرض ينتهي بكرة$/,function(){return "Offer ends tomorrow"}],[/^العرض ينتهي بعد يومين$/,function(){return "Offer ends in 2 days"}],[/^العرض ينتهي بعد (\d+) أيام$/,function(m){return "Offer ends in "+m[1]+" days"}],
  [/^(\d+) سيارة$/,function(m){return m[1]+" cars"}],
