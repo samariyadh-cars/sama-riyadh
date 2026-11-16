@@ -67,6 +67,9 @@ var cars=[
  {b:L,n:"LX600 BB",y:"2026",type:"SUV",status:"hidden"}
 ];
 function TH(u){return (u&&!/^(https?:|data:|blob:)/.test(u))?"t/"+u:u}
+function mainImg(c){var ci=c.cimgs||{},L=c.colors||[],A=c.allColors||c.call||L,g="";for(var j=0;j<A.length;j++)if(!(ci[A[j]]&&ci[A[j]].length)){g=A[j];break}
+  for(var i=0;i<L.length;i++){var k=L[i];if(ci[k]&&ci[k].length)return ci[k][0];if((k===g||/أبيض|لؤلؤي/.test(k))&&c.imgs&&c.imgs.length)return c.imgs[0]}
+  if(c.imgs&&c.imgs.length)return c.imgs[0];for(var k2 in ci)if(ci[k2]&&ci[k2].length)return ci[k2][0];return ""}
 function thumbImg(im,u){im.decoding="async";im.src=TH(u);if(TH(u)!==u)im.onerror=function(){im.onerror=null;im.src=u}}
 function carSlug(k){var h=2166136261,u=new TextEncoder().encode(k);for(var i=0;i<u.length;i++){h^=u[i];h=Math.imul(h,16777619)>>>0}return h.toString(36)}
 function todayYMD(o){var d=new Date(Date.now()+(o||0)*864e5);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
@@ -178,7 +181,7 @@ function render(f){
     var d=document.createElement("article");d.className="card";
     d.innerHTML='<button class="pic" type="button"></button><div class="body"><h3><button class="ttl" type="button"></button></h3><div class="meta"></div><div class="price"></div><div class="acts"><button class="btn dtl" type="button">التفاصيل</button><a class="btn cash" target="_blank" rel="noopener">اطلب كاش</a><a class="btn alt inst" target="_blank" rel="noopener">اطلب تقسيط</a></div></div>';
     var pic=d.querySelector(".pic");
-    if(c.imgs&&c.imgs.length){pic.classList.add("has");var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";thumbImg(im,c.imgs[0]);pic.appendChild(im)}else{pic.innerHTML=CAR;pic.setAttribute("aria-label","تفاصيل "+c.b+" "+c.n)}
+    if(c.imgs&&c.imgs.length){pic.classList.add("has");var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";thumbImg(im,mainImg(c));pic.appendChild(im)}else{pic.innerHTML=CAR;pic.setAttribute("aria-label","تفاصيل "+c.b+" "+c.n)}
     d.querySelector(".ttl").textContent=c.b+" "+c.n;
     d.querySelector(".meta").textContent="جديدة، موديل "+c.y+" • "+c.type;
     d.querySelector(".price").textContent=priceText(c);(function(){var n=offerLeft(c);if(n==null)return;var e=document.createElement("div");e.className="cdn";e.textContent=offerTxt(n,1);d.querySelector(".price").insertAdjacentElement("afterend",e)})();
@@ -252,7 +255,7 @@ function openCar(i){
   (function(){var G=$("dSimG"),W=$("dSim");G.innerHTML="";var me=cars.indexOf(c),p0=+c.price||0;
     var L=[];cars.forEach(function(x,k){if(k===me||x.status==="hidden"||x.status==="sold"||x.type!==c.type)return;var sc=(x.b===c.b?0:1000000)+(p0&&+x.price?Math.abs(+x.price-p0):500000);L.push([sc,k])});
     L.sort(function(u,v){return u[0]-v[0]});L=L.slice(0,2);W.hidden=!L.length;
-    L.forEach(function(u){var x=cars[u[1]],b=document.createElement("button");b.type="button";b.className="simc";var im=document.createElement("img");im.alt="";im.loading="lazy";if(x.imgs&&x.imgs[0])thumbImg(im,x.imgs[0]);b.appendChild(im);var s=document.createElement("span");s.textContent=x.b+" "+x.n;var sm=document.createElement("small");sm.textContent=priceText(x);s.appendChild(sm);b.appendChild(s);b.addEventListener("click",function(){openCar(u[1])});G.appendChild(b)})})();
+    L.forEach(function(u){var x=cars[u[1]],b=document.createElement("button");b.type="button";b.className="simc";var im=document.createElement("img");im.alt="";im.loading="lazy";if(mainImg(x))thumbImg(im,mainImg(x));b.appendChild(im);var s=document.createElement("span");s.textContent=x.b+" "+x.n;var sm=document.createElement("small");sm.textContent=priceText(x);s.appendChild(sm);b.appendChild(s);b.addEventListener("click",function(){openCar(u[1])});G.appendChild(b)})})();
   var nf=$("dNotify"),cso=(c.csoon||[]),soonB=/تصل|قريب|شحن/.test(c.badge||c._lb||"");nf.hidden=!(c.status==="sold"||soonB||cso.length);$("nfPhone").value="";$("nfName").value="";$("nfNote").textContent="";
   $("nfTitle").textContent=c.status==="sold"?"🔔 نبّهني إذا وصلت سيارة مثلها":(!soonB&&cso.length)?"🔔 نبّهني إذا وصل اللون":"🔔 نبّهني إذا وصلت";
   (function(){var sel=$("nfColor");sel.innerHTML="";var ops=(!soonB&&cso.length)?cso.concat(["أي لون"]):["أي لون"].concat(c.colors||[]);ops.forEach(function(x){var o=document.createElement("option");o.value=x;o.textContent=x;sel.appendChild(o)})})();
@@ -296,7 +299,7 @@ function drawCmp(){
   var tb=document.createElement("table"),th=document.createElement("thead"),hr=document.createElement("tr");
   function cell(tag,tx,cl){var e=document.createElement(tag);if(tx!=null)e.textContent=tx;if(cl)e.className=cl;return e}
   hr.appendChild(cell("th",""));
-  idx.forEach(function(i){var c=cars[i],h=cell("th");if(c.imgs&&c.imgs.length){var im=document.createElement("img");im.alt=c.b+" "+c.n;thumbImg(im,c.imgs[0]);h.appendChild(im)}h.appendChild(cell("div",c.n,"cn"));h.appendChild(cell("div",priceText(c),"price"));hr.appendChild(h)});
+  idx.forEach(function(i){var c=cars[i],h=cell("th");if(c.imgs&&c.imgs.length){var im=document.createElement("img");im.alt=c.b+" "+c.n;thumbImg(im,mainImg(c));h.appendChild(im)}h.appendChild(cell("div",c.n,"cn"));h.appendChild(cell("div",priceText(c),"price"));hr.appendChild(h)});
   th.appendChild(hr);tb.appendChild(th);
   var body=document.createElement("tbody");
   function row(label,vals,cl){var tr=document.createElement("tr");if(cl)tr.className=cl;tr.appendChild(cell("td",label));vals.forEach(function(v){tr.appendChild(v)});body.appendChild(tr)}
@@ -837,7 +840,7 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
     var sl=document.createElement("div");sl.className="hsl";sl.setAttribute("role","region");sl.setAttribute("aria-label","سيارات المعرض");
     var dots=document.createElement("div");dots.className="hdots";
     pick.forEach(function(c,k){var s=document.createElement("div");s.className="hs"+(k?"":" on");
-      var im=document.createElement("img");im.alt=c.b+" "+c.n;if(k)im.loading="lazy";im.decoding="async";im.src=c.imgs[0];s.appendChild(im);
+      var im=document.createElement("img");im.alt=c.b+" "+c.n;if(k)im.loading="lazy";im.decoding="async";im.src=mainImg(c);s.appendChild(im);
       var bd=c.badge||c._lb||"";if(bd){var e=document.createElement("span");e.className="hbd";e.textContent=bd;s.appendChild(e)}
       var cp=document.createElement("div");cp.className="hcp";var a=document.createElement("small");a.textContent=c.b+" · موديل "+c.y;var n=document.createElement("b");n.textContent=c.b+" "+c.n;var t=document.createElement("span");t.textContent="جديدة · "+c.type;var bt=document.createElement("button");bt.type="button";bt.textContent="التفاصيل";
       bt.addEventListener("click",function(){openCar(cars.indexOf(c))});[a,n,t,bt].forEach(function(x){cp.appendChild(x)});s.appendChild(cp);sl.appendChild(s);
@@ -856,7 +859,7 @@ var _oc=openCar;openCar=function(i){_oc(i);try{TRK.ev("car",ck(cars[i]))}catch(e
   }
   // وصلت حديثاً
   var fr=P.filter(function(c){return /جديد|وصل/.test(c.badge||"")}).slice(0,10);
-  if(fr.length>=2){var row=$("frRow");fr.forEach(function(c){var b=document.createElement("button");b.type="button";var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";im.src=c.imgs[0];var t=document.createElement("b");t.textContent=c.b+" "+c.n;b.appendChild(im);b.appendChild(t);b.addEventListener("click",function(){openCar(cars.indexOf(c))});row.appendChild(b)});$("fresh").hidden=false}
+  if(fr.length>=2){var row=$("frRow");fr.forEach(function(c){var b=document.createElement("button");b.type="button";var im=document.createElement("img");im.alt=c.b+" "+c.n;im.loading="lazy";im.src=mainImg(c);var t=document.createElement("b");t.textContent=c.b+" "+c.n;b.appendChild(im);b.appendChild(t);b.addEventListener("click",function(){openCar(cars.indexOf(c))});row.appendChild(b)});$("fresh").hidden=false}
 })();
 
 /* تبويبات اطلب سيارة / اطلب تقسيط */

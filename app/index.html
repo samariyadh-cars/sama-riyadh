@@ -367,7 +367,11 @@ function webp(u){return u.replace(/\.jpe?g(\?.*)?$/i,".webp$1")}
 /* صورة بأخف حجم: webp ثم الأصل */
 function pic(u,cls,isThumb){if(!u)return "";var a=isThumb?thumb(u):img(u),b=img(u);return '<img loading="lazy" decoding="async" alt=""'+(cls?' class="'+cls+'"':"")+' src="'+esc(webp(a))+'" data-f1="'+esc(a)+'" data-f2="'+esc(b)+'" onerror="fb(this)">'}
 function fb(im){var s=im.getAttribute("src");if(s!==im.dataset.f1&&im.dataset.f1){im.src=im.dataset.f1;return}if(s!==im.dataset.f2&&im.dataset.f2){im.src=im.dataset.f2;return}im.onerror=null}
-function firstImg(c){if(c.imgs&&c.imgs.length)return c.imgs[0];var ci=c.cimgs||{};for(var k in ci)if(ci[k]&&ci[k].length)return ci[k][0];return ""}
+/* صورة الواجهة: صور أول لون متوفر (لو المتوفر ذهبي تطلع صورة الذهبي)، والصور العامة تمثّل الأبيض */
+function mainImg(c){var ci=c.cimgs||{},L=c.colors||[],A=c.allColors||c.call||L,g="";for(var j=0;j<A.length;j++)if(!(ci[A[j]]&&ci[A[j]].length)){g=A[j];break}
+  for(var i=0;i<L.length;i++){var k=L[i];if(ci[k]&&ci[k].length)return ci[k][0];if((k===g||/أبيض|لؤلؤي/.test(k))&&c.imgs&&c.imgs.length)return c.imgs[0]}
+  if(c.imgs&&c.imgs.length)return c.imgs[0];for(var k2 in ci)if(ci[k2]&&ci[k2].length)return ci[k2][0];return ""}
+function firstImg(c){return mainImg(c)}
 function visible(){return cars.filter(function(c){return c.status!=="hidden"})}
 function colPrice(c,col){var v=+((c.cprice||{})[col])||0;return v>0?v:(+c.price||0)}
 function priceOf(c,col){if(c.pm==="hide"||c.status==="sold")return 0;if(col)return colPrice(c,col);var L=(c.colors||[]).map(function(x){return colPrice(c,x)}).filter(function(v){return v>0});return L.length?Math.min.apply(null,L):(+c.price||0)}

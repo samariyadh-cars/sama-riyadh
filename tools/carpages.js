@@ -23,7 +23,11 @@ cars.forEach(c=>{
   const base=+(o.price||c.price)||0,cp=Object.assign({},c.cprice||{},o.cprice||{});
   const ps=colors.map(x=>+cp[x]>0?+cp[x]:base).filter(v=>v>0),min=ps.length?Math.min(...ps):base,varies=ps.some(v=>v!==ps[0]);
   const ci=Object.assign({},c.cimgs||{},o.cimgs||{});
-  let img=(o.imgs&&o.imgs[0])||(c.imgs&&c.imgs[0])||"";if(!img){for(const k of colors){if(ci[k]&&ci[k][0]){img=ci[k][0];break}}}
+  /* صورة أول لون متوفر، والصور العامة تمثّل الأبيض (نفس الواجهة) */
+  const gen=(o.imgs&&o.imgs[0])||(c.imgs&&c.imgs[0])||"";let img="";
+  const all=c.colors||colors,gc=all.find(x=>!(ci[x]&&ci[x][0]))||"";
+  for(const k of colors){if(ci[k]&&ci[k][0]){img=ci[k][0];break}if((k===gc||/أبيض|لؤلؤي/.test(k))&&gen){img=gen;break}}
+  if(!img)img=gen;if(!img){for(const k in ci){if(ci[k]&&ci[k][0]){img=ci[k][0];break}}}
   const abs=img?(/^https?:/.test(img)?img:SITE+img.replace(/\.webp$/,".jpg")):SITE+"og.jpg";
   const title=bn+" "+nm+" "+y+(status==="sold"?" — تم البيع":pm==="hide"||!min?"":(varies?" — يبدأ من ":" — ")+money(min*(1+VAT))+" ر.س");
   const desc="جديدة زيرو · وكالة سعودية · كاش وأقساط"+(colors.length?" · الألوان: "+colors.slice(0,5).join("، "):"")+" — معرض سماء الرياض للسيارات";
