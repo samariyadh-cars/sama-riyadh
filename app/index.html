@@ -228,6 +228,8 @@ html[dir="ltr"] .back svg{transform:scaleX(-1)}
 .selx{display:none;width:24px;height:24px;border-radius:7px;border:2px solid #C9CDD3;flex:none;font-style:normal}.selm .selx{display:block}.selm .arow .tog,.selm .arow [data-ua]{pointer-events:none;opacity:.4}.arow.sel{border-color:var(--red);background:var(--red-l)}.arow.sel .selx{background:var(--red);border-color:var(--red);position:relative}.arow.sel .selx::after{content:"✓";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
 .selbar{position:fixed;bottom:0;inset-inline:0;z-index:30;background:#1C1F24;color:#fff;padding:12px 14px calc(12px + var(--safe-b));display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:8px;align-items:center}.selbar span{font-size:13px;font-weight:700}.selbar .btn{height:42px;font-size:13px;margin:0;width:100%}.selbar .btn.ghost{background:#fff;color:#1C1F24}.selm{padding-bottom:90px}
 .hrr{display:grid;grid-template-columns:62px 1fr 14px 1fr;gap:6px;align-items:center;margin-bottom:8px}.hrr span{font-size:12px;color:var(--mut)}.hrr i{font-style:normal;text-align:center}.hrr input{margin:0}
+.micb{border:0;background:none;color:var(--red);width:36px;height:36px;margin-inline-start:-6px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0}.search label input{min-width:0}
+.vbox{text-align:center}.vpul{width:88px;height:88px;border-radius:50%;background:var(--red);color:#fff;margin:6px auto 14px;display:flex;align-items:center;justify-content:center;animation:vp 1.4s ease-in-out infinite}.vpul svg{width:38px;height:38px}.vpul.off{animation:none;background:var(--mut)}@keyframes vp{0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,.35)}50%{box-shadow:0 0 0 22px rgba(200,16,46,0)}}.vsaid{font-size:21px;font-weight:700;min-height:32px;margin:6px 0}
 .rp{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}.rph{display:flex;justify-content:space-between;align-items:center}.rph b{font-size:15px}.rped{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:15px}.rp p{white-space:pre-line;font-size:13px;line-height:1.7;color:var(--ink2);margin:6px 0 10px;max-height:9.5em;overflow:hidden}.rpa{display:grid;grid-template-columns:1fr 1fr;gap:8px}.rp .btn{height:42px;font-size:13px;width:100%;margin:0}
 .docq{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0 10px;padding:10px 12px;border-radius:12px;border:1px dashed var(--line2,#D7D9DD);color:var(--ink);text-decoration:none;font-size:14px;font-weight:600}.docq span{font-size:12px;color:var(--wa,#1E8E4E);font-weight:700}
 #ptr{position:fixed;top:0;left:50%;transform:translate(-50%,-60px);z-index:60;display:flex;align-items:center;gap:8px;background:#1C1F24;color:#fff;border-radius:22px;padding:9px 16px;font-size:13px;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:opacity .2s;opacity:0;pointer-events:none;margin-top:env(safe-area-inset-top,0px)}#ptr.on{opacity:1}#ptr span{display:inline-block;font-size:18px;color:#ff8a98}#ptr.spin span{animation:ptrs .8s linear infinite}@keyframes ptrs{to{transform:rotate(360deg)}}#upbar{position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:59;border:0;border-radius:14px;background:#1C1F24;color:#fff;font:inherit;font-size:14px;padding:13px 14px;box-shadow:0 8px 24px rgba(0,0,0,.3);cursor:pointer}#upbar u{color:#ff8a98;font-weight:700}
@@ -294,7 +296,7 @@ body:not(.adm) .ph .fav{color:#1C1F24}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="qr.js"></script>
-<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=9"></script><script src="../i18n.js?v=10"></script>
+<script>window.SAMA_NOTOGGLE=true</script><script src="i18n-app.js?v=10"></script><script src="../i18n.js?v=10"></script>
 <script>
 /* ===== إعدادات المعرض ===== */
 var NUM="966554378456",PHONE="0554378456",SHOP="معرض سماء الرياض للسيارات",SNAP="es_99000";
@@ -446,7 +448,7 @@ function hrText(){var H=hrCfg(),f=function(L){return (L||[]).map(function(r){var
 function header(){
   return '<header class="top"><div class="wrap"><div class="row"><div class="brand"><div class="logo"><img src="../logo.png" alt="شعار سماء الرياض"></div><div><b>سماء الرياض للسيارات</b><small>الرياض – معارض الشفاء</small>'+hrPill()+'</div></div>'+
   (isOwner()?'<div style="display:flex;gap:8px">'+'<button type="button" class="ibtn" id="langBtn" aria-label="'+(window.SAMA_LANG==="en"?"التبديل للعربية":"Switch to English")+'" style="width:auto;padding:0 10px;font-size:13px;font-weight:700">'+(window.SAMA_LANG==="en"?"عربي":"EN")+'</button>'+'<a class="ibtn" href="#/admin" aria-label="إدارة السيارات">'+ICON.tune+'</a><a class="ibtn" href="'+opsLink()+'" aria-label="متابعات سماء">'+ICON.ops+'</a></div></div>':'<div style="display:flex;gap:8px">'+'<button type="button" class="ibtn" id="langBtn" aria-label="'+(window.SAMA_LANG==="en"?"التبديل للعربية":"Switch to English")+'" style="width:auto;padding:0 10px;font-size:13px;font-weight:700">'+(window.SAMA_LANG==="en"?"عربي":"EN")+'</button>'+'<a class="ibtn" href="#/contact" aria-label="تواصل معنا">'+ICON.phone+'</a></div></div>')+
-  '<div class="search"><label>'+ICON.search+'<input id="q" type="search" enterkeyhint="search" placeholder="ابحث: كامري، راف فور، LX…" value="'+esc(F.q)+'" aria-label="بحث"></label>'+
+  '<div class="search"><label>'+ICON.search+'<input id="q" type="search" enterkeyhint="search" placeholder="ابحث: كامري، راف فور، LX…" value="'+esc(F.q)+'" aria-label="بحث">'+(SR?'<button type="button" class="micb" id="micb" aria-label="بحث بالصوت">'+ICON.mic+'</button>':'')+'</label>'+
   '<button class="fbtn'+(isFiltered()?" on":"")+'" id="fopen" aria-label="فلترة"><i></i>'+ICON.filter+'</button></div></div></header>';
 }
 function isFiltered(){return F.type!=="all"||F.fuel!=="all"||F.sort!=="def"||F.bud!=="all"}
@@ -467,6 +469,7 @@ function rvHtml(){var l=rvGet().map(byKey).filter(function(c){return c&&c.status
 /* «الأكثر طلباً»: سيارة وحدة، تنحسب في «متابعات سماء» من مشاهدات وطلبات آخر 7 أيام */
 function isHot(c){return !!DATA.hot&&DATA.hot===ck(c)&&c.status!=="sold"&&c.status!=="hidden"}
 function card(c){var u=firstImg(c);return '<a class="card" href="#/car/'+idx(c)+'"><div class="ph">'+(u?pic(u,"",true):"")+tagOf(c,"tag")+favBtn(c)+(isHot(c)?'<span class="hot">🔥 الأكثر طلباً</span>':'')+'</div><div class="cb"><b>'+esc(c.b+" "+c.n)+'</b><span>'+esc(c.y||"")+(c.colors&&c.colors.length?" · "+c.colors.length+" ألوان":"")+'</span>'+priceLine(c)+(offerLeft(c)!=null?'<em class="cdn">'+offerTxt(offerLeft(c),1)+'</em>':'')+'</div></a>'}
+function arN(t){return String(t||"").toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\u064B-\u0652\u0640]/g,"")}
 function filtered(){
   var q=F.q.trim().toLowerCase();
   var l=visible().filter(function(c){
@@ -475,7 +478,7 @@ function filtered(){
     if(F.type!=="all"&&c.type!==F.type)return false;
     if(F.fuel!=="all"&&fuelOf(c)!==F.fuel)return false;
     if(F.bud!=="all"){var pv=priceOf(c)*(1+VAT),rg=BUD[F.bud];if(!pv||pv<rg[0]||pv>=rg[1])return false}
-    if(q&&(c.b+" "+c.n+" "+(c.type||"")+" "+(c.y||"")).toLowerCase().indexOf(q)<0)return false;
+    if(q){var hay=arN(c.b+" "+c.n+" "+(c.type||"")+" "+(c.y||"")+" "+(c.colors||[]).join(" "));if(!arN(q).split(/\s+/).filter(Boolean).every(function(w){return hay.indexOf(w)>=0}))return false}
     return true});
   if(F.sort==="lo"||F.sort==="hi"){l.sort(function(a,b){var x=priceOf(a)||1e12,y=priceOf(b)||1e12;if(F.sort==="hi"){x=priceOf(a)||-1;y=priceOf(b)||-1;return y-x}return x-y})}
   if(F.sort==="new"){l.sort(function(a,b){return (/جديد|وصل/.test(b.badge||"")?1:0)-(/جديد|وصل/.test(a.badge||"")?1:0)})}
@@ -557,7 +560,19 @@ function bindTop(where){
   Array.prototype.forEach.call(document.querySelectorAll(".chip[data-b]"),function(b){b.onclick=function(){F.brand=b.dataset.b;F.fav=false;if(where==="cars")vCars();else location.hash="#/cars"}});
   var fc=document.querySelector(".chip[data-fav]");if(fc)fc.onclick=function(){F.fav=!F.fav;if(where==="cars")vCars();else{F.fav=true;location.hash="#/cars"}};
   document.getElementById("fopen").onclick=openFilter;
+  var mb=document.getElementById("micb");if(mb)mb.onclick=function(e){e.preventDefault();voiceSearch(where)};
 }
+/* ===== البحث بالصوت (العربي، ويطلع لو الجوال يدعمه بس) ===== */
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition||null;
+function voiceSearch(where){if(!SR)return;var en=window.SAMA_LANG==="en",r;try{r=new SR()}catch(e){toast("البحث بالصوت ما يشتغل على هذا الجوال");return}
+  r.lang=en?"en-US":"ar-SA";r.interimResults=true;r.maxAlternatives=1;r.continuous=false;
+  var s=document.createElement("div");s.className="sheet open";s.innerHTML='<div class="box vbox" role="dialog" aria-label="بحث بالصوت"><div class="vpul">'+ICON.mic+'</div><p class="note" id="vst" style="margin:0">أسمعك… قل اسم السيارة</p><div class="vsaid" id="vsd"></div><p class="note" style="margin:0">مثلاً: «برادو ذهبي» أو «كامري هايبرد»</p><button type="button" class="btn ghost" id="vx" style="margin-top:14px;width:100%">إلغاء</button></div>';
+  document.body.appendChild(s);var txt="",done=false,close=function(){done=true;try{r.abort()}catch(e){}s.remove()};
+  s.addEventListener("click",function(e){if(e.target===s)close()});s.querySelector("#vx").onclick=close;
+  r.onresult=function(e){txt="";for(var i=0;i<e.results.length;i++)txt+=e.results[i][0].transcript;txt=txt.replace(/[.؟?!،,]+$/,"").trim();var d=document.getElementById("vsd");if(d)d.textContent=txt?"«"+txt+"»":""};
+  r.onerror=function(e){if(done)return;var m=e.error==="not-allowed"||e.error==="service-not-allowed"?"اسمح للتطبيق بالمايك من إعدادات الجوال":e.error==="no-speech"?"ما سمعت شي — جرّب مرة ثانية":"ما قدرت أسمعك — جرّب مرة ثانية";var st=document.getElementById("vst");if(st)st.textContent=m;var pu=s.querySelector(".vpul");if(pu)pu.classList.add("off")};
+  r.onend=function(){if(done)return;if(!txt){var pu=s.querySelector(".vpul");if(pu)pu.classList.add("off");return}done=true;s.remove();F.q=txt;if(where==="cars")vCars();else location.hash="#/cars"};
+  try{r.start()}catch(e){close();toast("ما قدرت أشغّل المايك")}}
 function openFilter(){
   var types=[],fu=[];visible().forEach(function(c){if(c.type&&types.indexOf(c.type)<0)types.push(c.type);var f=fuelOf(c);if(fu.indexOf(f)<0)fu.push(f)});
   function grp(key,arr,labels){return '<div class="chips" data-k="'+key+'">'+arr.map(function(v,i){return '<button class="chip" data-v="'+esc(v)+'" aria-pressed="'+(F[key]===v)+'">'+esc(labels?labels[i]:(v==="all"?"الكل":v))+'</button>'}).join("")+'</div>'}
@@ -665,6 +680,65 @@ function vFinance(i){
     window.open(waT("inst",m),"_blank");
   };
 }
+/* ===== إشعارات الطلبات على جوالك (مع رقم على أيقونة التطبيق) =====
+   كل شي ينسوى على جوالك: مفاتيح الإشعار + اشتراك الجوال + دخول «متابعات سماء»، وينحفظ مشفّر كسرّ في GitHub (PUSH_CFG).
+   وكل 5 دقايق تقريباً خدمة في GitHub تشيّك الطلبات الجديدة وترسل الإشعار. ما ينحفظ شي من هذا في الملفات. */
+/* BLAKE2b (بدون مفتاح) + صندوق مختوم متوافق مع libsodium crypto_box_seal — عشان نحفظ إعداد الإشعارات كسرّ في GitHub */
+var B2=(function(){
+  var IV=[0xF3BCC908,0x6A09E667,0x84CAA73B,0xBB67AE85,0xFE94F82B,0x3C6EF372,0x5F1D36F1,0xA54FF53A,0xADE682D1,0x510E527F,0x2B3E6C1F,0x9B05688C,0xFB41BD6B,0x1F83D9AB,0x137E2179,0x5BE0CD19];
+  var S=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,14,10,4,8,9,15,13,6,1,12,0,2,11,7,5,3,11,8,12,0,5,2,15,13,10,14,3,6,7,1,9,4,7,9,3,1,13,12,11,14,2,6,5,10,4,0,15,8,9,0,5,7,2,4,10,15,14,1,11,12,6,8,3,13,2,12,6,10,0,11,8,3,4,13,7,5,15,14,1,9,12,5,1,15,14,13,4,10,0,7,6,3,9,2,8,11,13,11,7,14,12,1,3,9,5,0,15,4,8,6,2,10,6,15,14,9,11,3,0,8,12,2,13,7,1,4,10,5,10,2,8,4,7,6,1,5,15,11,9,14,3,12,13,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,14,10,4,8,9,15,13,6,1,12,0,2,11,7,5,3].map(function(x){return x*2});
+  var v=new Uint32Array(32),m=new Uint32Array(32);
+  function add64(a,i,j){var o0=a[i]+a[j],o1=a[i+1]+a[j+1];if(o0>=0x100000000)o1++;a[i]=o0;a[i+1]=o1}
+  function add64c(a,i,b0,b1){var o0=a[i]+b0;if(b0<0)o0+=0x100000000;var o1=a[i+1]+b1;if(o0>=0x100000000)o1++;a[i]=o0;a[i+1]=o1}
+  function get32(b,i){return b[i]^(b[i+1]<<8)^(b[i+2]<<16)^(b[i+3]<<24)}
+  function G(a,b,c,d,ix,iy){var x0=m[ix],x1=m[ix+1],y0=m[iy],y1=m[iy+1];
+    add64(v,a,b);add64c(v,a,x0,x1);var xor0=v[d]^v[a],xor1=v[d+1]^v[a+1];v[d]=xor1;v[d+1]=xor0;
+    add64(v,c,d);xor0=v[b]^v[c];xor1=v[b+1]^v[c+1];v[b]=(xor0>>>24)^(xor1<<8);v[b+1]=(xor1>>>24)^(xor0<<8);
+    add64(v,a,b);add64c(v,a,y0,y1);xor0=v[d]^v[a];xor1=v[d+1]^v[a+1];v[d]=(xor0>>>16)^(xor1<<16);v[d+1]=(xor1>>>16)^(xor0<<16);
+    add64(v,c,d);xor0=v[b]^v[c];xor1=v[b+1]^v[c+1];v[b]=(xor1>>>31)^(xor0<<1);v[b+1]=(xor0>>>31)^(xor1<<1)}
+  function compress(ctx,last){var i;for(i=0;i<16;i++){v[i]=ctx.h[i];v[i+16]=IV[i]}
+    v[24]=v[24]^ctx.t;v[25]=v[25]^(ctx.t/0x100000000);if(last){v[28]=~v[28];v[29]=~v[29]}
+    for(i=0;i<32;i++)m[i]=get32(ctx.b,4*i);
+    for(i=0;i<12;i++){G(0,8,16,24,S[i*16+0],S[i*16+1]);G(2,10,18,26,S[i*16+2],S[i*16+3]);G(4,12,20,28,S[i*16+4],S[i*16+5]);G(6,14,22,30,S[i*16+6],S[i*16+7]);G(0,10,20,30,S[i*16+8],S[i*16+9]);G(2,12,22,24,S[i*16+10],S[i*16+11]);G(4,14,16,26,S[i*16+12],S[i*16+13]);G(6,8,18,28,S[i*16+14],S[i*16+15])}
+    for(i=0;i<16;i++)ctx.h[i]=ctx.h[i]^v[i]^v[i+16]}
+  return function(input,outlen){var ctx={b:new Uint8Array(128),h:new Uint32Array(16),t:0,c:0},i;for(i=0;i<16;i++)ctx.h[i]=IV[i];ctx.h[0]^=0x01010000^outlen;
+    for(i=0;i<input.length;i++){if(ctx.c===128){ctx.t+=ctx.c;compress(ctx,false);ctx.c=0}ctx.b[ctx.c++]=input[i]}
+    ctx.t+=ctx.c;while(ctx.c<128)ctx.b[ctx.c++]=0;compress(ctx,true);
+    var out=new Uint8Array(outlen);for(i=0;i<outlen;i++)out[i]=ctx.h[i>>2]>>(8*(i&3));return out}})();
+function sealBox(msg,pk){var kp=nacl.box.keyPair(),n=new Uint8Array(64);n.set(kp.publicKey);n.set(pk,32);var nonce=B2(n,24),c=nacl.box(msg,nonce,pk,kp.secretKey),o=new Uint8Array(32+c.length);o.set(kp.publicKey);o.set(c,32);return o}
+
+var FBK="AIzaSyAXF0CKuXOk2Pm8aqB_bfYe4K1ouiUtquE",GHR="https://api.github.com/repos/samariyadh-cars/sama-riyadh/";
+function b64url(buf){var b=new Uint8Array(buf),s="";for(var i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function unb64url(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";var b=atob(s),o=new Uint8Array(b.length);for(var i=0;i<b.length;i++)o[i]=b.charCodeAt(i);return o}
+function loadNacl(){return window.nacl?Promise.resolve():new Promise(function(ok,no){var sc=document.createElement("script");sc.src="nacl.min.js";sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)})}
+function isStandalone(){return (window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true}
+function pushOK(){return "serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window}
+function ghApi(path,opt){opt=opt||{};opt.headers=Object.assign({"Authorization":"Bearer "+ghTok(),"Accept":"application/vnd.github+json"},opt.headers||{});return fetch(GHR+path,opt)}
+function fbRT(email,pass){var rt="";try{rt=localStorage.getItem("sama_fb_rt")||""}catch(e){}if(rt&&!email)return Promise.resolve(rt);if(!email)return Promise.reject("NORT");
+  return fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+FBK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,password:pass,returnSecureToken:true})}).then(function(r){return r.json()}).then(function(j){if(!j.refreshToken)throw "BADLOGIN";try{localStorage.setItem("sama_fb_rt",j.refreshToken)}catch(e){}return j.refreshToken})}
+function enablePush(email,pass,say){var vk,sub,rt;
+  return Notification.requestPermission().then(function(p){if(p!=="granted")throw "PERM";say("جاري تجهيز المفاتيح…");return crypto.subtle.generateKey({name:"ECDSA",namedCurve:"P-256"},true,["sign"])})
+  .then(function(k){return crypto.subtle.exportKey("jwk",k.privateKey)}).then(function(j){var pub=new Uint8Array(65);pub[0]=4;pub.set(unb64url(j.x),1);pub.set(unb64url(j.y),33);vk={pub:b64url(pub),priv:j.d};return navigator.serviceWorker.ready})
+  .then(function(reg){return reg.pushManager.getSubscription().then(function(old){return old?old.unsubscribe():null}).then(function(){say("جاري ربط الجوال…");return reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:unb64url(vk.pub)})})})
+  .then(function(s0){sub=s0.toJSON();return fbRT(email,pass)}).then(function(r){rt=r;say("جاري الحفظ بشكل آمن…");return loadNacl()})
+  .then(function(){return ghApi("actions/secrets/public-key")}).then(function(r){if(r.status===403||r.status===404)throw "GHPERM";if(!r.ok)throw r.status;return r.json()})
+  .then(function(k){var cfg=JSON.stringify({sub:sub,vpub:vk.pub,vpriv:vk.priv,rt:rt,at:Date.now()}),enc=sealBox(new TextEncoder().encode(cfg),Uint8Array.from(atob(k.key),function(c){return c.charCodeAt(0)})),b="";for(var i=0;i<enc.length;i++)b+=String.fromCharCode(enc[i]);
+    return ghApi("actions/secrets/PUSH_CFG",{method:"PUT",body:JSON.stringify({encrypted_value:btoa(b),key_id:k.key_id})})}).then(function(r){if(r.status===403||r.status===404)throw "GHPERM";if(!r.ok)throw r.status;
+    try{localStorage.setItem("sama_push_on",String(Date.now()))}catch(e){}return pushTest()})}
+function pushTest(){return ghApi("actions/workflows/push.yml/dispatches",{method:"POST",body:JSON.stringify({ref:"main",inputs:{test:"1"}})}).then(function(r){return r.ok})}
+function vPush(){if(!isOwner())return needOwner();var on=0;try{on=+localStorage.getItem("sama_push_on")||0}catch(e){}var rt="";try{rt=localStorage.getItem("sama_fb_rt")||""}catch(e){}
+  var ok=pushOK(),sa=isStandalone(),perm=ok?Notification.permission:"";
+  app.innerHTML='<div class="sub"><a class="back" href="#/admin" aria-label="رجوع">'+ICON.back+'</a><h1 style="flex:1">🔔 إشعارات الطلبات</h1></div><main class="wrap form" style="padding-bottom:40px">'+
+   '<div class="tmc" style="margin-top:12px;line-height:1.9"><b>'+(on&&perm==="granted"?'✅ مفعّلة على هذا الجوال':'إشعار مع كل طلب جديد')+'</b><div class="note" style="margin:4px 0 0">يوصلك إشعار فيه اسم العميل والسيارة، ورقم أحمر على أيقونة التطبيق بعدد الطلبات اللي للحين ما فتحتها في «متابعات سماء». يتأخر تقريباً 5 لين 15 دقيقة.</div></div>'+
+   (!ok?'<div class="hint">جوالك أو المتصفح ما يدعم الإشعارات. حدّث نظام الآيفون (16.4 أو أحدث).</div>':!sa?'<div class="hint">لازم تفتح التطبيق من أيقونته في الشاشة الرئيسية، مو من سفاري. (من سفاري: زر المشاركة ← «إضافة إلى الشاشة الرئيسية»)</div>':perm==="denied"?'<div class="hint">الإشعارات مقفلة. افتح إعدادات الآيفون ← الإشعارات ← سماء الرياض ← فعّل «السماح بالإشعارات»، وارجع هنا.</div>':'')+
+   (ok&&sa&&perm!=="denied"?(rt?'':'<div class="tmc"><b style="font-size:14px">دخول «متابعات سماء»</b><div class="note" style="margin:2px 0 8px">نفس الإيميل والرقم السري اللي تدخل فيه المتابعات — عشان الخدمة تقدر تشوف الطلبات الجديدة.</div><label>الإيميل<input id="pe" type="email" dir="ltr" autocomplete="username"></label><label>الرقم السري<input id="pp" type="password" dir="ltr" autocomplete="current-password"></label></div>')+
+    '<div class="err" id="perr"></div><p class="note" id="pst" style="text-align:center"></p><button type="button" class="btn" id="pon" style="width:100%">'+(on?'🔁 أعد التفعيل على هذا الجوال':'🔔 فعّل الإشعارات على هذا الجوال')+'</button>'+(on?'<button type="button" class="btn ghost" id="ptest" style="width:100%;margin-top:8px">أرسل إشعار تجربة</button>':''):'')+
+   '<p class="note" style="margin-top:16px;line-height:1.8">• تشتغل على جوال واحد (آخر جوال فعّلتها عليه).<br>• الرقم على الأيقونة يختفي لما تفتح التطبيق.<br>• لو غيّرت الرقم السري حق المتابعات، رجّع فعّلها هنا.</p></main>';
+  var b=document.getElementById("pon");if(b)b.onclick=function(){var er=document.getElementById("perr"),st=document.getElementById("pst"),pe=document.getElementById("pe"),pp=document.getElementById("pp");er.style.display="none";
+    if(pe&&(!pe.value.trim()||!pp.value)){er.textContent="اكتب الإيميل والرقم السري حق «متابعات سماء».";er.style.display="block";return}b.disabled=true;
+    enablePush(pe?pe.value.trim():"",pp?pp.value:"",function(t){st.textContent=t}).then(function(sent){st.textContent="";toast(sent?"تم ✅ بيوصلك إشعار تجربة خلال دقيقتين":"تم ✅");vPush()}).catch(function(e){b.disabled=false;st.textContent="";
+      er.textContent=e==="PERM"?"لازم تسمح بالإشعارات عشان تشتغل.":e==="BADLOGIN"?"الإيميل أو الرقم السري غلط.":e==="NORT"?"اكتب دخول «متابعات سماء».":e==="GHPERM"?"مفتاح GitHub اللي في الجوال ما عنده صلاحية «Secrets». لازم تحدّث صلاحيات المفتاح (قل لي وأشرح لك).":"صار خطأ، جرّب مرة ثانية ("+e+")";er.style.display="block"})};
+  var t=document.getElementById("ptest");if(t)t.onclick=function(){t.disabled=true;pushTest().then(function(ok){t.disabled=false;toast(ok?"انرسل — يوصلك خلال دقيقتين تقريباً":"ما قدرت أرسل التجربة")}).catch(function(){t.disabled=false;toast("ما قدرت أرسل التجربة")})}}
 /* ===== الإدارة: أوقات العمل وموقع المعرض ===== */
 function vHours(){if(!isOwner())return needOwner();var H=SET.hours||HR_DEF,R=H.ram||{};
   var per=function(id,L){L=L||[];var g=function(i,j){var r=String(L[i]||"").split("-");return r[j]||""};
@@ -716,6 +790,7 @@ function vContact(){
 ICON.tune='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>';
 ICON.bell='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
 ICON.heart='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>';
+ICON.mic='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
 ICON.cam='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
 
 /* ===== المفضلة (تنحفظ في جوال العميل) ===== */
@@ -819,7 +894,7 @@ function vAdmin(){
   var chip=function(k,t){return '<button class="chip" data-st="'+k+'" aria-pressed="'+(AF.st===k)+'">'+t+'</button>'},cnt=function(k){return cars.filter(function(c){return c.loc===k}).length};
   app.innerHTML='<header class="top"><div class="wrap"><div class="row"><div class="brand"><a class="back" href="#/" aria-label="رجوع" style="background:#2A2E35;border-color:#3A3F47;color:#fff">'+ICON.back+'</a><div><b>إدارة السيارات</b><small>التعديل يظهر في الموقع والتطبيق خلال دقيقة</small></div></div><a class="ibtn" href="#/admin/new" aria-label="سيارة جديدة" style="background:var(--red);border-color:var(--red);font-size:24px;text-decoration:none">+</a></div>'+
    '<div class="search"><label>'+ICON.search+'<input id="aq" type="search" placeholder="ابحث باسم السيارة" value="'+esc(AF.q)+'"></label></div></div></header>'+
-   '<main class="wrap"><div class="atools"><a href="#/admin/album">🖼️<span>ألبوم الصور</span></a><a href="#/admin/stats">📊<span>الإحصائيات</span></a><a href="#/admin/prices">💰<span>الأسعار</span></a><a href="#/admin/deliv">🎉<span>صورة تسليم</span></a><a href="#/admin/arrivals">🔔<span>ينتظرون الوصول</span></a><a href="#/admin/replies">💬<span>ردود جاهزة</span></a><a href="#/admin/team">👥<span>فريق المبيعات</span></a><a href="#/admin/dhikr">🤲<span>الأذكار والمناسبات</span></a><a href="#/admin/hours">🕘<span>الأوقات والموقع</span></a><button type="button" id="shopQr">'+ICON.qr+'باركود المعرض</button><button type="button" id="mtog" class="'+(SET.maint?"on":"")+'">'+ICON.tune+(SET.maint?"الصيانة: شغّالة":"وضع الصيانة")+'</button></div>'+
+   '<main class="wrap"><div class="atools"><a href="#/admin/album">🖼️<span>ألبوم الصور</span></a><a href="#/admin/stats">📊<span>الإحصائيات</span></a><a href="#/admin/prices">💰<span>الأسعار</span></a><a href="#/admin/deliv">🎉<span>صورة تسليم</span></a><a href="#/admin/arrivals">🔔<span>ينتظرون الوصول</span></a><a href="#/admin/replies">💬<span>ردود جاهزة</span></a><a href="#/admin/team">👥<span>فريق المبيعات</span></a><a href="#/admin/dhikr">🤲<span>الأذكار والمناسبات</span></a><a href="#/admin/hours">🕘<span>الأوقات والموقع</span></a><a href="#/admin/push">🔔<span>إشعارات الطلبات</span></a><button type="button" id="shopQr">'+ICON.qr+'باركود المعرض</button><button type="button" id="mtog" class="'+(SET.maint?"on":"")+'">'+ICON.tune+(SET.maint?"الصيانة: شغّالة":"وضع الصيانة")+'</button></div>'+
    '<div class="chips" id="ast" style="flex-wrap:wrap">'+chip("all","الكل ("+cars.length+")")+chip("on","ظاهرة")+chip("hidden","مخفية")+chip("sold","تم البيع")+chip("show","🏢 المعرض ("+cnt("show")+")")+chip("ship","🚢 الشحن ("+cnt("ship")+")")+chip("dealer","🏭 الموزع ("+cnt("dealer")+")")+chip("arch","📦 الأرشيف ("+cars.filter(function(c){return c.arch}).length+")")+(STALE&&Object.keys(STALE).length?chip("stale","🐢 راكدة ("+Object.keys(STALE).length+")"):"")+'</div><div class="alist">'+
    (AF.st==="arch"&&!l.length?'<div class="empty">الأرشيف فاضي.</div>':'')+(l.length&&AF.st!=="arch"?'<button type="button" class="selb" id="selb">☑️ تحديد عدة سيارات</button>':'')+l.map(function(c){var st=c.status||"",u=firstImg(c),p=priceOf(c);
      return '<div class="arow" data-k="'+esc(ck(c))+'"><i class="selx" aria-hidden="true"></i><a class="ainfo" href="#/admin/'+idx(c)+'">'+(u?pic(u,"",true):'<span class="ph0"></span>')+'<span><b>'+esc(c.b+" "+c.n)+'</b>'+
@@ -1712,7 +1787,7 @@ function route(){
   else if(p[0]==="cmp"){t="cars";vCmp(p[1],p[2])}
   else if(p[0]==="finance"){t="finance";vFinance(p[1])}
   else if(p[0]==="contact"){t="contact";vContact()}
-  else if(p[0]==="admin"){t="admin";if(p[1]==="reps"){location.replace("#/admin");return}else if(p[1]==="new")vNew();else if(p[1]==="prices")vPrices();else if(p[1]==="stats")vStats();else if(p[1]==="arrivals")vArrivals();else if(p[1]==="replies")vReplies();else if(p[1]==="team")vTeam();else if(p[1]==="dhikr")vDhikr();else if(p[1]==="hours")vHours();else if(p[1]==="deliv")vDeliv(p[2]);else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]==="album")vAlbum(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
+  else if(p[0]==="admin"){t="admin";if(p[1]==="reps"){location.replace("#/admin");return}else if(p[1]==="new")vNew();else if(p[1]==="prices")vPrices();else if(p[1]==="stats")vStats();else if(p[1]==="arrivals")vArrivals();else if(p[1]==="replies")vReplies();else if(p[1]==="team")vTeam();else if(p[1]==="dhikr")vDhikr();else if(p[1]==="hours")vHours();else if(p[1]==="push")vPush();else if(p[1]==="deliv")vDeliv(p[2]);else if(p[1]==="specs")vSpecs(p[2]);else if(p[1]==="photos")vPhotos(p[2]);else if(p[1]==="album")vAlbum(p[2]);else if(p[1]!=null&&p[1]!=="")vAdminEdit(p[1]);else vAdmin()}
   else vHome();
   Array.prototype.forEach.call(app.querySelectorAll("option:not([value])"),function(o){o.value=o.textContent});
   document.getElementById("fab").style.display=(t==="finance"||t==="contact"||t==="admin")?"none":"";
@@ -1759,6 +1834,8 @@ function refreshData(quiet){if(REFRESHING)return Promise.resolve();REFRESHING=tr
   document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){hidAt=Date.now();return}
     check();if(hidAt&&Date.now()-hidAt>5*60e3&&!busyEditing())refreshData(true);hidAt=0});
 })();
+if(isOwner()&&navigator.clearAppBadge){try{navigator.clearAppBadge().catch(function(){})}catch(e){}document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&navigator.clearAppBadge)navigator.clearAppBadge().catch(function(){})})}
+if(/[?&]ops=1/.test(location.search)&&isOwner()){location.replace(opsLink())}
 load().then(function(){catchRep();route()}).catch(function(){app.innerHTML='<div class="load">تعذّر تحميل السيارات. تأكد من الاتصال بالإنترنت ثم <a href="javascript:location.reload()">أعد المحاولة</a>.</div>'});
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
 </script>
