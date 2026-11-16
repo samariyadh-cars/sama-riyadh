@@ -471,6 +471,17 @@ function isHot(c){return !!DATA.hot&&DATA.hot===ck(c)&&c.status!=="sold"&&c.stat
 function card(c){var u=firstImg(c);return '<a class="card" href="#/car/'+idx(c)+'"><div class="ph">'+(u?pic(u,"",true):"")+tagOf(c,"tag")+favBtn(c)+(isHot(c)?'<span class="hot">🔥 الأكثر طلباً</span>':'')+'</div><div class="cb"><b>'+esc(c.b+" "+c.n)+'</b><span>'+esc(c.y||"")+(c.colors&&c.colors.length?" · "+c.colors.length+" ألوان":"")+'</span>'+priceLine(c)+(offerLeft(c)!=null?'<em class="cdn">'+offerTxt(offerLeft(c),1)+'</em>':'')+'</div></a>'}
 /* توحيد الحروف: الإملاء الصوتي في الآيفون أحياناً يكتب حروف فارسية شكلها نفس العربي (ک ی ہ) أو أشكال عرض خاصة، فنرجعها للعربي */
 function arN(t){t=String(t||"");try{t=t.normalize("NFKC")}catch(e){}t=t.replace(/[کڪګ]/g,"ك").replace(/[یۍېےۓ]/g,"ي").replace(/[ہھەۀۃ]/g,"ه").replace(/[ۆۇۈۋ]/g,"و").replace(/[٠-٩]/g,function(d){return String(d.charCodeAt(0)-1632)}).replace(/[۰-۹]/g,function(d){return String(d.charCodeAt(0)-1776)});return t.toLowerCase().replace(/[\u200B-\u200F\u061C\u202A-\u202E\u2066-\u2069\uFEFF]/g,"").replace(/[.،,؟?!؛;:"'«»()\-]/g," ").replace(/[أإآٱ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\u064B-\u0652\u0640]/g,"")}
+/* بحث مرن: لو ما لقى بالإملاء الصحيح، يدوّر على الأقرب (كوريلا ← كورولا، بردو ← برادو، كمري ← كامري) */
+var QAL={camry:"كامري",corolla:"كورولا",corola:"كورولا",prado:"برادو",landcruiser:"لاندكروزر",cruiser:"كروزر",land:"لاند",lc:"لاندكروزر",rav4:"راف فور",rav:"راف",yaris:"يارس",hilux:"هايلكس",fortuner:"فورتشنر",highlander:"هايلاندر",crown:"كراون",raize:"رايز",veloz:"فيلوز",urban:"أوربان",lexus:"لكزس",toyota:"تويوتا",kia:"كيا",hyundai:"هيونداي",changan:"شانجان",accent:"اكسنت",elantra:"النترا",sonata:"سوناتا",tucson:"توسان",sportage:"سبورتاج",hybrid:"هايبرد",gold:"ذهبي",white:"أبيض",black:"أسود",silver:"فضي",grey:"رمادي",gray:"رمادي"};
+function qWords(q){return arN(q).replace(/\s+/g," ").trim().split(" ").filter(Boolean).map(function(w){return QAL[w]?arN(QAL[w]):w})}
+function skel(w){return w.replace(/^ال(?=..)/,"").replace(/[اويء]/g,"")}
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.length;j++)d[0][j]=j;
+  for(i=1;i<=a.length;i++)for(j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function qMatch(c,q,fuzzy){var hay=arN(c.b+" "+c.n+" "+(c.type||"")+" "+(c.y||"")+" "+(c.colors||[]).join(" ")),hw=null;
+  return qWords(q).every(function(w){if(hay.indexOf(w)>=0)return true;if(!fuzzy||w.length<3||/^\d+$/.test(w))return false;
+    hw=hw||hay.split(/\s+/).filter(Boolean);var lim=w.length<=6?1:2,sw=skel(w);
+    return hw.some(function(h){if(/^\d+$/.test(h))return false;var h2=h.replace(/^ال(?=..)/,""),w2=w.replace(/^ال(?=..)/,"");
+      if(lev(w2,h2)<=lim)return true;if(sw.length>=2&&skel(h)===sw)return true;if(h2.length>w2.length+1&&lev(w2,h2.slice(0,w2.length))<=(w2.length<=4?0:1))return true;return false})})}
 function filtered(){
   var q=F.q.trim().toLowerCase();
   var l=visible().filter(function(c){
@@ -479,7 +490,7 @@ function filtered(){
     if(F.type!=="all"&&c.type!==F.type)return false;
     if(F.fuel!=="all"&&fuelOf(c)!==F.fuel)return false;
     if(F.bud!=="all"){var pv=priceOf(c)*(1+VAT),rg=BUD[F.bud];if(!pv||pv<rg[0]||pv>=rg[1])return false}
-    if(q){var hay=arN(c.b+" "+c.n+" "+(c.type||"")+" "+(c.y||"")+" "+(c.colors||[]).join(" "));if(!arN(q).split(/\s+/).filter(Boolean).every(function(w){return hay.indexOf(w)>=0}))return false}
+    if(q&&!qMatch(c,q,false))return false;
     return true});
   if(F.sort==="lo"||F.sort==="hi"){l.sort(function(a,b){var x=priceOf(a)||1e12,y=priceOf(b)||1e12;if(F.sort==="hi"){x=priceOf(a)||-1;y=priceOf(b)||-1;return y-x}return x-y})}
   if(F.sort==="new"){l.sort(function(a,b){return (/جديد|وصل/.test(b.badge||"")?1:0)-(/جديد|وصل/.test(a.badge||"")?1:0)})}
@@ -522,8 +533,8 @@ function morning(){var td=todayYMD();try{if(localStorage.getItem("sama_ms_hide")
      (S.raw?'':'<div class="note" style="margin:6px 0 0;font-size:11px">الأرقام من آخر مرة فتحت فيها «متابعات سماء».</div>');
     box.querySelector(".msx").onclick=function(){try{localStorage.setItem("sama_ms_hide",td)}catch(e){}box.remove()}}).catch(function(){box.remove()})}
 function vCars(){
-  var l=filtered();
-  app.innerHTML=header()+'<main class="wrap">'+brandChips()+'<div class="sec"><h2>'+(F.fav?"المفضلة":F.brand==="all"?"كل السيارات":esc(F.brand))+'</h2><span style="font-size:13px;color:var(--mut)">'+l.length+' سيارة</span></div>'+
+  var l=filtered();F._fz=false;if(F.q.trim()&&!F.fav){var q0=F.q,qq=F.q;F.q="";var base=filtered();F.q=qq;var ex=l.length,add=base.filter(function(c){return l.indexOf(c)<0&&qMatch(c,q0,true)});l=l.concat(add);F._fz=!ex&&add.length>0}
+  app.innerHTML=header()+'<main class="wrap">'+brandChips()+'<div class="sec"><h2>'+(F.fav?"المفضلة":F.brand==="all"?"كل السيارات":esc(F.brand))+'</h2><span style="font-size:13px;color:var(--mut)">'+l.length+' سيارة</span></div>'+(F._fz?'<p class="note" style="margin:-4px 0 10px">ما لقيت «'+esc(F.q.trim())+'» بالضبط — هذي الأقرب لها:</p>':'')+
    (l.length?'<div class="grid">'+l.map(card).join("")+'</div>'+(F.fav?'':reqCard()):F.fav?'<div class="empty">ما حفظت سيارات للحين. اضغط القلب على أي سيارة تعجبك.</div>':'<div class="empty">ما فيه سيارات بهذا البحث.<br><a href="#/cars" id="clr">امسح البحث</a></div>'+reqCard())+'</main>';
   bindTop("cars");
   var clr=document.getElementById("clr");if(clr)clr.onclick=function(e){e.preventDefault();F={q:"",brand:"all",type:"all",fuel:"all",sort:"def",fav:false,bud:"all"};vCars()};
