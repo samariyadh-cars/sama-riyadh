@@ -35,7 +35,7 @@ a,button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 1
         try{localStorage.setItem(KEY,t)}catch(e){}location.reload()}).catch(function(){document.getElementById("em").textContent="تعذر الاتصال، تأكد من الإنترنت."})};
     return}
   fetch("https://api.github.com/repos/samariyadh-cars/sama-data/contents/crm.html?t="+Date.now(),{headers:{"Authorization":"Bearer "+tok,"Accept":"application/vnd.github.raw"},cache:"no-store"})
-  .then(function(r){if(r.status===401)throw "مفتاح الدخول غير صحيح أو منتهي.";if(r.status===403||r.status===404)throw "المفتاح ما عنده صلاحية على مستودع sama-data. أضفه للمفتاح من إعدادات GitHub.";if(!r.ok)throw "تعذر الفتح، تأكد من الإنترنت.";return r.text()})
+  .then(function(r){if(r.status===401){try{localStorage.removeItem(KEY)}catch(e){}throw "مفتاح الدخول غير صحيح أو منتهي. تم مسحه، ارجع للموقع واضغط «دخول المعرض» والصق المفتاح الجديد."}if(r.status===403||r.status===404)throw "المفتاح ما عنده صلاحية على مستودع sama-data. أضفه للمفتاح من إعدادات GitHub.";if(!r.ok)throw "تعذر الفتح، تأكد من الإنترنت.";return r.text()})
   .then(function(html){document.open();document.write(html);document.close()})
   .catch(function(m){fail(typeof m==="string"?m:"تعذر الفتح، تأكد من الإنترنت.")});
 })();
