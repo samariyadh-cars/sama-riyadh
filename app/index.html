@@ -1881,5 +1881,6 @@ if(/[?&]ops=1/.test(location.search)&&isOwner()){location.replace(opsLink())}
 load().then(function(){catchRep();route()}).catch(function(){app.innerHTML='<div class="load">تعذّر تحميل السيارات. تأكد من الاتصال بالإنترنت ثم <a href="javascript:location.reload()">أعد المحاولة</a>.</div>'});
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
 </script>
+<script src="../hscroll.js?v=1"></script>
 </body>
 </html>
