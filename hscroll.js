@@ -1,6 +1,6 @@
 /* تحريك القوائم الأفقية على اللابتوب: أسهم + عجلة الماوس + سحب بالماوس. لا يعمل على الجوال/اللمس */
 (function(){
-  try{if(!window.matchMedia||!matchMedia("(hover:hover) and (pointer:fine)").matches)return}catch(e){return}
+  try{if(!window.matchMedia||!matchMedia("(any-pointer:fine)").matches)return}catch(e){return}
   var SEL=".tabs,.chips,.track,.himgs,.rvs,.simr,.nth,#models,.fr,#chips,[data-hs]";
   var css=document.createElement("style");
   css.textContent=".hs-b{position:absolute;z-index:6;width:32px;height:32px;margin-top:-16px;border-radius:50%;border:1px solid rgba(0,0,0,.18);background:rgba(255,255,255,.92);color:#222;font:700 16px/30px Arial,sans-serif;padding:0;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);opacity:.9;display:none}.hs-b:hover{opacity:1;background:#fff}.hs-on{cursor:grab}.hs-drag{cursor:grabbing!important;user-select:none}.hs-drag *{pointer-events:none}";
